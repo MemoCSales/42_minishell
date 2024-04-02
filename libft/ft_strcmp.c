@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/02 13:10:22 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/04/02 13:10:23 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2024/04/02 17:11:34 by mcruz-sa          #+#    #+#             */
+/*   Updated: 2024/04/02 17:12:14 by mcruz-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "./libft/libft.h"
-# include <errno.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <unistd.h>
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	unsigned char	*str1;
+	unsigned char	*str2;
+	size_t			i;
 
-// Functions for the buildins
-int	buildins(char **cmd);
-void	cd_buildin(char *path);
-
-
-#endif
+	i = 0;
+	str1 = (unsigned char *) s1;
+	str2 = (unsigned char *) s2;
+	while (str1[i] || str2[i])
+	{
+		if (str1[i] == str2[i])
+			i++;
+		else if (str1[i] != str2[i])
+			return (str1[i] - str2[i]);
+	}
+	return (0);
+}

@@ -9,6 +9,7 @@ CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror -g
 
 SRC = 	main.c \
+		buildins.c \
 
 all: $(NAME)
 
