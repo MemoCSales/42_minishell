@@ -35,6 +35,7 @@ void	cd_buildin(char *path)
 	{
 		if (home == NULL)
 			ft_putstr_fd("cd: HOME environment variable not set\n", STDERR_FILENO);
+		path = home;
 	}
 	status = chdir(path);
 	if (status == 0)
