@@ -36,5 +36,6 @@ typedef struct s_main
 // Functions for the buildins
 int	    buildins(char **cmd);
 void	cd_buildin(char *path);
+void    pwd_buildin();
 
 #endif

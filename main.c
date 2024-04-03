@@ -15,7 +15,7 @@
 
 int main(void)
 {
-	char	*cmd[] = {"cd", NULL};
+	char	*cmd[] = {"pwd", NULL};
 
 	buildins(cmd);
 	printf("Hello minishell\n");

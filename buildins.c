@@ -25,6 +25,19 @@ int	buildins(char **cmd)
 		pwd_buildin();
 		return (0);
 	}
+	// check env, unset, exit
+	else if (ft_strcmp(cmd[0], "env") == 0)
+	{
+		env_buildin();
+		return(0);
+	}
+	else if (ft_strcmp(cmd[0], "unset") == 0)
+	{
+		unset_buildin(cmd[1]);
+		return (0);
+	}
+	else if (ft_strcmp(cmd[0], "exit") == 0)
+		exit(0);
 	return (-1);
 }
 
@@ -60,4 +73,29 @@ void	cd_buildin(char *path)
 	}
 }
 
+void pwd_buildin()
+{
+	char	cwd[MAX_CMD_LEN];
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		printf("%s\n", cwd);
+	else
+		ft_putstr_fd("pwd: error retrieving current directory", STDERR_FILENO);
+}
 
+//env buildin
+// void env_buildin()
+// {
+
+// }
+
+
+// First create the env buildin
+// void	unset_buildin(char *variable)
+// {
+// 	if (variable == NULL)
+// 	{
+// 		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+// 		return ;
+// 	}
+
+// }
