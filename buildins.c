@@ -20,6 +20,11 @@ int	buildins(char **cmd)
 		cd_buildin(cmd[1]);
 		return (0);
 	}
+	else if (ft_strcmp(cmd[0], "pwd") == 0)
+	{
+		pwd_buildin();
+		return (0);
+	}
 	return (-1);
 }
 
@@ -54,3 +59,5 @@ void	cd_buildin(char *path)
 		}
 	}
 }
+
+
