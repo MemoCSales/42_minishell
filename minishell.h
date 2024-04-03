@@ -22,5 +22,16 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define MAX_CMD_LEN 1024
+
+typedef struct s_main
+{
+    char    *cmd;
+    char    *flags;
+    char    **args;
+    int     fd[2];
+    pid_t   pid;
+} t_main;
+
 
 #endif
