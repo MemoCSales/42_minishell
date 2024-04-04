@@ -18,7 +18,7 @@ $(LIBFT):
 		make -C $(LIBFT_DIRECTORY)
 
 $(NAME): $(OBJ) $(LIBFT)
-			$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 			@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 $(OBJ_DIR)%.o: %.c

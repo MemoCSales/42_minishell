@@ -15,6 +15,14 @@
 
 int main(void)
 {
-    printf("Hello minishell\n");
-    return(0);
+	char *rl;
+
+	//first while loop that prints a prompt and retrieves from what it reads
+	while (1)
+	{
+		rl = readline("\033[0;91mmini\033[1;91mℍ\033[0;91mΞLL>> \033[0m");
+		printf("%s\n", rl);
+	}
+	printf("Hello minishell\n");
+	return(0);
 }
