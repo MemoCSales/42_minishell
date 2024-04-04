@@ -26,16 +26,16 @@ int	buildins(char **cmd)
 		return (0);
 	}
 	// check env, unset, exit
-	else if (ft_strcmp(cmd[0], "env") == 0)
-	{
-		env_buildin();
-		return(0);
-	}
-	else if (ft_strcmp(cmd[0], "unset") == 0)
-	{
-		unset_buildin(cmd[1]);
-		return (0);
-	}
+	// else if (ft_strcmp(cmd[0], "env") == 0)
+	// {
+	// 	env_buildin();
+	// 	return(0);
+	// }
+	// else if (ft_strcmp(cmd[0], "unset") == 0)
+	// {
+	// 	unset_buildin(cmd[1]);
+	// 	return (0);
+	// }
 	else if (ft_strcmp(cmd[0], "exit") == 0)
 		exit(0);
 	return (-1);

@@ -15,6 +15,8 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
@@ -32,6 +34,12 @@ typedef struct s_main
     int     fd[2];
     pid_t   pid;
 } t_main;
+
+typedef struct s_env
+{
+    char **env_vars;
+    int status;
+} t_env;
 
 // Functions for the buildins
 int	    buildins(char **cmd);
