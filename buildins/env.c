@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   buildins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 17:32:15 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/04/02 17:03:01 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2024/04/02 13:37:46 by mcruz-sa          #+#    #+#             */
+/*   Updated: 2024/04/02 13:37:47 by mcruz-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+void env_buildin(t_env *env_vars)
 {
-	unsigned char	*str1;
-	unsigned char	*str2;
-	size_t			i;
+	int	i;
 
-	i = 0;
-	str1 = (unsigned char *) s1;
-	str2 = (unsigned char *) s2;
-	while (i < n && (str1[i] || str2[i]))
+	if (env_vars->env_vars == NULL)
 	{
-		if (str1[i] == str2[i])
-			i++;
-		else if (str1[i] != str2[i])
-			return (str1[i] - str2[i]);
+		printf("No environment variables available.\n");
+		return ;
 	}
-	return (0);
+	i = 0;
+	while (env_vars->env_vars[i] != NULL)
+	{
+		printf("%s\n", env_vars->env_vars[i]);
+		i++;
+	}
 }
