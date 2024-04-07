@@ -33,7 +33,6 @@ void	init_env(t_env *env_vars, char **env)
 		env_vars->env_vars[i] = ft_strdup(env[i]);
 		i++;
 	}
-    
 	env_vars->status = 0;
 }
 

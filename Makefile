@@ -14,6 +14,8 @@ SRC = 	main.c \
 		./buildins/cd.c \
 		./buildins/env.c \
 		./buildins/pwd.c \
+		./buildins/unset.c \
+		./buildins/export.c \
 
 all: $(NAME)
 
@@ -44,6 +46,9 @@ re: fclean all
 
 norminette: 
 		norminette $(SRC) $(SUPPORT_DIR) minishell.h $(LIBFT_DIRECTORY)
+
+valgrind:
+		valgrind --leak-check=full --show-leak-kinds=all ./minishell
 
 .PHONY: all clean fclean re
 

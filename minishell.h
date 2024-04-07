@@ -46,9 +46,13 @@ int			buildins(t_env *env_vars, char **cmd);
 void		cd_buildin(char *path);
 void		pwd_buildin(void);
 void		env_buildin(t_env *env_vars);
+void		unset_buildin(t_env *env_vars, char *var_name);
+int			find_index(t_env *env_vars, char *var_name);
+void		export_buildin(t_env *env_vars, char *new_var);
+int			check_duplicate(t_env *env_vars, char *new_var);
 
 // Environment variables
-void	init_env(t_env *env_vars, char **env);
-void	check_env(t_env *env_vars);
+void init_env(t_env *env_vars, char **env);
+void		check_env(t_env *env_vars);
 
 #endif

@@ -17,7 +17,7 @@ int main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-	char	*cmd[] = {"pwd", NULL}; //This variable is for testing the buildins
+	char	*cmd[] = {"export", "GREETING=HELLO, WORLD!", NULL}; //This variable is for testing the buildins
 	char 	*rl;
 	t_env	env_var;
 
@@ -28,6 +28,6 @@ int main(int argc, char **argv, char **env)
 		printf("%s\n", rl);
 		buildins(&env_var, cmd);
 	}
-	check_env(&env_var); //In this function it checks env_vars and frees the memory. 
+	check_env(&env_var); //In this function it checks env_vars and frees the memory. Need to check if its needed
 	return(0);
 }

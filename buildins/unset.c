@@ -13,33 +13,48 @@
 
 #include "../minishell.h"
 
-int	buildins(t_env *env_vars, char **cmd)
+void	unset_buildin(t_env *env_vars, char *var_name)
 {
-	if (ft_strcmp(cmd[0], "cd") == 0)
+	int	index;
+	int	i;
+
+	index = -1;
+	if (var_name == NULL)
 	{
-		cd_buildin(cmd[1]);
-		return (0);
+		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+		return ;
 	}
-	else if (ft_strcmp(cmd[0], "pwd") == 0)
+	index = find_index(env_vars, var_name);
+	if (index != -1)
 	{
-		pwd_buildin();
-		return (0);
+		free(env_vars->env_vars[index]);
+		i = index;
+		while (env_vars->env_vars[i] != NULL)
+		{
+			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
+			i++;
+		}
+		printf("ENV_VAR [%s] deleted\n", var_name); //printf for testing, might delete later
+		env_buildin(env_vars);						//can delete later
 	}
-	else if (ft_strcmp(cmd[0], "env") == 0)
+}
+
+int	find_index(t_env *env_vars, char *var_name)
+{
+	int	i;
+	int	index;
+
+	i = 0;
+	index = -1;
+	while (env_vars->env_vars[i] != NULL) //loop to find thei ndex of the environment var in the env_var->env_vars
 	{
-		env_buildin(env_vars);
-		return(0);
+		if (ft_strncmp(env_vars->env_vars[i], var_name, ft_strlen(var_name)) == 0 \
+			&& env_vars->env_vars[i][ft_strlen(var_name)] == '=')
+		{
+			index = i;
+			break;
+		}
+		i++;
 	}
-	else if (ft_strcmp(cmd[0], "unset") == 0)
-	{
-		unset_buildin(env_vars, cmd[1]);
-		return (0);
-	}
-	else if (ft_strcmp(cmd[0], "export") == 0)
-	{
-		export_buildin(env_vars, cmd[1]);
-	}
-	else if (ft_strcmp(cmd[0], "exit") == 0)
-		exit(0);
-	return (-1);
+	return (index);
 }
