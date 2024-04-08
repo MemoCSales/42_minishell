@@ -42,7 +42,7 @@ typedef struct s_env
 }			t_env;
 
 // Functions for the buildins
-int			buildins(t_env *env_vars, char **cmd);
+int			buildins(char **cmd);
 void		cd_buildin(char *path);
 void		pwd_buildin(void);
 void		env_buildin(t_env *env_vars);
@@ -51,6 +51,7 @@ int			find_index(t_env *env_vars, char *var_name);
 void		export_buildin(t_env *env_vars, char *new_var);
 int			check_duplicate(t_env *env_vars, char *new_var);
 void		echo_buildin(char **cmd);
+void		exec_buildin(t_env *env_vars, t_main *main);
 
 // Environment variables
 void init_env(t_env *env_vars, char **env);
