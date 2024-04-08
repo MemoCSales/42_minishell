@@ -16,6 +16,7 @@ SRC = 	main.c \
 		./buildins/pwd.c \
 		./buildins/unset.c \
 		./buildins/export.c \
+		./buildins/echo.c \
 
 all: $(NAME)
 

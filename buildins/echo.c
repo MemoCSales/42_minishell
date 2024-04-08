@@ -13,39 +13,25 @@
 
 #include "../minishell.h"
 
-int	buildins(t_env *env_vars, char **cmd)
+void	echo_buildin(char **cmd)
 {
-	if (ft_strcmp(cmd[0], "cd") == 0)
+	int	i;
+	int	cut_newline;
+
+	cut_newline = 0;
+	if (ft_strcmp(cmd[1], "-n") == 0)
 	{
-		cd_buildin(cmd[1]);
-		return (1);
+		cut_newline = 1;
+		cmd++;
 	}
-	else if (ft_strcmp(cmd[0], "pwd") == 0)
+	i = 1;
+	while (cmd[i] != NULL)
 	{
-		pwd_buildin();
-		return (1);
+		printf("%s", cmd[i]);
+		if (cmd[i + 1] != NULL)
+			printf(" ");
+		i++;
 	}
-	else if (ft_strcmp(cmd[0], "env") == 0)
-	{
-		env_buildin(env_vars);
-		return (1);
-	}
-	else if (ft_strcmp(cmd[0], "unset") == 0)
-	{
-		unset_buildin(env_vars, cmd[1]);
-		return (1);
-	}
-	else if (ft_strcmp(cmd[0], "export") == 0)
-	{
-		export_buildin(env_vars, cmd[1]);
-		return (1);
-	}
-	else if (ft_strcmp(cmd[0], "echo") == 0)
-	{
-		echo_buildin(cmd);
-		return (1);
-	}
-	else if (ft_strcmp(cmd[0], "exit") == 0)
-		exit(0);
-	return (-1);
+	if (!cut_newline)
+		printf("\n");
 }
