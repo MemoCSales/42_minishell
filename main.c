@@ -100,3 +100,42 @@ int main(int argc, char **argv, char **env)
 	check_env(&env_var); //In this function it checks env_vars and frees the memory. Need to check if its needed
 	return(0);
 }
+
+// void execute_command(t_main *main_var)
+// {
+//     pid_t pid = fork(); // Create a new process
+
+//     if (pid < 0)
+//     {
+//         // Fork failed
+//         perror("minishell");
+//     }
+//     else if (pid == 0)
+//     {
+//         // This is the child process
+//         if (main_var->flags != NULL && strcmp(main_var->flags, ">") == 0)
+//         {
+//             // Handle output redirection
+//             int fd = open(main_var->args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+//             if (fd == -1)
+//             {
+//                 perror(main_var->args[1]);
+//                 exit(EXIT_FAILURE);
+//             }
+//             dup2(fd, STDOUT_FILENO); // Redirect output to the file
+//             close(fd);
+//         }
+//         if (execvp(main_var->cmd, main_var->args) < 0)
+//         {
+//             // execvp failed
+//             perror(main_var->cmd);
+//             exit(EXIT_FAILURE);
+//         }
+//     }
+//     else
+//     {
+//         // This is the parent process
+//         int status;
+//         waitpid(pid, &status, 0); // Wait for the child process to finish
+//     }
+// }
