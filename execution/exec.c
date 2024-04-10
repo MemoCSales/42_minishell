@@ -138,12 +138,15 @@ void    execute_command(t_env env, t_main *main)
 			i++;
 		}
 		exec_args[num_args + 2] = NULL;
+		
+		// more code here...
+
     }
 	else
 		waitpid(pid, NULL, 0);
 }
 
-
+// execute that handles redirections
 // void execute_command(t_main *main_var)
 // {
 //     pid_t pid = fork(); // Create a new process
