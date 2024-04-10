@@ -54,7 +54,7 @@ void		echo_buildin(char **cmd);
 void		exec_buildin(t_env *env_vars, t_main *main);
 
 // Environment variables
-void init_env(t_env *env_vars, char **env);
+void 		init_env(t_env *env_vars, char **env);
 void		check_env(t_env *env_vars);
 
 #endif

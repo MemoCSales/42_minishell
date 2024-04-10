@@ -38,12 +38,14 @@
 // t_main parsed_commands[] = {
 //     {
 //         .cmd = "echo",
-//         .args = {"echo", "Hello,", "world!", NULL}
+//		   .flags = "-a",
+//         .args = {"Hello,", "world!", NULL}
 //     },
 //     {
 //         .cmd = NULL
 //     }
 // };
+// SYNTAX: command [flags] [arguments]
 
 t_main	*parse_line(char *line)
 {
@@ -68,12 +70,46 @@ t_main	*parse_line(char *line)
 	{
 		args = ft_split(commands[i], ' '); //Split the command into arguments
 		parsed_commands[i].cmd = args[0]; //The first argument is the command
-		parsed_commands[i].args = args; //The entire array is the arguments
+		if (args[1] && args[1][0] == '-') // Check if the second argument is a flag
+		{
+			parsed_commands[i].flags = args[1]; //Saving the flags
+			parsed_commands[i].args = &args[2]; // The rest are arguments
+		}
+		else
+		{
+			parsed_commands[i].flags = NULL; //No flags
+			parsed_commands[i].args = &args[i]; //The rest are arguments
+		}
 		i++;
 	}
 	parsed_commands[num_commands].cmd = NULL; //Setting the last element of the array as NULL
 	free(commands);
 	return (parsed_commands);
+}
+void	print_struct(t_main *main)
+{
+	int		i;
+	char	**args;
+
+	i = 0;
+	while (main[i].cmd != NULL)
+	{
+		printf("Command: %s\n", main[i].cmd);
+		if (main[i].flags != NULL)
+			printf("Flags: %s\n", main[i].flags);
+		if (main[i].args != NULL)
+		{
+			args = main[i].args;
+			printf("Arguments: ");
+			while (*args != NULL)
+			{
+				printf("%s ", *args);
+				args++;
+			}
+			printf("\n");
+		}
+		i++;
+	}
 }
 
 int main(int argc, char **argv, char **env)
@@ -91,51 +127,14 @@ int main(int argc, char **argv, char **env)
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		main_var = parse_line(line);
+		// print_struct(main_var); //printing parsing result
+		// exit(0);
 		if(buildins(main_var->args) == -1)
-			// execute_command(main_var->cmd);
-			printf("Here it supposed to be a function\n");
+			execute_command(&env_var, main_var);
+			// printf("Here it supposed to be a function\n");
 		else
 			exec_buildin(&env_var, main_var);
 	}
 	check_env(&env_var); //In this function it checks env_vars and frees the memory. Need to check if its needed
 	return(0);
 }
-
-// void execute_command(t_main *main_var)
-// {
-//     pid_t pid = fork(); // Create a new process
-
-//     if (pid < 0)
-//     {
-//         // Fork failed
-//         perror("minishell");
-//     }
-//     else if (pid == 0)
-//     {
-//         // This is the child process
-//         if (main_var->flags != NULL && strcmp(main_var->flags, ">") == 0)
-//         {
-//             // Handle output redirection
-//             int fd = open(main_var->args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//             if (fd == -1)
-//             {
-//                 perror(main_var->args[1]);
-//                 exit(EXIT_FAILURE);
-//             }
-//             dup2(fd, STDOUT_FILENO); // Redirect output to the file
-//             close(fd);
-//         }
-//         if (execvp(main_var->cmd, main_var->args) < 0)
-//         {
-//             // execvp failed
-//             perror(main_var->cmd);
-//             exit(EXIT_FAILURE);
-//         }
-//     }
-//     else
-//     {
-//         // This is the parent process
-//         int status;
-//         waitpid(pid, &status, 0); // Wait for the child process to finish
-//     }
-// }
