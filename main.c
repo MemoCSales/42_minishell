@@ -78,7 +78,7 @@ t_main	*parse_line(char *line)
 		else
 		{
 			parsed_commands[i].flags = NULL; //No flags
-			parsed_commands[i].args = &args[i]; //The rest are arguments
+			parsed_commands[i].args = &args[1]; //The rest are arguments
 		}
 		i++;
 	}
@@ -127,9 +127,9 @@ int main(int argc, char **argv, char **env)
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		main_var = parse_line(line);
-		// print_struct(main_var); //printing parsing result
+		print_struct(main_var); //printing parsing result
 		// exit(0);
-		if(buildins(main_var->args) == -1)
+		if(buildins(main_var->cmd) == -1)
 			execute_command(&env_var, main_var);
 			// printf("Here it supposed to be a function\n");
 		else

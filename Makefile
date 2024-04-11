@@ -10,6 +10,7 @@ CFLAGS	= -Wall -Wextra -Werror -g
 
 SRC = 	main.c \
 		./utils/init_env.c \
+		./utils/cleanup.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
@@ -17,6 +18,7 @@ SRC = 	main.c \
 		./buildins/unset.c \
 		./buildins/export.c \
 		./buildins/echo.c \
+		./execution/exec.c \
 
 all: $(NAME)
 

@@ -11,7 +11,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // char *find_command_path(char *cmd) {
 //     char *path = getenv("PATH");
@@ -37,32 +37,34 @@
 //     return NULL;
 // }
 
-char	*cmd_path(char *argv, t_env env)
-{
-	int		i;
-	char	*prog;
-	char	*path_cmd;
-	char	**cmd;
 
-	cmd = ft_split(argv, ' ');
-	i = 0;
-	while (pipex.dir_paths[i])
-	{
-		path_cmd = ft_strjoin(pipex.dir_paths[i], "/");
-		prog = ft_strjoin(path_cmd, cmd[0]);
-		free(path_cmd);
-		if (access(prog, F_OK | X_OK) == 0)
-		{
-			cleanup_split(cmd);
-			return (prog);
-		}
-		free(prog);
-		i++;
-	}
-	cleanup_split(pipex.dir_paths);
-	cleanup_split(cmd);
-	return (argv);
-}
+// char	*cmd_path(char *argv, t_env env)
+// {
+// 	int		i;
+// 	char	*prog;
+// 	char	*path_cmd;
+// 	char	**cmd;
+
+// 	cmd = ft_split(argv, ' ');
+// 	i = 0;
+// 	while (pipex.dir_paths[i])
+// 	{
+// 		path_cmd = ft_strjoin(pipex.dir_paths[i], "/");
+// 		prog = ft_strjoin(path_cmd, cmd[0]);
+// 		free(path_cmd);
+// 		if (access(prog, F_OK | X_OK) == 0)
+// 		{
+// 			cleanup_split(cmd);
+// 			return (prog);
+// 		}
+// 		free(prog);
+// 		i++;
+// 	}
+// 	cleanup_split(pipex.dir_paths);
+// 	cleanup_split(cmd);
+// 	return (argv);
+// }
+
 
 // void execute_command(t_main *command)
 // {
@@ -113,12 +115,55 @@ char	*cmd_path(char *argv, t_env env)
 //         waitpid(pid, NULL, 0);
 //     }
 // }
-void    execute_command(t_env env, t_main *main)
+char	*get_env_path(t_env *env)
 {
+	int		i;
+	char	*path;
+
+	i = 0;
+	while (env->env_vars[i] != NULL)
+	{
+		if (ft_strncmp(env->env_vars[i], "PATH=", 5) == 0)
+		{
+			path = env->env_vars[i] + 5;
+			break;
+		}
+		i++;
+	}
+	return (path);
+}
+
+char	*get_cmd_path(t_main *main, char *cmd_path)
+{
+	int	i;
+	char	*prog;
+	char	*path_cmd;
+	char	**dir_paths;
+
+	i = 0;
+	dir_paths = ft_split(cmd_path, ':');
+	while (dir_paths[i])
+	{
+		path_cmd = ft_strjoin(dir_paths[i], "/");
+		prog = ft_strjoin(path_cmd, main->cmd);
+		free(path_cmd);
+		if (access(prog, F_OK | X_OK) == 0)
+			return (prog);
+		free(prog);
+		i++;
+	}
+	cleanup_split(dir_paths);
+	return (cmd_path); //check this later
+}
+
+void	execute_command(t_env *env, t_main *main)
+{
+    char    **exec_args;
+	char	*path_env;
+	char	*path_cmd;
     int     num_args;
     int     i;
     pid_t   pid;
-    char    **exec_args;
 
     pid = fork();
     if (pid < 0)
@@ -128,6 +173,7 @@ void    execute_command(t_env env, t_main *main)
         num_args = 0;
         while (main->args[num_args] != NULL)
             num_args++;
+		printf("%d\n", num_args);
         exec_args = malloc((num_args + 3) * sizeof(char *)); //Allocate memory for args + cmd, flags and NULL
 		exec_args[0] = main->cmd;
 		exec_args[1] = main->flags;
@@ -138,11 +184,20 @@ void    execute_command(t_env env, t_main *main)
 			i++;
 		}
 		exec_args[num_args + 2] = NULL;
-		
-		// more code here...
+		// Prepare the env variables!
+		// Find the full path of the command
+		path_env = get_env_path(env);
+		path_cmd = get_cmd_path(main, path_env);
 
+		//Execute the command (you can use the pipex execution part)
+		if (execve(path_cmd, exec_args, env->env_vars) == -1)
+		{
+			ft_putstr_fd("Command not found: ", 2);
+			ft_putendl_fd(main->cmd, 2);
+			exit(1);
+		}
     }
-	else
+	else //Parent process waits for the child to finish
 		waitpid(pid, NULL, 0);
 }
 

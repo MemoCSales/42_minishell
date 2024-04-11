@@ -13,21 +13,21 @@
 
 #include "../minishell.h"
 
-int	buildins(char **cmd)
+int	buildins(char *cmd)
 {
-	if (ft_strcmp(cmd[0], "cd") == 0)
+	if (ft_strcmp(cmd, "cd") == 0)
 		return (1);
-	else if (ft_strcmp(cmd[0], "pwd") == 0)
+	else if (ft_strcmp(cmd, "pwd") == 0)
 		return (1);
-	else if (ft_strcmp(cmd[0], "env") == 0)
+	else if (ft_strcmp(cmd, "env") == 0)
 		return (1);
-	else if (ft_strcmp(cmd[0], "unset") == 0)
+	else if (ft_strcmp(cmd, "unset") == 0)
 		return (1);
-	else if (ft_strcmp(cmd[0], "export") == 0)
+	else if (ft_strcmp(cmd, "export") == 0)
 		return (1);
-	else if (ft_strcmp(cmd[0], "echo") == 0)
+	else if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
-	else if (ft_strcmp(cmd[0], "exit") == 0)
+	else if (ft_strcmp(cmd, "exit") == 0)
 		exit(0);
 	return (-1);
 }
