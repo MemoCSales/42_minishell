@@ -54,91 +54,111 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	return (cmd_path); //check this later
 }
 
-void	execute_piped_commands(t_main *main, t_env *env, int n)
-{
-	int	i;
-	int	in;
+// void	execute_piped_commands(t_main *main, t_env *env, int num_cmd)
+// {
+// 	int	i;
+// 	int	in_fd;
+// 	int	fd[2];
 
-	i = 0;
+// 	i = 0;
+// 	in_fd = 0; // input fd for the first cmd is STDINPUT
+// 	while (i < num_cmd)
+// 	{
+// 		if (pipe(fd) == -1)
+// 		{
+// 			perror("Pipe error");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		main[i].pid = fork();
+// 		if (main[i].pid < 0)
+// 		{
+// 			perror("Fork error");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		if (main[i].pid == 0)
+// 		{
+// 			if (i != 0)
+// 			{
+// 				dup2(in_fd, STDIN_FILENO);
+// 				close(in_fd);
+// 			}
+// 			if (i != num_cmd - 1) // If its not the last cmd, redirect the STDOUT to the write end of the pipe
+// 			{
+// 				dup2(fd[1], STDOUT_FILENO);
+// 				close(fd[0]);
+// 			}
+// 			execute_command(env, &main[i]);
+// 		}
+// 		else
+// 		{
+// 			// waitpid(main->pid, NULL, 0);
+// 			wait(NULL);
+// 			if (i != 0)
+// 				close (in_fd);
+// 			in_fd = fd[0];
+// 			close(fd[1]);
+// 		}
+// 		i++;
+// 	}
+// }
+
+void execute_piped_commands(t_main *main, t_env *env, int n)
+{
+    int i;
+    int in;
+	int	saved_stdin;
+
 	in = 0;
-	while (i < n)
-	{
-		if (pipe(main->fd) == -1)
-		{
-			perror("Pipe error");
-			exit(EXIT_FAILURE);
-		}
-		main->pid = fork();
-		if (main->pid < 0)
+	i = 0;
+	saved_stdin = dup(STDIN_FILENO);
+	while (i < n - 1)
+    {
+		main[i].pid = fork();
+		if (main[i].pid == -1)
 		{
 			perror("Fork error");
 			exit(EXIT_FAILURE);
 		}
-		if (main->pid == 0)
+		if (main[i].pid == 0) // Child process
 		{
-			if (i != 0)
+			if (in != 0)
+			{
 				dup2(in, STDIN_FILENO);
-			if (i != n - 1)
-				dup2(main->fd[1], STDOUT_FILENO);
-			close(main->fd[0]);
+				close(in);
+			}
+			dup2(main[i].fd[1], STDOUT_FILENO);
+			close(main[i].fd[0]);
 			execute_command(env, &main[i]);
 		}
 		else
 		{
-			// waitpid(main->pid, NULL, 0);
 			wait(NULL);
-			close(main->fd[1]);
+			close(main[i].fd[1]);
 			if (in != 0)
 				close(in);
-			in = main->fd[0];
+			in = main[i].fd[0];
 		}
 		i++;
-	}
+    }
+	if (in != 0)
+		dup2(in, STDIN_FILENO);
+	main[i].pid = fork();
+	if (main[i].pid == 0)
+		execute_command(env, &main[i]);
+	else
+		wait(NULL);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
 }
-
-// void execute_piped_commands(t_main *main, t_env *env, int n)
-// {
-//     int i;
-//     int in = 0;
-//     int fd[2];
-
-// 	i = 0;
-// 	while (i < n - 1)
-//     {
-//         pipe(fd);
-//         if (fork() == 0)
-//         {
-//             dup2(in, 0); //change the input according to the old one 
-//             dup2(fd[1], 1);
-//             close(fd[0]);
-//             if (in != 0) 
-//                 close(in);
-//             execute_command(env, &main[i]);
-//             exit(EXIT_FAILURE);
-//         }
-//         else
-//         {
-//             wait(NULL); //wait for the child process to finish
-//             close(fd[1]);
-//             if (in != 0) 
-//                 close(in);
-//             in = fd[0]; //save the input for the next command
-//         }
-// 		i++;
-//     }
-//     if (in != 0)
-//         dup2(in, 0);
-//     execute_command(env, &main[i]);
-// }
 
 void	execute_command(t_env *env, t_main *main)
 {
-    char    **exec_args;
+	char    **exec_args;
 	char	*path_env;
 	char	*path_cmd;
-    int     num_args;
-    int     i;
-    pid_t   pid;
+	int     num_args;
+	int     i;
+	pid_t   pid;
 
 	if (buildins(main->cmd) != -1)
 		exec_buildin(env, main);

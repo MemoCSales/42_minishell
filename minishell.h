@@ -61,8 +61,7 @@ void		check_env(t_env *env_vars);
 void		execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-void	execute_piped_commands(t_main *main, t_env *env, int n);
-
+void	execute_piped_commands(t_main *main, t_env *env, int num_cmd);
 // cleanup.c
 void		cleanup_split(char **split);
 
