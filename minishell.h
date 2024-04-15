@@ -61,8 +61,15 @@ void		check_env(t_env *env_vars);
 void		execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-void	execute_piped_commands(t_main *main, t_env *env, int num_cmd);
-// cleanup.c
+void		execute_piped_commands(t_main *main, t_env *env, int num_cmd);
+
+// parsing
+t_main		*parse_line(char *line);
+int			count_cmds(char **cmds);
+
+// utils
 void		cleanup_split(char **split);
+void		free_main(t_main *main_var);
+void		print_struct(t_main *main);
 
 #endif

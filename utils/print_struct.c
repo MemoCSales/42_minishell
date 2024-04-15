@@ -13,44 +13,30 @@
 
 #include "../minishell.h"
 
-void	cleanup_split(char **split)
+void	print_struct(t_main *main)
 {
-	int	i;
+	int		i;
+	char	**args;
 
 	i = 0;
-	while (split[i])
+	while (main[i].cmd != NULL)
 	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-	split = NULL;
-}
-
-void	free_main(t_main *main_var)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (main_var[i].cmd != NULL)
-	{
-		free(main_var[i].cmd);
-		if(main_var[i].args != NULL)
+		printf("Command: %s\n", main[i].cmd);
+		if (main[i].flags != NULL)
+			printf("Flags: %s\n", main[i].flags);
+		if (main[i].args != NULL)
 		{
-			j = 0;
-			while(main_var[i].args[j] != NULL)
+			args = main[i].args;
+			printf("Arguments: ");
+			while (*args != NULL)
 			{
-				free(main_var[i].args[j]);
-				j++;
+				printf("%s ", *args);
+				args++;
 			}
-			free(main_var[i].args);
+			printf("\n");
 		}
-		if (main_var[i].flags != NULL)
-		{
-			free(main_var[i].flags);
-		}
+		printf("File descriptor (read end): %d\n", main[i].fd[0]);
+		printf("File descriptor (write end): %d\n", main[i].fd[1]);
 		i++;
 	}
-	free(main_var);
 }

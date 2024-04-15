@@ -54,63 +54,13 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	return (cmd_path); //check this later
 }
 
-// void	execute_piped_commands(t_main *main, t_env *env, int num_cmd)
-// {
-// 	int	i;
-// 	int	in_fd;
-// 	int	fd[2];
-
-// 	i = 0;
-// 	in_fd = 0; // input fd for the first cmd is STDINPUT
-// 	while (i < num_cmd)
-// 	{
-// 		if (pipe(fd) == -1)
-// 		{
-// 			perror("Pipe error");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		main[i].pid = fork();
-// 		if (main[i].pid < 0)
-// 		{
-// 			perror("Fork error");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		if (main[i].pid == 0)
-// 		{
-// 			if (i != 0)
-// 			{
-// 				dup2(in_fd, STDIN_FILENO);
-// 				close(in_fd);
-// 			}
-// 			if (i != num_cmd - 1) // If its not the last cmd, redirect the STDOUT to the write end of the pipe
-// 			{
-// 				dup2(fd[1], STDOUT_FILENO);
-// 				close(fd[0]);
-// 			}
-// 			execute_command(env, &main[i]);
-// 		}
-// 		else
-// 		{
-// 			// waitpid(main->pid, NULL, 0);
-// 			wait(NULL);
-// 			if (i != 0)
-// 				close (in_fd);
-// 			in_fd = fd[0];
-// 			close(fd[1]);
-// 		}
-// 		i++;
-// 	}
-// }
-
 void execute_piped_commands(t_main *main, t_env *env, int n)
 {
-    int i;
-    int in;
-	int	saved_stdin;
+	int	i;
+	int	in;
 
 	in = 0;
 	i = 0;
-	saved_stdin = dup(STDIN_FILENO);
 	while (i < n - 1)
     {
 		main[i].pid = fork();
@@ -121,34 +71,47 @@ void execute_piped_commands(t_main *main, t_env *env, int n)
 		}
 		if (main[i].pid == 0) // Child process
 		{
-			if (in != 0)
+			if (i != 0) // Checks if there is a previous command
 			{
 				dup2(in, STDIN_FILENO);
 				close(in);
 			}
-			dup2(main[i].fd[1], STDOUT_FILENO);
+			if (i != n - 1) //If not the last command
+			{
+				dup2(main[i].fd[1], STDOUT_FILENO);
+			}
 			close(main[i].fd[0]);
+
+			// else // Last command
+			// {
+			// 	dup2(STDIN_FILENO, STDIN_FILENO);
+			// 	// dup2(saved_stdin, STDIN_FILENO);
+			// 	// close(saved_stdin);
+			// }
+			// close(main[i].fd[0]);
+			// close(main[i].fd[1]);
 			execute_command(env, &main[i]);
+			exit(EXIT_SUCCESS);
 		}
-		else
+		else // Parent process
 		{
-			wait(NULL);
-			close(main[i].fd[1]);
+			close(main[i].fd[1]); // Close writting end of the pipe
+			// close(main[i].fd[0]); // Close writting end of the pipe
 			if (in != 0)
 				close(in);
 			in = main[i].fd[0];
+			// waitpid(main[i].pid, NULL, 0); // Waits for the children to finish
 		}
 		i++;
-    }
+	}
+	i = 0;
+	while (i < n - 1)
+	{
+		waitpid(main[i].pid, NULL, 0);
+		i++;
+	}
 	if (in != 0)
-		dup2(in, STDIN_FILENO);
-	main[i].pid = fork();
-	if (main[i].pid == 0)
-		execute_command(env, &main[i]);
-	else
-		wait(NULL);
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdin);
+		close(in);
 }
 
 void	execute_command(t_env *env, t_main *main)
@@ -160,6 +123,7 @@ void	execute_command(t_env *env, t_main *main)
 	int     i;
 	pid_t   pid;
 
+	exec_args = NULL;
 	if (buildins(main->cmd) != -1)
 		exec_buildin(env, main);
 	else
@@ -172,7 +136,6 @@ void	execute_command(t_env *env, t_main *main)
 			num_args = 0;
 			while (main->args[num_args] != NULL)
 				num_args++;
-			// printf("%d\n", num_args);
 			exec_args = malloc((num_args + 3) * sizeof(char *)); //Allocate memory for args + cmd, flags and NULL
 			exec_args[0] = main->cmd;
 			if (main->flags != NULL)
@@ -196,7 +159,7 @@ void	execute_command(t_env *env, t_main *main)
 				}
 				exec_args[num_args + 1] = NULL;
 			}
-			path_env = get_env_path(env);	// Prepare the env variables!
+			path_env = get_env_path(env);				// Prepare the env variables!
 			path_cmd = get_cmd_path(main, path_env);	// Find the full path of the command
 
 			//Execute the command (you can use the pipex execution part)
@@ -204,50 +167,10 @@ void	execute_command(t_env *env, t_main *main)
 			{
 				ft_putstr_fd("Command not found: ", 2);
 				ft_putendl_fd(main->cmd, 2);
-				exit(1);
+				exit(EXIT_FAILURE);
 			}
 		}
 		else //Parent process waits for the child to finish
 			waitpid(pid, NULL, 0);
 	}
 }
-
-// execute that handles redirections
-// void execute_command(t_main *main_var)
-// {
-//     pid_t pid = fork(); // Create a new process
-
-//     if (pid < 0)
-//     {
-//         // Fork failed
-//         perror("minishell");
-//     }
-//     else if (pid == 0)
-//     {
-//         // This is the child process
-//         if (main_var->flags != NULL && strcmp(main_var->flags, ">") == 0)
-//         {
-//             // Handle output redirection
-//             int fd = open(main_var->args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//             if (fd == -1)
-//             {
-//                 perror(main_var->args[1]);
-//                 exit(EXIT_FAILURE);
-//             }
-//             dup2(fd, STDOUT_FILENO); // Redirect output to the file
-//             close(fd);
-//         }
-//         if (execvp(main_var->cmd, main_var->args) < 0)
-//         {
-//             // execvp failed
-//             perror(main_var->cmd);
-//             exit(EXIT_FAILURE);
-//         }
-//     }
-//     else
-//     {
-//         // This is the parent process
-//         int status;
-//         waitpid(pid, &status, 0); // Wait for the child process to finish
-//     }
-// }
