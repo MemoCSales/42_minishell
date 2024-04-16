@@ -42,7 +42,7 @@ typedef struct s_env
 }			t_env;
 
 // Functions for the buildins
-int			buildins(t_env *env_vars, char **cmd);
+int			buildins(char *cmd);
 void		cd_buildin(char *path);
 void		pwd_buildin(void);
 void		env_buildin(t_env *env_vars);
@@ -50,10 +50,26 @@ void		unset_buildin(t_env *env_vars, char *var_name);
 int			find_index(t_env *env_vars, char *var_name);
 void		export_buildin(t_env *env_vars, char *new_var);
 int			check_duplicate(t_env *env_vars, char *new_var);
-void		echo_buildin(char **cmd);
+void		echo_buildin(t_main *main);
+void		exec_buildin(t_env *env_vars, t_main *main);
 
 // Environment variables
-void init_env(t_env *env_vars, char **env);
+void		init_env(t_env *env_vars, char **env);
 void		check_env(t_env *env_vars);
+
+// exec.c
+void		execute_command(t_env *env, t_main *main);
+char		*get_env_path(t_env *env);
+char		*get_cmd_path(t_main *main, char *cmd_path);
+void		execute_piped_commands(t_main *main, t_env *env, int num_cmd);
+
+// parsing
+t_main		*parse_line(char *line);
+int			count_cmds(char **cmds);
+
+// utils
+void		cleanup_split(char **split);
+void		free_main(t_main *main_var);
+void		print_struct(t_main *main);
 
 #endif
