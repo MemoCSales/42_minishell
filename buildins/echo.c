@@ -13,22 +13,21 @@
 
 #include "../minishell.h"
 
-void	echo_buildin(char **cmd)
+void	echo_buildin(t_main *main)
 {
 	int	i;
 	int	cut_newline;
 
 	cut_newline = 0;
-	if (ft_strcmp(cmd[1], "-n") == 0)
+	if (ft_strcmp(main->flags, "-n") == 0 && main->flags != NULL)
 	{
 		cut_newline = 1;
-		cmd++;
 	}
-	i = 1;
-	while (cmd[i] != NULL)
+	i = 0;
+	while (main->args[i] != NULL)
 	{
-		printf("%s", cmd[i]);
-		if (cmd[i + 1] != NULL)
+		printf("%s", main->args[i]);
+		if (main->args[i + 1] != NULL)
 			printf(" ");
 		i++;
 	}

@@ -50,7 +50,7 @@ void		unset_buildin(t_env *env_vars, char *var_name);
 int			find_index(t_env *env_vars, char *var_name);
 void		export_buildin(t_env *env_vars, char *new_var);
 int			check_duplicate(t_env *env_vars, char *new_var);
-void		echo_buildin(char **cmd);
+void		echo_buildin(t_main *main);
 void		exec_buildin(t_env *env_vars, t_main *main);
 
 // Environment variables

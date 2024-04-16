@@ -45,7 +45,7 @@ void	exec_buildin(t_env *env_vars, t_main *main)
 	else if (ft_strcmp(main->cmd, "export") == 0)
 		export_buildin(env_vars, main->args[1]);
 	else if (ft_strcmp(main->cmd, "echo") == 0)
-		echo_buildin(main->args);
+		echo_buildin(main);
 	else if (ft_strcmp(main->cmd, "exit") == 0)
 		exit(0);
 }
