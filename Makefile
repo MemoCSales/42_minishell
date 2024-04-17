@@ -1,6 +1,5 @@
 NAME	= minishell
 
-#LIBFT
 LIBFT_DIRECTORY  = ./libft/
 LIBFT	= $(LIBFT_DIRECTORY)libft.a
 
@@ -9,6 +8,7 @@ CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror -g
 
 SRC = 	main.c \
+		minishell.c \
 		./utils/init_env.c \
 		./utils/cleanup.c \
 		./utils/print_struct.c \
@@ -57,7 +57,6 @@ valgrind:
 
 .PHONY: all clean fclean re
 
-#COLORS
 RED = \033[1;31m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m

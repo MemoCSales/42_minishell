@@ -41,6 +41,9 @@ typedef struct s_env
 	int		status;
 }			t_env;
 
+// main
+void	main_loop(t_env env_var, t_main *main_var);
+
 // Functions for the buildins
 int			buildins(char *cmd);
 void		cd_buildin(char *path);
@@ -61,7 +64,6 @@ void		check_env(t_env *env_vars);
 void		execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-void		execute_piped_commands(t_main *main, t_env *env, int num_cmd);
 
 // parsing
 t_main		*parse_line(char *line);
