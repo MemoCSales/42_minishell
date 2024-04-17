@@ -33,7 +33,7 @@ char	*get_env_path(t_env *env)
 
 char	*get_cmd_path(t_main *main, char *cmd_path)
 {
-	int	i;
+	int		i;
 	char	*prog;
 	char	*path_cmd;
 	char	**dir_paths;
@@ -71,7 +71,6 @@ void	execute_command(t_env *env, t_main *main)
 		i = 0;
 		while (main[i].cmd != NULL)
 		{
-			// printf("Execution command: %s\n", main[i].cmd);
 			main[i].pid = fork();
 			if (main[i].pid < 0)
 			{
@@ -80,7 +79,6 @@ void	execute_command(t_env *env, t_main *main)
 			}
 			if (main[i].pid == 0) //Child process
 			{
-				// printf("Inside child process for command: %s\n", main[i].cmd);
 				if (i != 0) // If not the first cmd, redirect input from the previous pipe
 				{
 					if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1) 
@@ -98,12 +96,9 @@ void	execute_command(t_env *env, t_main *main)
 						perror("dup2 error");
 						exit(EXIT_FAILURE);
 					}
-					// printf("After dup2 Output pipe: %d\n", main[i].fd[1]);
 					close(main[i].fd[0]);
 					close(main[i].fd[1]);
 				}
-				// printf("Input pipe: %d\n", main[i].fd[0]);
-				// printf("Output pipe: %d\n", main[i].fd[1]);
 				num_args = 0;
 				while(main[i].args[num_args] != NULL)
 					num_args++;
@@ -132,10 +127,6 @@ void	execute_command(t_env *env, t_main *main)
 				}
 				path_env = get_env_path(env);				// Prepare the env variables!
 				path_cmd = get_cmd_path(&main[i], path_env);	// Find the full path of the command
-				// printf("Exec args:");
-				// for (int k = 0; k < num_args + 3; k++) {
-				// 	printf(" %s", exec_args[k]);
-				// }
 				if (execve(path_cmd, exec_args, env->env_vars) == -1)
 				{
 					ft_putstr_fd("Command not found: ", 2);
@@ -145,15 +136,15 @@ void	execute_command(t_env *env, t_main *main)
 			}
 			else // Parent process
 			{
-				if (i != 0) // If not the 1st cmd, close the preivous pipe
+				if (i != 0) // If not the 1st cmd, closes the ends of the previous pipe
 				{
 					close(main[i - 1].fd[0]);
 					close(main[i - 1].fd[1]);
 				}
-				if (main[i + 1].cmd != NULL)
-				{
-					close(main[i].fd[1]);
-				}
+				// if (main[i + 1].cmd != NULL) // IF there is another cmd in the pipeline.
+				// {
+				// 	close(main[i].fd[1]); // Close the write end of the pipe ensuring only the child can write to the pipe
+				// }
 				waitpid(main[i].pid, &env->status, 0);
 			}
 			i++;
