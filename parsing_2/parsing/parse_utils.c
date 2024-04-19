@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/19 12:27:08 by demacinema        #+#    #+#             */
-/*   Updated: 2024/04/19 14:57:02 by demacinema       ###   ########.fr       */
+/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#             */
+/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

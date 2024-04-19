@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   checkers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/19 13:00:03 by demacinema        #+#    #+#             */
-/*   Updated: 2024/04/19 15:07:18 by demacinema       ###   ########.fr       */
+/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#             */
+/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
