@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2024/04/02 17:11:34 by mcruz-sa          #+#    #+#             */
+/*   Updated: 2024/04/16 19:27:22 by mcruz-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char **argv, char **env)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	t_main	*main_var;
-	t_env	env_var;
+	unsigned char	*str1;
+	unsigned char	*str2;
+	size_t			i;
 
-	(void)argc;
-	(void)argv;
-	main_var = NULL;
-	init_env(&env_var, env);	// This function initialize the env_vars
-	main_loop(env_var, main_var);
-	check_env(&env_var);	// In this function it checks env_vars and frees the memory. Need to check if its needed
+	if (!s1 || !s2)
+		return (1);
+	i = 0;
+	str1 = (unsigned char *) s1;
+	str2 = (unsigned char *) s2;
+	while (str1[i] || str2[i])
+	{
+		if (str1[i] == str2[i])
+			i++;
+		else if (str1[i] != str2[i])
+			return (str1[i] - str2[i]);
+	}
 	return (0);
 }

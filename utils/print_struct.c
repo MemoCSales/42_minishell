@@ -11,18 +11,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void	print_struct(t_main *main)
 {
-	t_main	*main_var;
-	t_env	env_var;
+	int		i;
+	char	**args;
 
-	(void)argc;
-	(void)argv;
-	main_var = NULL;
-	init_env(&env_var, env);	// This function initialize the env_vars
-	main_loop(env_var, main_var);
-	check_env(&env_var);	// In this function it checks env_vars and frees the memory. Need to check if its needed
-	return (0);
+	i = 0;
+	while (main[i].cmd != NULL)
+	{
+		printf("Command: %s\n", main[i].cmd);
+		if (main[i].flags != NULL)
+			printf("Flags: %s\n", main[i].flags);
+		if (main[i].args != NULL)
+		{
+			args = main[i].args;
+			printf("Arguments: ");
+			while (*args != NULL)
+			{
+				printf("%s ", *args);
+				args++;
+			}
+			printf("\n");
+		}
+		printf("File descriptor (read end): %d\n", main[i].fd[0]);
+		printf("File descriptor (write end): %d\n", main[i].fd[1]);
+		i++;
+	}
 }

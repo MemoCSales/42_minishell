@@ -11,18 +11,46 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void	cleanup_split(char **split)
 {
-	t_main	*main_var;
-	t_env	env_var;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	main_var = NULL;
-	init_env(&env_var, env);	// This function initialize the env_vars
-	main_loop(env_var, main_var);
-	check_env(&env_var);	// In this function it checks env_vars and frees the memory. Need to check if its needed
-	return (0);
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+	split = NULL;
+}
+
+void	free_main(t_main *main_var)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (main_var[i].cmd != NULL)
+	{
+		free(main_var[i].cmd);
+		if(main_var[i].args != NULL)
+		{
+			j = 0;
+			while(main_var[i].args[j] != NULL)
+			{
+				free(main_var[i].args[j]);
+				j++;
+			}
+			free(main_var[i].args);
+		}
+		if (main_var[i].flags != NULL)
+		{
+			free(main_var[i].flags);
+		}
+		i++;
+	}
+	free(main_var);
 }

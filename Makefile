@@ -1,6 +1,5 @@
 NAME	= minishell
 
-#LIBFT
 LIBFT_DIRECTORY  = ./libft/
 LIBFT	= $(LIBFT_DIRECTORY)libft.a
 
@@ -9,6 +8,19 @@ CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror -g
 
 SRC = 	main.c \
+		minishell.c \
+		./utils/init_env.c \
+		./utils/cleanup.c \
+		./utils/print_struct.c \
+		./buildins/buildins.c \
+		./buildins/cd.c \
+		./buildins/env.c \
+		./buildins/pwd.c \
+		./buildins/unset.c \
+		./buildins/export.c \
+		./buildins/echo.c \
+		./parsing/parse.c \
+		./execution/exec.c \
 
 all: $(NAME)
 
@@ -18,7 +30,7 @@ $(LIBFT):
 		make -C $(LIBFT_DIRECTORY)
 
 $(NAME): $(OBJ) $(LIBFT)
-			$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 			@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 $(OBJ_DIR)%.o: %.c
@@ -40,9 +52,11 @@ re: fclean all
 norminette: 
 		norminette $(SRC) $(SUPPORT_DIR) minishell.h $(LIBFT_DIRECTORY)
 
+valgrind:
+		valgrind --leak-check=full --show-leak-kinds=all ./minishell
+
 .PHONY: all clean fclean re
 
-#COLORS
 RED = \033[1;31m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m

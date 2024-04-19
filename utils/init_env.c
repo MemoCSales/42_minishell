@@ -11,18 +11,52 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void	init_env(t_env *env_vars, char **env)
 {
-	t_main	*main_var;
-	t_env	env_var;
+	int	num_vars;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	main_var = NULL;
-	init_env(&env_var, env);	// This function initialize the env_vars
-	main_loop(env_var, main_var);
-	check_env(&env_var);	// In this function it checks env_vars and frees the memory. Need to check if its needed
-	return (0);
+	num_vars = 0;
+	while (env[num_vars] != NULL)
+		num_vars++;
+	env_vars->env_vars = (char **)malloc((num_vars + 1) * sizeof(char *));
+	if (!env_vars->env_vars)
+	{
+		env_vars->status = -1;
+		return ;
+	}
+	i = 0;
+	while (i < num_vars)
+	{
+		env_vars->env_vars[i] = ft_strdup(env[i]);
+		i++;
+	}
+	env_vars->env_vars[i] = NULL;
+	env_vars->status = 0;
+}
+
+void	check_env(t_env *env_vars)
+{
+	int	i;
+
+	if (env_vars->status == 0)
+	{
+		i = 0;
+		while (env_vars->env_vars[i] != NULL)
+		{
+			printf("%s\n", env_vars->env_vars[i]);
+			i++;
+		}
+		i = 0;
+		while (env_vars->env_vars[i] != NULL)
+		{
+			free(env_vars->env_vars[i]);
+			i++;
+		}
+		free(env_vars->env_vars);
+	}
+	else
+		printf("Error initializaing environment variables\n");
 }

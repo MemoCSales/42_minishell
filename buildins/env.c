@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   buildins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
 /*   By: demrodri <demrodri@student.42wolfsburg.de>*/
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2024/04/02 13:37:46 by mcruz-sa          #+#    #+#             */
+/*   Updated: 2024/04/02 13:37:47 by mcruz-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void env_buildin(t_env *env_vars)
 {
-	t_main	*main_var;
-	t_env	env_var;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	main_var = NULL;
-	init_env(&env_var, env);	// This function initialize the env_vars
-	main_loop(env_var, main_var);
-	check_env(&env_var);	// In this function it checks env_vars and frees the memory. Need to check if its needed
-	return (0);
+	if (env_vars->env_vars == NULL)
+	{
+		printf("No environment variables available.\n");
+		return ;
+	}
+	i = 0;
+	while (env_vars->env_vars[i] != NULL)
+	{
+		printf("%s\n", env_vars->env_vars[i]);
+		i++;
+	}
 }
