@@ -42,7 +42,7 @@ typedef struct s_env
 }			t_env;
 
 // main
-void	main_loop(t_env env_var, t_main *main_var);
+void		main_loop(t_env env_var, t_main *main_var);
 
 // Functions for the buildins
 int			buildins(char *cmd);
@@ -64,6 +64,17 @@ void		check_env(t_env *env_vars);
 void		execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
+// redirections
+int			check_for_redirect_output(t_main *main);
+int			check_for_redirect_input(t_main *main);
+void		handle_output_redirection(t_main *main, int i);
+void		handle_input_redirection(t_main *main, int i);
+
+// exec_utils.c
+char		*get_env_path(t_env *env);
+char		*get_cmd_path(t_main *main, char *cmd_path);
+void		pipe_redirection(t_main *main, int i);
+char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 // parsing
 t_main		*parse_line(char *line);

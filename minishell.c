@@ -27,7 +27,8 @@ void    main_loop(t_env env_var, t_main *main_var)
 		while (main_var[num_commands].cmd)
 			num_commands++;
 		print_struct(main_var); // printing parsing result
-		exit(0);
+		printf("\n");
+		// exit(0);
 		if (num_commands >= 1)
 		{
 			if (buildins(main_var->cmd) == -1)

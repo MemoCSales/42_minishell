@@ -13,45 +13,81 @@
 
 #include "../minishell.h"
 
-char	*get_env_path(t_env *env)
+int	check_for_redirect_output(t_main *main)
 {
-	int		i;
-	char	*path;
+	int	i;
 
 	i = 0;
-	while (env->env_vars[i] != NULL)
+	while(main->args[i] != NULL)
 	{
-		if (ft_strncmp(env->env_vars[i], "PATH=", 5) == 0)
-		{
-			path = env->env_vars[i] + 5;
-			break;
-		}
+		if (ft_strcmp(main->args[i], ">") == 0)
+			return (1);	// ">" is present in the args
 		i++;
 	}
-	return (path);
+	return (0); // ">" Not found
 }
 
-char	*get_cmd_path(t_main *main, char *cmd_path)
+int	check_for_redirect_input(t_main *main)
 {
-	int		i;
-	char	*prog;
-	char	*path_cmd;
-	char	**dir_paths;
+	int	i;
 
 	i = 0;
-	dir_paths = ft_split(cmd_path, ':');
-	while (dir_paths[i])
+	while(main->args[i] != NULL)
 	{
-		path_cmd = ft_strjoin(dir_paths[i], "/");
-		prog = ft_strjoin(path_cmd, main->cmd);
-		free(path_cmd);
-		if (access(prog, F_OK | X_OK) == 0)
-			return (prog);
-		free(prog);
+		if (ft_strcmp(main->args[i], "<") == 0)
+			return (1);
 		i++;
 	}
-	cleanup_split(dir_paths);
-	return (cmd_path); //check this later
+	return (0);
+}
+
+
+void	handle_output_redirection(t_main *main, int i)
+{
+	int	fd;
+	int	redirect_output;
+
+	redirect_output = check_for_redirect_output(&main[i]);
+	if(redirect_output)
+	{
+		fd = open(main[i].args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+		{
+			perror("Error: Unable to open file\n");
+			exit(EXIT_FAILURE);
+		}
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+}
+
+void	handle_input_redirection(t_main *main, int i)
+{
+	int fd;
+	int redirect_input;
+
+	redirect_input = check_for_redirect_input(&main[i]);
+	if (redirect_input)
+	{
+		fd = open(main[i].args[i + 1], O_RDONLY);
+		if (fd < 0)
+		{
+			perror("Error: Unable to open file\n");
+			exit(EXIT_FAILURE);
+		}
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+}
+
+void	parent_process(t_main *main, t_env *env, int i)
+{
+	if (i != 0) // If not the 1st cmd, closes the ends of the previous pipe
+	{
+		close(main[i - 1].fd[0]);
+		close(main[i - 1].fd[1]);
+	}
+	waitpid(main[i].pid, &env->status, 0);
 }
 
 void	execute_command(t_env *env, t_main *main)
@@ -59,9 +95,7 @@ void	execute_command(t_env *env, t_main *main)
 	char    **exec_args;
 	char	*path_env;
 	char	*path_cmd;
-	int     num_args;
 	int     i;
-	int		j;
 
 	exec_args = NULL;
 	if (buildins(main->cmd) != -1)
@@ -79,54 +113,12 @@ void	execute_command(t_env *env, t_main *main)
 			}
 			if (main[i].pid == 0) //Child process
 			{
-				if (i != 0) // If not the first cmd, redirect input from the previous pipe
-				{
-					if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1) 
-					{
-						perror("dup2 error");
-						exit(EXIT_FAILURE);
-					}
-					close(main[i - 1].fd[0]);
-					close(main[i - 1].fd[1]);
-				}
-				if (main[i + 1].cmd != NULL) // If not the last cmd, redirect output to the next pipe
-				{
-					if (dup2(main[i].fd[1], STDOUT_FILENO) == -1) 
-					{
-						perror("dup2 error");
-						exit(EXIT_FAILURE);
-					}
-					close(main[i].fd[0]);
-					close(main[i].fd[1]);
-				}
-				num_args = 0;
-				while(main[i].args[num_args] != NULL)
-					num_args++;
-				exec_args = malloc((num_args + 3) * sizeof(char *));
-				exec_args[0] = main[i].cmd;
-				if (main[i].flags != NULL)
-				{
-					exec_args[1] = main[i].flags;
-					j = 0;
-					while (j < num_args)
-					{
-						exec_args[j + 2] = main[i].args[j];
-						j++;
-					}
-					exec_args[num_args + 2] = NULL;
-				}
-				else
-				{
-					j = 0;
-					while (j < num_args)
-					{
-						exec_args[j + 1] = main[i].args[j];
-						j++;
-					}
-					exec_args[num_args + 1] = NULL;
-				}
-				path_env = get_env_path(env);				// Prepare the env variables!
+				pipe_redirection(main, i);
+				exec_args = build_exec_args(main, exec_args, i);
+				path_env = get_env_path(env);					// Prepare the env variables!
 				path_cmd = get_cmd_path(&main[i], path_env);	// Find the full path of the command
+				handle_output_redirection(main, i);
+				handle_input_redirection(main, i);
 				if (execve(path_cmd, exec_args, env->env_vars) == -1)
 				{
 					ft_putstr_fd("Command not found: ", 2);
@@ -135,18 +127,7 @@ void	execute_command(t_env *env, t_main *main)
 				}
 			}
 			else // Parent process
-			{
-				if (i != 0) // If not the 1st cmd, closes the ends of the previous pipe
-				{
-					close(main[i - 1].fd[0]);
-					close(main[i - 1].fd[1]);
-				}
-				// if (main[i + 1].cmd != NULL) // IF there is another cmd in the pipeline.
-				// {
-				// 	close(main[i].fd[1]); // Close the write end of the pipe ensuring only the child can write to the pipe
-				// }
-				waitpid(main[i].pid, &env->status, 0);
-			}
+				parent_process(main, env, i);
 			i++;
 		}
 	}

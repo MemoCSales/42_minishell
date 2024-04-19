@@ -23,6 +23,17 @@ int	count_cmds(char **cmds)
 	return(num_commands);
 }
 
+void	remove_args(char **args, int start_index, int num_args)
+{
+	int	i;
+
+	i = start_index;
+	while (args[i] != NULL)
+	{
+		args[i] = args[i + num_args];
+		i++;
+	}
+}
 // After calling this function with this input = echo Hello World
 // The output is this one
 // t_main parsed_commands[] = {
@@ -44,11 +55,10 @@ t_main	*parse_line(char *line)
 	char	**commands;
 	int		num_commands;
 	int		i;
+	// int		j;
 
 	commands = ft_split(line, '|');
 	num_commands = count_cmds(commands);
-	// while (commands[num_commands] != NULL)
-	// 	num_commands++;
 	parsed_commands = malloc((num_commands + 1) * sizeof(t_main));
 	if (!parsed_commands)
 	{
@@ -60,6 +70,24 @@ t_main	*parse_line(char *line)
 	{
 		args = ft_split(commands[i], ' '); // Split the command into arguments
 		parsed_commands[i].cmd = args[0];  // The first argument is the command
+		// parsed_commands[i].input_file = NULL;
+		// parsed_commands[i].output_file = NULL;
+		// j = 1;
+		// while (args[j] != NULL)
+		// {
+		// 	if (ft_strcmp(args[j], "<") == 0)
+		// 	{
+		// 		parsed_commands[i].input_file = args[j + 1];
+		// 		remove_args(args, j, 2);
+		// 	}
+		// 	else if (ft_strcmp(args[j], ">") == 0)
+		// 	{
+		// 		parsed_commands[i].output_file = args[j + 1];
+		// 		remove_args(args, j, 2);
+		// 	}
+		// 	else
+		// 		j++;
+		// }
 		if (args[1] && args[1][0] == '-') // Check if the second argument is a flag
 		{
 			parsed_commands[i].flags = args[1]; // Saving the flags

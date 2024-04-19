@@ -1,12 +1,4 @@
 < colors.txt sort | uniq -c | sort -r | head -3
 
-blue
-black
-red
-red
-green
-blue
-green
-red
-red
-blue
+cat input.txt | grep "pattern" > output.txt
+cat input.txt | grep "pattern" | wc -l > output.txt
