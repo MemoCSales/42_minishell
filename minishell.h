@@ -33,6 +33,8 @@ typedef struct s_main
 	char	**args;
 	int		fd[2];
 	pid_t	pid;
+	char	*input_file;
+	char	*output_file;
 }			t_main;
 
 typedef struct s_env

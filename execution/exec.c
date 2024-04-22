@@ -13,44 +13,58 @@
 
 #include "../minishell.h"
 
-int	check_for_redirect_output(t_main *main)
+void	print_exec_args(char **exec_args)
 {
 	int	i;
+	// int	j;
 
 	i = 0;
-	while(main->args[i] != NULL)
+	while (exec_args[i])
 	{
-		if (ft_strcmp(main->args[i], ">") == 0)
-			return (1);	// ">" is present in the args
+		printf("arg[%d]:%s\n", i, exec_args[i]);
 		i++;
 	}
-	return (0); // ">" Not found
 }
 
-int	check_for_redirect_input(t_main *main)
-{
-	int	i;
+// int	check_for_redirect_output(t_main *main)
+// {
+// 	int	i;
 
-	i = 0;
-	while(main->args[i] != NULL)
-	{
-		if (ft_strcmp(main->args[i], "<") == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
+// 	i = 0;
+// 	while(main->args[i] != NULL)
+// 	{
+// 		if (ft_strcmp(main->args[i], ">") == 0)
+// 			return (1);	// ">" is present in the args
+// 		i++;
+// 	}
+// 	return (0); // ">" Not found
+// }
+
+// int	check_for_redirect_input(t_main *main)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while(main->args[i] != NULL)
+// 	{
+// 		if (ft_strcmp(main->args[i], "<") == 0)
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 
 void	handle_output_redirection(t_main *main, int i)
 {
 	int	fd;
-	int	redirect_output;
+	// int	redirect_output;
 
-	redirect_output = check_for_redirect_output(&main[i]);
-	if(redirect_output)
+	// redirect_output = check_for_redirect_output(&main[i]);
+	if(main[i].output_file != NULL)
 	{
-		fd = open(main[i].args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		// printf("Output file: %s\n", main[i].output_file);
+		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 		{
 			perror("Error: Unable to open file\n");
@@ -64,15 +78,18 @@ void	handle_output_redirection(t_main *main, int i)
 void	handle_input_redirection(t_main *main, int i)
 {
 	int fd;
-	int redirect_input;
 
-	redirect_input = check_for_redirect_input(&main[i]);
-	if (redirect_input)
+	if (main[i].input_file != NULL)
 	{
-		fd = open(main[i].args[i + 1], O_RDONLY);
+		// printf("Input file: %s\n", main[i].input_file);
+		fd = open(main[i].input_file, O_RDONLY);
 		if (fd < 0)
 		{
-			perror("Error: Unable to open file\n");
+			// perror("");
+			ft_putstr_fd("zsh: no such file or directory: ", 2);
+			ft_putstr_fd(main[i].input_file, 2);
+			ft_putstr_fd("\n", 2);
+			// close(fd);
 			exit(EXIT_FAILURE);
 		}
 		dup2(fd, STDIN_FILENO);
@@ -103,6 +120,7 @@ void	execute_command(t_env *env, t_main *main)
 	else
 	{
 		i = 0;
+		// printf("i: %d\n", i);
 		while (main[i].cmd != NULL)
 		{
 			main[i].pid = fork();
@@ -114,15 +132,18 @@ void	execute_command(t_env *env, t_main *main)
 			if (main[i].pid == 0) //Child process
 			{
 				pipe_redirection(main, i);
+				if (main[i].input_file != NULL)
+					handle_input_redirection(main, i);
+				if (main[i].output_file != NULL)
+					handle_output_redirection(main, i);
 				exec_args = build_exec_args(main, exec_args, i);
 				path_env = get_env_path(env);					// Prepare the env variables!
 				path_cmd = get_cmd_path(&main[i], path_env);	// Find the full path of the command
-				handle_output_redirection(main, i);
-				handle_input_redirection(main, i);
+				// print_exec_args(exec_args);
 				if (execve(path_cmd, exec_args, env->env_vars) == -1)
 				{
-					ft_putstr_fd("Command not found: ", 2);
-					ft_putendl_fd(main->cmd, 2);
+					ft_putstr_fd("zsh: command not found: ", 2);
+					ft_putendl_fd(main[i].cmd, 2);
 					exit(EXIT_FAILURE);
 				}
 			}

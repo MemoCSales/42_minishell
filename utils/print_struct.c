@@ -46,6 +46,8 @@ void	print_struct(t_main *main)
 			}
 			printf("\n");
 		}
+		printf("Input file: %s\n", main[i].input_file);
+		printf("Output file: %s\n", main[i].output_file);
 		printf("File descriptor (read end): %d\n", main[i].fd[0]);
 		printf("File descriptor (write end): %d\n", main[i].fd[1]);
 		i++;

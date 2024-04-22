@@ -24,11 +24,11 @@ char	*get_env_path(t_env *env)
 		if (ft_strncmp(env->env_vars[i], "PATH=", 5) == 0)
 		{
 			path = env->env_vars[i] + 5;
-			break;
+			return (path);
 		}
 		i++;
 	}
-	return (path);
+	return (NULL);
 }
 
 char	*get_cmd_path(t_main *main, char *cmd_path)
@@ -40,6 +40,8 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 
 	i = 0;
 	dir_paths = ft_split(cmd_path, ':');
+	if (!cmd_path)
+		return (NULL);
 	while (dir_paths[i])
 	{
 		path_cmd = ft_strjoin(dir_paths[i], "/");
@@ -104,8 +106,11 @@ char	**build_exec_args(t_main *main, char **exec_args, int i)
 		j = 0;
 		while (j < num_args)
 		{
-			if (ft_strcmp(main[i].args[j], "<") == 0 || ft_strcmp(main[i].args[j], ">") == 0)
-				j++;
+			// if (ft_strcmp(main[i].args[j], "<") == 0 || ft_strcmp(main[i].args[j], ">") == 0)
+			// {
+			// 	printf("print < or >");
+			// 	j++;
+			// }
 			exec_args[j + 1] = main[i].args[j];
 			j++;
 		}
