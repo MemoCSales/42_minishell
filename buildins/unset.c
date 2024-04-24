@@ -34,7 +34,7 @@ void	unset_buildin(t_env *env_vars, char *var_name)
 			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
 			i++;
 		}
-		printf("ENV_VAR [%s] deleted\n", var_name); //printf for testing, might delete later
+		// printf("ENV_VAR [%s] deleted\n", var_name); //printf for testing, might delete later
 		// env_buildin(env_vars);						//can delete later
 	}
 }

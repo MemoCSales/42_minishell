@@ -31,10 +31,10 @@ typedef struct s_main
 	char	*cmd;
 	char	*flags;
 	char	**args;
-	int		fd[2];
-	pid_t	pid;
 	char	*input_file;
 	char	*output_file;
+	int		fd[2];
+	pid_t	pid;
 }			t_main;
 
 typedef struct s_env
@@ -55,7 +55,7 @@ void		unset_buildin(t_env *env_vars, char *var_name);
 int			find_index(t_env *env_vars, char *var_name);
 void		export_buildin(t_env *env_vars, char *new_var);
 int			check_duplicate(t_env *env_vars, char *new_var);
-void		echo_buildin(t_main *main);
+void		echo_buildin(t_main *main, t_env *env);
 void		exec_buildin(t_env *env_vars, t_main *main);
 
 // Environment variables
