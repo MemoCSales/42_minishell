@@ -28,7 +28,7 @@ int	buildins(char *cmd)
 	else if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "exit") == 0)
-		exit(0);
+		return(1);
 	return (-1);
 }
 
@@ -47,10 +47,29 @@ void	exec_buildin(t_env *env_vars, t_main *main)
 	else if (ft_strcmp(main->cmd, "echo") == 0)
 		echo_buildin(main, env_vars);
 	else if (ft_strcmp(main->cmd, "exit") == 0)
-		exit(0);
+		exit_buildin(main, env_vars);
 }
 
-void	exit_buildin(t_main *main, t_env *env_vars, char *string)
+void	exit_buildin(t_main *main, t_env *env_vars)
 {
-	
+	env_vars->status = 0;
+	if (main->flags != NULL)
+		env_vars->status = ft_atoi(main->flags);
+	else if (main->args[1] != NULL)
+	{
+		ft_putstr_fd("exit: too many arguments\n", 2);
+		env_vars->status = 1;
+		return ;
+	}
+	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '-' && ft_isdigit(main->args[0][1])))
+		env_vars->status = ft_atoi(main->args[0]);
+	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '+' && ft_isdigit(main->args[0][1])))
+		env_vars->status = ft_atoi(main->args[0]);
+	else
+	{
+		ft_putstr_fd("exit: numeric argument required\n", 2);
+		env_vars->status = 2;
+		return ;
+	}
+	exit(env_vars->status);
 }

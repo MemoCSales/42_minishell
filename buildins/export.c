@@ -19,15 +19,15 @@ void	export_buildin(t_env *env_vars, char *new_var)
 	int		j;
 	char	**new_env_vars;
 	char	*temp;
-	char	*name;
-	char	*value;
+	char	**name;
+	// char	**value;
 
-	name = ft_split(new_var, "=");
-	value = ft_split(NULL, "=");
-	if (!is_valid_var_name(name))
+	name = ft_split(new_var, '=');
+	// value = ft_split(NULL, '=');
+	if (!is_valid_var_name(name[0]))
 	{
 		ft_putstr_fd("export: not valid in this context: ", 2);
-		ft_putstr_fd(name, 2);
+		ft_putstr_fd(name[0], 2);
 		env_vars->status = 1;
 	}
 
@@ -105,7 +105,6 @@ int	check_duplicate(t_env *env_vars, char *new_var)
 	}
 	return (0);
 }
-
 
 int	is_valid_var_name(char *var)
 {

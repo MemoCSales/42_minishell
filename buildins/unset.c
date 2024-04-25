@@ -21,7 +21,7 @@ void	unset_buildin(t_env *env_vars, char *var_name)
 	index = -1;
 	if (var_name == NULL)
 	{
-		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+		// ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
 		return ;
 	}
 	index = find_index(env_vars, var_name);

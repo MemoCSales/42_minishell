@@ -152,6 +152,7 @@ void	remove_args(char **args, int start_index, int num_args)
 // };
 // SYNTAX: command [flags] [arguments]
 
+
 t_main	*parse_line(char *line)
 {
 	t_main	*parsed_commands;

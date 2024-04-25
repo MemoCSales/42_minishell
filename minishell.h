@@ -54,8 +54,10 @@ void		env_buildin(t_env *env_vars);
 void		unset_buildin(t_env *env_vars, char *var_name);
 int			find_index(t_env *env_vars, char *var_name);
 void		export_buildin(t_env *env_vars, char *new_var);
+int	is_valid_var_name(char *var);
 int			check_duplicate(t_env *env_vars, char *new_var);
 void		echo_buildin(t_main *main, t_env *env);
+void	exit_buildin(t_main *main, t_env *env_vars);
 void		exec_buildin(t_env *env_vars, t_main *main);
 
 // Environment variables
@@ -75,7 +77,8 @@ void		handle_input_redirection(t_main *main, int i);
 // exec_utils.c
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-void		pipe_redirection(t_main *main, int i);
+// void	pipe_redirection(t_main *main, t_env *env_vars, int i);
+void	pipe_redirection(t_main *main, int i);
 char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 // parsing

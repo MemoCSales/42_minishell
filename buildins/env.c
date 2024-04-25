@@ -25,7 +25,9 @@ void env_buildin(t_env *env_vars)
 	i = 0;
 	while (env_vars->env_vars[i] != NULL)
 	{
-		printf("%s\n", env_vars->env_vars[i]);
+		// printf("%s\n", env_vars->env_vars[i]);
+		ft_putstr_fd(env_vars->env_vars[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}
 }
