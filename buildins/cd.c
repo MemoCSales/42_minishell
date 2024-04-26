@@ -15,7 +15,7 @@
 
 //FIX CD BUILDING
 // IS NOT GOING BACK TO THE PREVIOUS FOLDER
-void cd_buildin(char *path)
+int cd_builtin(char *path)
 {
 	int 	status;
 	char 	*home;
@@ -47,7 +47,10 @@ void cd_buildin(char *path)
 	prev_dir = getcwd(NULL, 0); // Save current directory
 	status = chdir(path);
 	if (status == 0)
+	{
 		printf("cd: Directory changed to %s\n", path);
+		return (0);
+	}
 	else 
 	{
 		if (errno == EACCES)
@@ -60,5 +63,6 @@ void cd_buildin(char *path)
 			ft_putstr_fd("cd: No such file or directory: ", STDERR_FILENO);
 			printf("%s\n", path);
 		}
+		return (1);
 	}
 }

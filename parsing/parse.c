@@ -197,12 +197,12 @@ t_main	*parse_line(char *line)
 		if (args[1] && args[1][0] == '-') // Check if the second argument is a flag
 		{
 			parsed_commands[i].flags = args[1]; // Saving the flags
-			parsed_commands[i].args = &args[2]; // The rest are arguments
+			parsed_commands[i].args = copy_args(&args[2]); // The rest are arguments
 		}
 		else
 		{
 			parsed_commands[i].flags = NULL;    // No flags
-			parsed_commands[i].args = &args[1]; // The rest are arguments
+			parsed_commands[i].args = copy_args(&args[1]); // The rest are arguments
 		}
 		if (i < num_commands - 1)
 		{

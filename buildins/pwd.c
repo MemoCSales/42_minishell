@@ -13,11 +13,17 @@
 
 #include "../minishell.h"
 
-void pwd_buildin()
+int pwd_builtin()
 {
 	char	cwd[MAX_CMD_LEN];
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
 		printf("%s\n", cwd);
+		return (0);
+	}
 	else
+	{
 		ft_putstr_fd("pwd: error retrieving current directory", STDERR_FILENO);
+		return (1);
+	}
 }

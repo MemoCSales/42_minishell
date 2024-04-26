@@ -13,21 +13,23 @@
 
 #include "../minishell.h"
 
-void env_buildin(t_env *env_vars)
+int env_builtin(t_env *env_vars)
 {
 	int	i;
 
 	if (env_vars->env_vars == NULL)
 	{
 		printf("No environment variables available.\n");
-		return ;
+		return (1);
 	}
 	i = 0;
 	while (env_vars->env_vars[i] != NULL)
+	// while (i < 5)
 	{
 		// printf("%s\n", env_vars->env_vars[i]);
 		ft_putstr_fd(env_vars->env_vars[i], STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}
+	return (0);
 }

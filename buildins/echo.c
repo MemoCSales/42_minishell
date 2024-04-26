@@ -40,7 +40,7 @@ char	*ft_strremove(char *string, int c)
 	return (new_start);
 }
 
-void	echo_buildin(t_main *main, t_env *env)
+int	echo_builtin(t_main *main, t_env *env)
 {
 	int		i;
 	int		cut_newline;
@@ -51,7 +51,7 @@ void	echo_buildin(t_main *main, t_env *env)
 	if (ft_strcmp(main->args[0], "$?") == 0)
 	{
 		exit_code(env);
-		return ;
+		return (0);
 	}
 	if (ft_strcmp(main->flags, "-n") == 0 && main->flags != NULL)
 		cut_newline = 1;
@@ -62,9 +62,8 @@ void	echo_buildin(t_main *main, t_env *env)
 		arg_no_quotes = ft_strremove(arg, '\'');
 		if (printf("%s", arg_no_quotes) < 0)
 		{
-			env->status = 1; //Set exit status to 1 if printf fails
 			free(arg_no_quotes);
-			return ;
+			return (1);
 		}
 		if (main->args[i + 1] != NULL)
 			printf(" ");
@@ -72,6 +71,6 @@ void	echo_buildin(t_main *main, t_env *env)
 	}
 	if (!cut_newline)
 		printf("\n");
-	env->status = 0; // Set status to 0 if success
+	return (0); // Set status to 0 if success
 }
 

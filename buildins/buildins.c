@@ -13,63 +13,71 @@
 
 #include "../minishell.h"
 
-int	buildins(char *cmd)
+int	builtins_no_output(char *cmd)
 {
 	if (ft_strcmp(cmd, "cd") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "pwd") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "env") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "export") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "exit") == 0)
 		return(1);
 	return (-1);
 }
 
-void	exec_buildin(t_env *env_vars, t_main *main)
+int	builtins_with_output(char *cmd)
 {
-	if (ft_strcmp(main->cmd, "cd") == 0)
-		cd_buildin(main->args[0]);
-	else if (ft_strcmp(main->cmd, "pwd") == 0)
-		pwd_buildin();
-	else if (ft_strcmp(main->cmd, "env") == 0)
-		env_buildin(env_vars);
-	else if (ft_strcmp(main->cmd, "unset") == 0)
-		unset_buildin(env_vars, main->args[0]);
-	else if (ft_strcmp(main->cmd, "export") == 0)
-		export_buildin(env_vars, main->args[0]);
-	else if (ft_strcmp(main->cmd, "echo") == 0)
-		echo_buildin(main, env_vars);
-	else if (ft_strcmp(main->cmd, "exit") == 0)
-		exit_buildin(main, env_vars);
+	if (ft_strcmp(cmd, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "env") == 0)
+		return (1);
+	else if (ft_strcmp(cmd, "echo") == 0)
+		return (1);
+	return (-1);
 }
 
-void	exit_buildin(t_main *main, t_env *env_vars)
+int	exec_builtin(t_env *env_vars, t_main *main)
 {
-	env_vars->status = 0;
-	if (main->flags != NULL)
-		env_vars->status = ft_atoi(main->flags);
+	if (ft_strcmp(main->cmd, "cd") == 0)
+		return (env_vars->status = cd_builtin(main->args[0]));
+	else if (ft_strcmp(main->cmd, "pwd") == 0)
+		return (env_vars->status = pwd_builtin());
+	else if (ft_strcmp(main->cmd, "env") == 0)
+		return (env_vars->status = env_builtin(env_vars));
+	else if (ft_strcmp(main->cmd, "unset") == 0)
+		return (env_vars->status = unset_builtin(env_vars, main->args[0]));
+	else if (ft_strcmp(main->cmd, "export") == 0)
+		return (env_vars->status = export_builtin(env_vars, main->args[0]));
+	else if (ft_strcmp(main->cmd, "echo") == 0)
+		return (env_vars->status = echo_builtin(main, env_vars));
+	else if (ft_strcmp(main->cmd, "exit") == 0)
+		return (env_vars->status = exit_builtin(main));
+	return (-1);
+}
+
+int	exit_builtin(t_main *main)
+{
+	int	status;
+
+	status = 0;
+	 if (main->flags != NULL)
+		status = ft_atoi(main->flags);
+	else if (!main->args[0])
+		exit(status);
 	else if (main->args[1] != NULL)
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
-		env_vars->status = 1;
-		return ;
+		return (1);
 	}
 	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '-' && ft_isdigit(main->args[0][1])))
-		env_vars->status = ft_atoi(main->args[0]);
+		status = ft_atoi(main->args[0]);
 	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '+' && ft_isdigit(main->args[0][1])))
-		env_vars->status = ft_atoi(main->args[0]);
+		status = ft_atoi(main->args[0]);
 	else
 	{
 		ft_putstr_fd("exit: numeric argument required\n", 2);
-		env_vars->status = 2;
-		return ;
+		return (2);
 	}
-	exit(env_vars->status);
+	exit(status);
 }
