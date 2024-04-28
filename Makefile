@@ -29,16 +29,19 @@ SRC2 = 	parsing_2/parser.c \
 OBJ2 = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC2))
 ##END OF ADDITION
 
-all: $(NAME)
+all: $(NAME) parser
 
 OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 
 $(LIBFT):
-		make -C $(LIBFT_DIRECTORY)
+		@make -C $(LIBFT_DIRECTORY)
 
 $(NAME): $(OBJ) $(LIBFT)
-			$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
-			@echo "$(GREEN)$(NAME) created!$(DEFAULT)"
+			@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
+			@echo "$(GREEN)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
+			@echo "$(GREEN)│                               MiniℍΞLL OK!                               │$(DEFAULT)"
+			@echo "$(GREEN)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
+
 
 $(OBJ_DIR)%.o: %.c
 			@mkdir -p $(@D)
@@ -46,20 +49,25 @@ $(OBJ_DIR)%.o: %.c
 
 ##ADDED FOR TEST PARSER
 parser: $(OBJ2) $(LIBFT)
-		$(CC) $(CFLAGS) $(OBJ2) $(LIBFT) -lreadline -o parser
-		@echo "$(GREEN)Parser created!$(DEFAULT)"
+		@$(CC) $(CFLAGS) $(OBJ2) $(LIBFT) -lreadline -o parser
+		@echo "$(GREEN)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
+		@echo "$(GREEN)│                                Parser OK!                                │$(DEFAULT)"
+		@echo "$(GREEN)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
+		@sleep 0.5
 ##END OF ADDITION
 
 clean:
-		rm -rf $(OBJ_DIR)
+		@rm -rf $(OBJ_DIR)
 		@make clean -C $(LIBFT_DIRECTORY)
-		@echo "$(YELLOW)Object files deleted!$(DEFAULT)"
+		@echo "$(RED)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
+		@echo "$(RED)│                          Object files deleted!                           │$(DEFAULT)"
 
 fclean: clean
 		@rm -f ./parser
 		@rm -f ./$(NAME)
 		@rm -f ./$(LIBFT)
-		@echo "$(RED)All files deleted!$(DEFAULT)"
+		@echo "$(RED)│                          All  files   deleted!                           │$(DEFAULT)"
+		@echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
 
 re: fclean all
 
@@ -71,7 +79,13 @@ valgrind:
 
 .PHONY: all clean fclean re
 
-RED = \033[1;31m
+LIGHT_RED = \033[1;31m
+RED = \033[0;31m
+DARK_RED = \033[0;35m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m
+LIGHT_CYAN = \033[1;36m
+CYAN = \033[0;36m
+LIGHT_BLUE = \033[1;34m
+DARK_BLUE = \033[0;34m
 DEFAULT = \033[0m
