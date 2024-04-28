@@ -14,21 +14,6 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-// STRUCT LIST - AFTER USE THE LIBFT ONE!!!!
-typedef struct s_list
-{
-	void			*data;
-	struct s_list	*next;
-}			t_list;
-
-// STRUCT DOUBLE LINKED LIST
-typedef struct s_dlist
-{
-	void			*content;
-	struct s_dlist	*next;
-	struct s_dlist	*prev;
-}			t_dlist;
-
 // STRUCT FOR ALL THE COMMAND LISTS
 typedef struct s_ast
 {

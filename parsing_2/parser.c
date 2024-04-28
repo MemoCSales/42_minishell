@@ -1,17 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* *************************************************************************** */
+/*                                                                             */
+/*                                                           ::     :::::      */
+/*   parser.c                                              :+:    :+:  :+:     */
+/*                                                       +:+ +:+       +:+     */
+/*   By: mcruz-sa <mcruz-sa@student.42.fr>             +#+ +:+      +#+        */
+/*   By: demrodri <demrodri@student.42wolfsburg.de>  +#+  +#+     +#+          */
+/*                                                +#+#+#+#+#+   +#+            */
+/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#              */
+/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr        */
+/*                                                                             */
+/* *************************************************************************** */
 
-#include "../main.h"	
+#include "../minishell.h"
 
 t_redir	*set_redir(const char *string, int *position)
 {
@@ -143,16 +143,16 @@ void print_ast(t_ast *ast)
 			t_list *cmdlist_node = ast->cmdlist;
 			while (cmdlist_node)
 			{
-				t_cmdlist *cmdlist = (t_cmdlist *)cmdlist_node->data;
+				t_cmdlist *cmdlist = (t_cmdlist *)cmdlist_node->content;
 				t_list *cmd_node = cmdlist->commands;
 				while (cmd_node)
 				{
-					t_cmd *cmd = (t_cmd *)cmd_node->data;
+					t_cmd *cmd = (t_cmd *)cmd_node->content;
 					printf("Command: ");
 					t_list *token_node = cmd->tokens;
 					while (token_node)
 					{
-						char *token = (char *)token_node->data;
+						char *token = (char *)token_node->content;
 						printf("%s ", token);
 						token_node = token_node->next;
 					}
@@ -160,7 +160,7 @@ void print_ast(t_ast *ast)
 					t_list *redir_node = cmd->redirs;
 					while (redir_node)
 					{
-						t_redir *redir = (t_redir *)redir_node->data;
+						t_redir *redir = (t_redir *)redir_node->content;
 						printf("Redirection: %s %s\n", redir->type, redir->direction);
 						redir_node = redir_node->next;
 					}
@@ -185,11 +185,11 @@ int main(void)
         "ls -l && echo Success || echo Failure",
         "ls -l > output.txt 2> error.txt",
         "cat file.txt | grep keyword | wc -l",
-        "ls -l; echo Done &",
+        // "ls -l; echo Done &",
         "ls -l && echo Success && echo More Success",
         "ls -l || echo Failure || echo More Failure",
         "command1; command2; command3",
-        "command1 & command2 & command3",
+        // "command1 & command2 & command3",
         "command1 && command2 && command3",
         "command1 || command2 || command3",
         "command1 | command2 | command3",
@@ -220,113 +220,7 @@ int main(void)
 
     return 0;
 }
-////EXPECTED OUTPUTS
-// AST created successfully for test case 0: ls -l
-// Command: ls
-// Arguments: -l
 
-// AST created successfully for test case 1: echo Hello, World!
-// Command: echo
-// Arguments: Hello, World!
+//cc parser.c parse_utils.c checkers.c -Wall -Wextra -Werror && ./a.out
 
-// Failed to create AST for test case 2: cat file.txt
-
-// AST created successfully for test case 3: ls -l | grep .txt
-// Command: ls
-// Arguments: -l
-// Pipe
-// Command: grep
-// Arguments: .txt
-
-// ...
-
-
-///////////// TEST MAIN WITH INPUT FROM USER
-// int main(int argc, char **argv)
-// {
-//     if (argc < 2)
-//     {
-//         printf("Please provide at least one string as an argument.\n");
-//         return 1;
-//     }
-
-//     for (int i = 1; i < argc; i++)
-//     {
-//         const char *string = argv[i];
-//         t_ast *ast = set_ast(string);
-//         if (ast)
-//         {
-//             printf("AST created successfully for argument %d: %s\n", i, string);
-//             print_ast(ast);
-//         }
-//         else
-//         {
-//             printf("Failed to create AST for argument %d: %s\n", i, string);
-//         }
-//     }
-
-//     return 0;
-// }
-
-
-
-
-
-///////OLD TESTERS
-// int main(int argc, char **argv)
-// {
-// 	if (argc != 2)
-// 	{
-// 		printf("Please provide a string as an argument.\n");
-// 		return 1;
-// 	}
-
-// 	const char *string = argv[1];
-// 	t_ast *ast = set_ast(string);
-// 	if (ast)
-// 	{
-// 		printf("AST created successfully!\n");
-// 		print_ast(ast);
-// 	}
-// 	else
-// 	{
-// 		printf("Failed to create AST.\n");
-// 	}
-
-// 	return 0;
-// }
-
-
-// int main(int argc, char **argv)
-// {
-
-// 	char *string = argv[1];
-// 	char *needle = argv[2];
-
-// 	printf("ARGC: %d\n", argc);
-// 	printf("ARGV1: %s\n", argv[1]);
-// 	printf("ARGV2: %s\n", argv[2]);
-// 	printf("ARGV3: %s\n", argv[3]);
-	
-// 	if (argc != 3)
-// 	{
-// 		write(1, "Please insert a string to search from, and another to be looked for\n", 68);
-// 		return (1);
-// 	}
-
-// 	char *result = ft_search_outside_quotes(string, needle);
-// 	if (result)
-// 	{
-// 		write (1, "Found!\n", 7);
-// 		printf("Result: %s\n", result);
-// 	}
-// 	else
-// 	{
-// 		write (1, "Not Found!\n", 11);
-// 		printf("Result: %s\n", result);
-// 	}
-
-// 	return (0);
-// }
-
-//cc parsing.c parse_utils.c checkers.c -Wall -Wextra -Werror && ./a.out "test'TEST'WHAt' HEREZ'" Z
+// cc parser.c parse_utils.c checkers.c -L../libft/ -lft -Wall -Wextra -Werror && ./a.out
