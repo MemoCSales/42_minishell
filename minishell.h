@@ -15,6 +15,8 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
+# include "./parsing_2/structs.h"
+# include "./parsing_2/parse_utils.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
