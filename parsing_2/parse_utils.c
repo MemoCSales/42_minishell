@@ -13,45 +13,6 @@
 
 #include "../minishell.h"
 
-int ft_strcpy(char *dst, const char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (i);
-}
-
-char	*ft_strncpy(char *dest, char *src, size_t n)
-{
-	char	*sav_dest;
-	char	*sav_src;
-
-	sav_dest = dest;
-	sav_src = src;
-	if (n != 0)
-	{
-		while (1)
-		{
-			*sav_dest = *sav_src++;
-			if (*sav_dest++ == 0)
-			{
-				while (--n != 0)
-					*sav_dest++ = 0;
-				break ;
-			}
-			if (--n == 0)
-				break ;
-		}
-	}
-	return (dest);
-}
-
 /// JUMP SPACES
 /// @brief - jump spaces in the string
 /// @param str - string to jump spaces from
@@ -182,4 +143,95 @@ char *get_cmdlist_separator(const char *str, int *position)
 		return (0); // QUIT PROGRAM // LATER QUIT PROGRAM CORRECTLY WITH EXIT PGM FUNCTION
 	(*position) += ft_strlen(separator); // increment the size of the separator
 	return (separator);
+}
+
+//IS
+int ft_isspace(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
+}
+
+int ft_isenv_or_path(char c)
+{
+	if (c == '$' || c == '/')
+		return (1);
+	return (0);
+}
+
+int ft_isquote(char c)
+{
+	if (c == '\'' || c == '"')
+		return (1);
+	return (0);
+}
+
+//SEPARATORS
+int ft_istoken_separator(char c)
+{
+	if (ft_isspace(c))
+		return (1);
+	else if (c == ';' || c == '|' || c == '>' || c == '<' || c == '&')
+		return (1);
+	return (0);
+}
+
+int ft_iscmd_separator(char c)
+{
+	if (c == ';' || c == '|' || c == '&')
+		return (1);
+	return (0);
+}
+
+int ft_iscmdlist_separator(const char *str)
+{
+	if (*str == ';')
+		return (1);
+	else if (!ft_strncmp((char *)str, "||", 2))
+		return (1);
+	else if (!ft_strncmp((char *)str, "&&", 2))
+		return (1);
+	else
+		return (0);
+}
+
+//OTHER FUNCTIONS
+int ft_strcpy(char *dst, const char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (i);
+}
+
+char	*ft_strncpy(char *dest, char *src, size_t n)
+{
+	char	*sav_dest;
+	char	*sav_src;
+
+	sav_dest = dest;
+	sav_src = src;
+	if (n != 0)
+	{
+		while (1)
+		{
+			*sav_dest = *sav_src++;
+			if (*sav_dest++ == 0)
+			{
+				while (--n != 0)
+					*sav_dest++ = 0;
+				break ;
+			}
+			if (--n == 0)
+				break ;
+		}
+	}
+	return (dest);
 }

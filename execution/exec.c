@@ -28,6 +28,11 @@ char	*get_env_path(t_env *env)
 		}
 		i++;
 	}
+	if (env->env_vars[i] == NULL) //ADDED TO FIX: variable 'path' is used uninitialized whenever
+	{
+		ft_putstr_fd("Error: PATH not found in env variables\n", 2);
+		exit(EXIT_FAILURE);
+	}	
 	return (path);
 }
 

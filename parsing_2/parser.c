@@ -172,8 +172,10 @@ void print_ast(t_ast *ast)
 		
 
 ////////////// TEST MAIN WITH EXAMPLES ALREADY SETTED
-int main(void)
+int	main(int argc, char **argv)
 {
+	(void)argc;
+	(void)argv;
     const char *test_cases[] = {
         "ls -l",
         "echo Hello, World!",
@@ -221,6 +223,4 @@ int main(void)
     return 0;
 }
 
-//cc parser.c parse_utils.c checkers.c -Wall -Wextra -Werror && ./a.out
-
-// cc parser.c parse_utils.c checkers.c -L../libft/ -lft -Wall -Wextra -Werror && ./a.out
+// cc parser.c parse_utils.c -L../libft/ -lft -Wall -Wextra -Werror && ./a.out

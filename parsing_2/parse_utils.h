@@ -11,10 +11,39 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../main.h"
-
 #ifndef PARSE_UTILS_H
 # define PARSE_UTILS_H
+
+// STRUCT FOR ALL THE COMMAND LISTS
+typedef struct s_ast
+{
+	t_list		*cmdlist;
+}			t_ast;
+
+// STRUCT FOR EACH COMMAND LIST
+typedef struct s_cmdlist
+{
+	t_list		*commands;
+	t_list      *pids;
+	char		*separator;
+	int			nbr_commands;
+	int			**pipes;
+	int         return_value;
+}			t_cmdlist;
+
+// STRUCT FOR EACH COMMAND
+typedef struct s_cmd
+{
+	t_list		*tokens;
+	t_list      *redirs;
+}			t_cmd;
+
+// STRUCT FOR REDIRECTIONS
+typedef struct s_redir
+{
+	char		*direction;
+	char		type[3];
+}			t_redir;
 
 // UTILS - parsing/parse_utils.c
 void	ft_jump_spaces(const char *str, int *position);
@@ -40,22 +69,9 @@ char		*set_token(const char *string, int *position);
 t_redir		*set_redir(const char *string, int *position);
 t_cmd		*set_cmd(const char *string, int *position);
 t_cmdlist	*set_cmdlist(const char *string, int *position);
-t_ast	*set_ast(const char *string);
+t_ast		*set_ast(const char *string);
+
+// OTHER FUNCTIONS - parsing/checkers.c
+int		ft_strcpy(char *dst, const char *src);
 
 #endif
-
-// MINI LIBFTS FUNCTIONS - parsing/checkers.c
-// t_list	*ft_lstlast(t_list *lst);
-// void	ft_lstadd_front(t_list **lst, t_list *new);
-// void	ft_lstadd_back(t_list **lst, t_list *new);
-// t_list	*ft_lstnew(void *data);
-
-// char	*ft_strncpy(char *dest, char *src, size_t n);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
-// char	*ft_strchr(const char *s, int c);
-int		ft_strcpy(char *dst, const char *src);
-// int		ft_strlen(const char *s);
-// int		ft_strncmp(const char *s1, const char *s2, int n);
-// char	*ft_strdup(const char *s);
-
-// void	*ft_calloc(size_t count, size_t size);
