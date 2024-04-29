@@ -32,6 +32,9 @@ typedef struct s_main
 	char	*cmd;
 	char	*flags;
 	char	**args;
+	t_list 	*tokens;// for testing
+	t_list	*redirs;// for testing
+	char	*separator;// for testing
 	int		fd[2];
 	pid_t	pid;
 }			t_main;
