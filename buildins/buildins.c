@@ -52,7 +52,10 @@ int	exec_builtin(t_env *env_vars, t_main *main)
 	else if (ft_strcmp(main->cmd, "echo") == 0)
 		return (env_vars->status = echo_builtin(main, env_vars));
 	else if (ft_strcmp(main->cmd, "exit") == 0)
+	{
 		return (env_vars->status = exit_builtin(main));
+		exit(env_vars->status);
+	}
 	return (-1);
 }
 

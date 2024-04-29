@@ -83,15 +83,6 @@ void	pipe_redirection(t_main *main, int i)
 		close(main[i].fd[0]);
 		close(main[i].fd[1]);
 	}
-	// if (buildins(main[i].cmd) != -1)
-	// {
-	// 	exec_buildin(env_vars, &main[i]);
-	// 	if (main[i + 1].cmd != NULL)
-	// 		close(main[i].fd[1]);
-	// 	exit(EXIT_SUCCESS);
-	// }
-	// 	else if (main[i + 1].cmd != NULL)
-	// 		close(main[i].fd[1]);
 }
 
 char	**build_exec_args(t_main *main, char **exec_args, int i)

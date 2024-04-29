@@ -59,7 +59,7 @@ int			export_builtin(t_env *env_vars, char *new_var);
 int			is_valid_var_name(char *var);
 int			check_duplicate(t_env *env_vars, char *new_var);
 int			echo_builtin(t_main *main, t_env *env);
-int	exit_builtin(t_main *main);
+int			exit_builtin(t_main *main);
 int			exec_builtin(t_env *env_vars, t_main *main);
 
 // Environment variables
@@ -87,7 +87,7 @@ char		**build_exec_args(t_main *main, char **exec_args, int i);
 // parsing
 t_main		*parse_line(char *line);
 int			count_cmds(char **cmds);
-char	**copy_args(char **args);
+char		**copy_args(char **args);
 
 // utils
 void		cleanup_split(char **split);

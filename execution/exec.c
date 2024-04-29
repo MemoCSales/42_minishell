@@ -581,6 +581,8 @@ int	execute_command(t_env *env, t_main *main)
 		if (main[i].pid == 0) //Child process
 		{
 			pipe_redirection(main, i);
+			// printf("Pipe read end: %d\n", main[i].fd[0]);
+			// printf("Pipe write end: %d\n", main[i].fd[1]);
 			if (main[i].input_file != NULL)
 				handle_input_redirection(main, i);
 			if (main[i].output_file != NULL)
@@ -588,20 +590,35 @@ int	execute_command(t_env *env, t_main *main)
 			exec_args = build_exec_args(main, exec_args, i);
 			path_env = get_env_path(env);					// Prepare the env variables!
 			path_cmd = get_cmd_path(&main[i], path_env);	// Find the full path of the command
-			// print_exec_args(exec_args);
-			if (builtins_with_output(main->cmd) != -1)
+
+			//Grandson - executes
+			pid_t	pid;
+			int		status;
+			
+			pid = fork();
+			if (pid == -1)
+				printf("Error while forking grandson\n");
+			else if (pid == 0)
 			{
-				return (env->status = exec_builtin(env, &main[i]));
+				// printf("I am the grandson process\n");
+				if (builtins_with_output(main[i].cmd) != -1)
+					return (env->status = exec_builtin(env, &main[i]));
+				else if (execve(path_cmd, exec_args, env->env_vars) == -1)
+				{
+					ft_putstr_fd("zsh: command not found: ", 2);
+					ft_putendl_fd(main[i].cmd, 2);
+					return (EXEC_ERROR);
+				}
 			}
-			if (execve(path_cmd, exec_args, env->env_vars) == -1)
-			{
-				ft_putstr_fd("zsh: command not found: ", 2);
-				ft_putendl_fd(main[i].cmd, 2);
-				return (EXEC_ERROR);
-			}
+			wait(&status);
+			close(main[i].fd[0]);
+			close(main[i].fd[1]);
+			exit(EXIT_SUCCESS); //check this line
 		}
 		else // Parent process
 		{
+			// close(main[i].fd[0]);
+			// close(main[i].fd[1]);
 			env->status = parent_process(main, env, i);
 		}
 		i++;

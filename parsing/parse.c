@@ -179,7 +179,7 @@ t_main	*parse_line(char *line)
 		j = 0;
 		while (args[j] != NULL)
 		{
-			args[j] = remove_quotes(args[j]);
+			args[j] = remove_quotes(args[j]); // fix this
 			if (ft_strcmp(args[j], "<") == 0)
 			{
 				parsed_commands[i].input_file = args[j + 1];
@@ -216,6 +216,7 @@ t_main	*parse_line(char *line)
 	}
 	parsed_commands[num_commands].cmd = NULL;
 	free(commands);
+	// free(args);
 	return (parsed_commands);
 }
 
