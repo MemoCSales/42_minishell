@@ -15,7 +15,6 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
-# include "./parsing_2/parse_utils.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -32,9 +31,6 @@ typedef struct s_main
 	char	*cmd;
 	char	*flags;
 	char	**args;
-	t_list 	*tokens;// for testing
-	t_list	*redirs;// for testing
-	char	*separator;// for testing
 	int		fd[2];
 	pid_t	pid;
 }			t_main;
@@ -76,6 +72,7 @@ int			count_cmds(char **cmds);
 // utils
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
-void		print_struct(t_main *main);
+void		print_struct(t_main *main_var, int num_commands);
+t_main		*initialize_main(t_main *main_var);
 
 #endif

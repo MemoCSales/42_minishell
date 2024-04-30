@@ -12,6 +12,7 @@ SRC =	main.c \
 		./utils/init_env.c \
 		./utils/cleanup.c \
 		./utils/print_struct.c \
+		./utils/parse_utils.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
@@ -22,14 +23,7 @@ SRC =	main.c \
 		./parsing/parse.c \
 		./execution/exec.c \
 
-##ADDED FOR TEST PARSER
-SRC2 = 	parsing_2/parser.c \
-		parsing_2/parse_utils.c \
-
-OBJ2 = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC2))
-##END OF ADDITION
-
-all: $(NAME) parser
+all: $(NAME)
 
 OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 
@@ -46,33 +40,29 @@ $(NAME): $(OBJ) $(LIBFT)
 $(OBJ_DIR)%.o: %.c
 			@mkdir -p $(@D)
 			@$(CC) $(CFLAGS) -I$(LIBFT_DIRECTORY) -c $< -o $@
-
-##ADDED FOR TEST PARSER
-parser: $(OBJ2) $(LIBFT)
-		@$(CC) $(CFLAGS) $(OBJ2) $(LIBFT) -lreadline -o parser
-		@echo "$(GREEN)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
-		@echo "$(GREEN)│                                Parser OK!                                │$(DEFAULT)"
-		@echo "$(GREEN)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
-		@sleep 0.5
-##END OF ADDITION
-
+# CHANGED clean AND fclean SO THE make re DOES NOT DELETE THE LIBFT (FASTER RECOMPILATION)
 clean:
 		@rm -rf $(OBJ_DIR)
-		@make clean -C $(LIBFT_DIRECTORY)
+		@# @make clean -C $(LIBFT_DIRECTORY)///
 		@echo "$(RED)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
 		@echo "$(RED)│                          Object files deleted!                           │$(DEFAULT)"
 
 fclean: clean
-		@rm -f ./parser
 		@rm -f ./$(NAME)
-		@rm -f ./$(LIBFT)
+		@# @rm -f ./$(LIBFT)///
 		@echo "$(RED)│                          All  files   deleted!                           │$(DEFAULT)"
 		@echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
+
+cleanlib:
+		@make clean -C $(LIBFT_DIRECTORY)
+		@rm -f ./$(LIBFT)
+
+fre: fclean cleanlib all #TO DELETE THE LIBFT AND RECOMPILE IT
 
 re: fclean all
 
 norminette: 
-		norminette $(SRC) $(SRC2) $(SUPPORT_DIR) $(SRC2) minishell.h $(LIBFT_DIRECTORY)
+		norminette $(SRC) $(SUPPORT_DIR) minishell.h $(LIBFT_DIRECTORY)
 
 valgrind:
 		valgrind --leak-check=full --show-leak-kinds=all ./minishell
