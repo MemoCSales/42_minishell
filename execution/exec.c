@@ -13,6 +13,86 @@
 
 #include "../minishell.h"
 
+// void	pipe_redirection(t_main *main, int i)
+// {
+// 	if (i != 0) // If not the first cmd, redirect input from the previous pipe
+// 	{
+// 		// printf("%s\n", main[i].cmd);
+// 		// printf("%d\n", main[i].fd[0]);
+// 		if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1) 
+// 		{
+// 			perror("dup2 error");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		// close(main[i - 1].fd[0]);
+// 		close(main[i - 1].fd[1]);
+// 	}
+// 	if (main[i + 1].cmd != NULL) // If not the last cmd, redirect output to the next pipe
+// 	{
+// 		// printf("%s\n", main[i].cmd);
+// 		// printf("%d\n", main[i].fd[1]);
+// 		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1) 
+// 		{
+// 			perror("dup2 error");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		close(main[i].fd[0]);
+// 		// close(main[i].fd[1]);
+// 	}
+// }
+
+// int	builtins_no_output(char *cmd)
+// {
+// 	if (ft_strcmp(cmd, "cd") == 0)
+// 		return (1);
+// 	else if (ft_strcmp(cmd, "unset") == 0)
+// 		return (1);
+// 	else if (ft_strcmp(cmd, "export") == 0)
+// 		return (1);
+// 	else if (ft_strcmp(cmd, "exit") == 0)
+// 		return(1);
+// 	return (-1);
+// }
+
+// int	builtins_with_output(char *cmd)
+// {
+// 	if (ft_strcmp(cmd, "pwd") == 0)
+// 		return (1);
+// 	else if (ft_strcmp(cmd, "env") == 0)
+// 		return (1);
+// 	else if (ft_strcmp(cmd, "echo") == 0)
+// 		return (1);
+// 	return (-1);
+// }
+
+// int	exec_builtin(t_env *env_vars, t_main *main)
+// {
+// 	if (ft_strcmp(main->cmd, "cd") == 0)
+// 		return (env_vars->status = cd_builtin(main->args[0]));
+// 	else if (ft_strcmp(main->cmd, "pwd") == 0)
+// 		return (env_vars->status = pwd_builtin());
+// 	else if (ft_strcmp(main->cmd, "env") == 0)
+// 		return (env_vars->status = env_builtin(env_vars));
+// 	else if (ft_strcmp(main->cmd, "unset") == 0)
+// 		return (env_vars->status = unset_builtin(env_vars, main->args[0]));
+// 	else if (ft_strcmp(main->cmd, "export") == 0)
+// 		return (env_vars->status = export_builtin(env_vars, main->args[0]));
+// 	else if (ft_strcmp(main->cmd, "echo") == 0)
+// 		return (env_vars->status = echo_builtin(main, env_vars));
+// 	else if (ft_strcmp(main->cmd, "exit") == 0)
+// 	{
+// 		return (env_vars->status = exit_builtin(main));
+// 		exit(env_vars->status);
+// 	}
+// 	return (-1);
+// }
+
+
+
+
+/*----------------------------------------------------------------------------------*/
+
+
 void	print_exec_args(char **exec_args)
 {
 	int	i;
@@ -100,6 +180,8 @@ int	parent_process(t_main *main, t_env *env, int i)
 		close(main[i - 1].fd[0]);
 		close(main[i - 1].fd[1]);
 	}
+		// close(main[i].fd[0]);
+	// close(main[i].fd[1]);
 	waitpid(main[i].pid, &env->status, 0);
 	return WEXITSTATUS(env->status);
 }
@@ -117,6 +199,7 @@ int	execute_command(t_env *env, t_main *main)
 	i = 0;
 	while (main[i].cmd != NULL)
 	{
+		// printf("COMMAND BEING EXECUTED %s\n", main[i].cmd);
 		if (builtins_no_output(main->cmd) != -1)
 			return (env->status = exec_builtin(env, &main[i]));
 		main[i].pid = fork();
@@ -127,6 +210,7 @@ int	execute_command(t_env *env, t_main *main)
 		}
 		if (main[i].pid == 0) //Child process
 		{
+			// printf("Before the pipe_redirection\n");
 			pipe_redirection(main, i);
 			// printf("Pipe read end: %d\n", main[i].fd[0]);
 			// printf("Pipe write end: %d\n", main[i].fd[1]);
@@ -147,9 +231,11 @@ int	execute_command(t_env *env, t_main *main)
 				printf("Error while forking grandson\n");
 			else if (pid == 0)
 			{
-				// printf("I am the grandson process\n");
 				if (builtins_with_output(main[i].cmd) != -1)
-					return (env->status = exec_builtin(env, &main[i]));
+				{
+					// printf("builtin en grandson\n");
+					env->status = exec_builtin(env, &main[i]);
+				}
 				else if (execve(path_cmd, exec_args, env->env_vars) == -1)
 				{
 					ft_putstr_fd("zsh: command not found: ", 2);
@@ -157,9 +243,10 @@ int	execute_command(t_env *env, t_main *main)
 					return (EXEC_ERROR);
 				}
 			}
-			wait(&status);
 			close(main[i].fd[0]);
 			close(main[i].fd[1]);
+			wait(&status);
+			// printf("before exit process\n");
 			exit(EXIT_SUCCESS); //check this line
 		}
 		else // Parent process
@@ -170,5 +257,6 @@ int	execute_command(t_env *env, t_main *main)
 		}
 		i++;
 	}
+	
 	return (env->status);
 }

@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <limits.h>
 
 # define MAX_CMD_LEN 1024
 # define EXEC_ERROR 127

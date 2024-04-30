@@ -61,7 +61,7 @@ void	pipe_redirection(t_main *main, int i)
 {
 	if (i != 0) // If not the first cmd, redirect input from the previous pipe
 	{
-		// printf("%s\n", main[i].cmd);
+		// printf("PIPE REDIRECTION %s\n", main[i].cmd);
 		// printf("%d\n", main[i].fd[0]);
 		if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1) 
 		{
@@ -70,6 +70,16 @@ void	pipe_redirection(t_main *main, int i)
 		}
 		close(main[i - 1].fd[0]);
 		close(main[i - 1].fd[1]);
+		// if (close(main[i - 1].fd[0] == -1))
+		// {
+		// 	perror("Error closing fd[0]\n");
+		// 	exit(EXIT_FAILURE);
+		// }
+		// if (close(main[i - 1].fd[1]) == -1)
+		// {
+		// 	perror("Error closing fd[1]\n");
+		// 	exit(EXIT_FAILURE);
+		// }
 	}
 	if (main[i + 1].cmd != NULL) // If not the last cmd, redirect output to the next pipe
 	{
@@ -82,6 +92,16 @@ void	pipe_redirection(t_main *main, int i)
 		}
 		close(main[i].fd[0]);
 		close(main[i].fd[1]);
+		// if (close(main[i].fd[0] == -1))
+		// {
+		// 	perror("Error closing fd[0]\n");
+		// 	exit(EXIT_FAILURE);
+		// }
+		// if (close(main[i].fd[1]) == -1)
+		// {
+		// 	perror("Error closing fd[1]\n");
+		// 	exit(EXIT_FAILURE);
+		// }
 	}
 }
 

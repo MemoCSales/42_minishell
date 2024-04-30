@@ -7,7 +7,31 @@ cat input.txt | grep "pattern" | wc -l > output.txt
 < colors.txt sort | uniq -c | sort -r | head -3 > output.txt
 
 env | sort | grep -v SHLVL | grep -v ^_
-cat ./test_files/infile_big | grep oi
+cat ./test_files/infile_big | grep oi //CHECK THIS TEST
 cat minishell.h | grep ");"$
 export GHOST=123 | env | grep GHOST
 
+valgrind --leak-check=full --trace-children=yes --track-fds=all
+
+
+
+PIPES:
+pwd | wc -l
+date | sort | uniq
+echo "hello" | ls
+ls | echo "hello"
+ls | echo "hello" | ls | pwd
+env | sort | grep -v SHLVL | grep -v ^_
+cat ./data/lorem.txt | grep oi
+cat ./data/lorem.txt | grep ");"$
+cat ./data/empty.txt | wc -l
+echo 'Hello, bash pipes!' | wc -m
+ls | ls | ls
+ls | ls | ls | ls | ls
+ls | ls | ls | ls | ls | grep a
+ls -l | sed -e "s/[aeio]/u/g"
+ls -l | grep "\.txt$"
+ls -l | grep drw | awk '{print $9}' | sort
+echo '~/test111' | sed s/111/222/g | test -f && echo "found" || echo "not found"
+export GHOST=123 | env | grep GHOST
+seq 100 | echo "Line ++" | grep 'Line' | sort | uniq -c | sort -nr | head -n 5

@@ -13,6 +13,17 @@
 
 #include "minishell.h"
 
+void	print_open_fds(void)
+{
+	long	open_max = sysconf(_SC_OPEN_MAX);
+
+	for(int i = 0; i < open_max; i++)
+	{
+		if (fcntl(i, F_GETFD) != -1 || errno!= EBADF)
+			printf("File descriptor %d is open\n", i);
+	}
+}
+
 void    main_loop(t_env env_var, t_main *main_var)
 {
 	char	*line;
@@ -33,11 +44,14 @@ void    main_loop(t_env env_var, t_main *main_var)
 		// if (num_commands >= 1)
 		// {
 			// if (buildins(main_var->cmd) == -1)
+			// print_open_fds();
 				env_var.status = execute_command(&env_var, main_var);
+			// print_open_fds();
 		// 	else
 		// 		exec_buildin(&env_var, main_var);
 		// }
 		// free_main(main_var); // This does not goes here
+
 		free(line);
 	}
 }
