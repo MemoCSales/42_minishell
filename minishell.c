@@ -26,16 +26,17 @@ void    main_loop(t_env env_var, t_main *main_var)
 		num_commands = 0;
 		while (main_var[num_commands].cmd)
 			num_commands++;
+			
 		// print_struct(main_var); // printing parsing result
 		// printf("\n");
 		// exit(0);
-		if (num_commands >= 1)
-		{
-			if (buildins(main_var->cmd) == -1)
-				execute_command(&env_var, main_var);
-			else
-				exec_buildin(&env_var, main_var);
-		}
+		// if (num_commands >= 1)
+		// {
+			// if (buildins(main_var->cmd) == -1)
+				env_var.status = execute_command(&env_var, main_var);
+		// 	else
+		// 		exec_buildin(&env_var, main_var);
+		// }
 		// free_main(main_var); // This does not goes here
 		free(line);
 	}

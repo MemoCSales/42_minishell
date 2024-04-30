@@ -1,0 +1,13 @@
+< colors.txt sort | uniq -c | sort -r | head -3 > output.txt
+
+cat input.txt | grep "pattern" > output.txt
+cat input.txt | grep "pattern" | wc -l > output.txt
+
+
+< colors.txt sort | uniq -c | sort -r | head -3 > output.txt
+
+env | sort | grep -v SHLVL | grep -v ^_
+cat ./test_files/infile_big | grep oi
+cat minishell.h | grep ");"$
+export GHOST=123 | env | grep GHOST
+
