@@ -48,11 +48,15 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 		prog = ft_strjoin(path_cmd, main->cmd);
 		free(path_cmd);
 		if (access(prog, F_OK | X_OK) == 0)
+		{
+			cleanup_split(dir_paths);
 			return (prog);
+		}
 		free(prog);
 		i++;
 	}
 	cleanup_split(dir_paths);
+	// printf("Despues del cleanup\n");
 	return (cmd_path); //check this later
 }
 

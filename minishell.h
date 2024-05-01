@@ -51,7 +51,7 @@ void		main_loop(t_env env_var, t_main *main_var);
 // Functions for the buildins
 int			builtins_no_output(char *cmd);
 int			builtins_with_output(char *cmd);
-int			cd_builtin(char *path);
+int cd_builtin(t_env *env_vars, char *path);
 int			pwd_builtin(void);
 int			env_builtin(t_env *env_vars);
 int			unset_builtin(t_env *env_vars, char *var_name);

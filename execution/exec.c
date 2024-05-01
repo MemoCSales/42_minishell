@@ -180,7 +180,7 @@ int	parent_process(t_main *main, t_env *env, int i)
 		close(main[i - 1].fd[0]);
 		close(main[i - 1].fd[1]);
 	}
-		// close(main[i].fd[0]);
+	// close(main[i].fd[0]);
 	// close(main[i].fd[1]);
 	waitpid(main[i].pid, &env->status, 0);
 	return WEXITSTATUS(env->status);
@@ -196,6 +196,7 @@ int	execute_command(t_env *env, t_main *main)
 	int     i;
 
 	exec_args = NULL;
+	path_cmd = NULL;
 	i = 0;
 	while (main[i].cmd != NULL)
 	{
@@ -235,17 +236,19 @@ int	execute_command(t_env *env, t_main *main)
 				{
 					// printf("builtin en grandson\n");
 					env->status = exec_builtin(env, &main[i]);
+					// free(path_cmd);
 				}
 				else if (execve(path_cmd, exec_args, env->env_vars) == -1)
 				{
 					ft_putstr_fd("zsh: command not found: ", 2);
 					ft_putendl_fd(main[i].cmd, 2);
-					return (EXEC_ERROR);
+					exit(EXEC_ERROR);
 				}
 			}
 			close(main[i].fd[0]);
 			close(main[i].fd[1]);
 			wait(&status);
+			// free(path_cmd);
 			// printf("before exit process\n");
 			exit(EXIT_SUCCESS); //check this line
 		}
@@ -257,6 +260,6 @@ int	execute_command(t_env *env, t_main *main)
 		}
 		i++;
 	}
-	
+	// free(path_cmd);
 	return (env->status);
 }
