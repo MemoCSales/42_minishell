@@ -23,6 +23,8 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <assert.h> // to test parsing functions
+# include <stdio.h> // to test parsing functions
 
 # define MAX_CMD_LEN 1024
 
@@ -31,6 +33,9 @@ typedef struct s_main
 	char	*cmd;
 	char	*flags;
 	char	**args;
+	char	*input_file;
+	char	*output_file;
+	char	*heredoc;
 	int		fd[2];
 	pid_t	pid;
 }			t_main;
@@ -68,11 +73,18 @@ char		*get_cmd_path(t_main *main, char *cmd_path);
 // parsing
 t_main		*parse_line(char *line);
 int			count_cmds(char **cmds);
+char		**copy_args(char **args);
 
 // utils
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
 void		print_struct(t_main *main_var, int num_commands);
+void		free_args(char **args); //added due to segfault while testing parsing
+
+// parse_utils
 t_main		*initialize_main(t_main *main_var);
+int 		ft_strcpy(char *dst, const char *src);
+char		*ft_strncpy(char *dest, char *src, size_t n);
+void 		test_parser();
 
 #endif

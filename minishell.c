@@ -28,6 +28,7 @@ void    main_loop(t_env env_var, t_main *main_var)
 			num_commands++;
 print_struct(main_var, num_commands); // printing parsing result
 // printf("\n");
+test_parser(main_var, num_commands); // testing parsing functions
 exit(0);
 		if (num_commands >= 1)
 		{

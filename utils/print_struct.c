@@ -34,6 +34,9 @@ void	print_struct(t_main *main, int num_commands)
 			args++;
 			// j++;
 		}
+		printf("Input file: %s\n", main[i].input_file);
+		printf("Output file: %s\n", main[i].output_file);
+		printf("Heredoc: %s\n", main[i].heredoc);
 		printf("File descriptor (read end): %d\n", main[i].fd[0]);
 		printf("File descriptor (write end): %d\n", main[i].fd[1]);
 		printf("PID: %d\n", main[i].pid);

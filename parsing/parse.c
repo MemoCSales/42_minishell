@@ -23,19 +23,112 @@ int	count_cmds(char **cmds)
 	return(num_commands);
 }
 
-// After calling this function with this input = echo Hello World
-// The output is this one
-// t_main parsed_commands[] = {
-//     {
-//         .cmd = "echo",
-//			.flags = "-a",
-//         .args = {"Hello,", "world!", NULL}
-//     },
-//     {
-//         .cmd = NULL
-//     }
-// };
-// SYNTAX: command [flags] [arguments]
+void	ft_erase_quotes(char *tkn)
+{
+	int i;
+	int	double_q_flag;
+	int	single_q_flag;
+	
+	i = 0;
+	double_q_flag = 0;
+	single_q_flag = 0;
+	
+	while (tkn[i])
+	{
+		if (tkn[i] == '"' && single_q_flag == 0)
+		{
+			double_q_flag = !double_q_flag;
+			ft_strcpy(&tkn[i], (const char *)&tkn[i + 1]);
+			continue;
+		}
+		else if (tkn[i] == '\'' && double_q_flag == 0)
+		{
+			single_q_flag = !single_q_flag;
+			ft_strcpy(&tkn[i], (const char *)&tkn[i + 1]);
+			continue;
+		}
+		i++;
+	}
+}
+
+// char	*remove_quotes(char *str)
+// {
+// 	char	*new_str;
+// 	int		i, j;
+
+// 	i = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		if (str[i] == '\"')
+// 			break;
+// 		i++;
+// 	}
+// 	if (str[i] == '\0')
+// 		return str;
+// 	new_str = malloc(ft_strlen(str) + 1);
+// 	if(!new_str)
+// 	{
+// 		perror("Error: Unable to allocate memory\n");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	j = 0;
+// 	i = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		if (str[i] != '\"')
+// 		{
+// 			new_str[j] = str[i];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	new_str[j] = '\0';
+// 	return (new_str);
+// }
+
+void	remove_args(char **args, int start_index, int num_args)
+{
+	int	i;
+
+	i = start_index;
+	while (args[i] != NULL)
+	{
+		args[i] = args[i + num_args];
+		i++;
+	}
+}
+
+char *read_heredoc(char *delimiter)
+{
+	char *heredoc;
+	char *line;
+
+	heredoc = NULL;
+
+	while (1)
+	{
+		line = readline("");
+		if (strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break;
+		}
+		if (heredoc == NULL)
+		{
+			heredoc = ft_strdup(line);
+		}
+		else
+		{
+			char *temp = malloc(ft_strlen(heredoc) + ft_strlen(line) + 1);
+			ft_strlcpy(temp, heredoc, ft_strlen(heredoc) + 1);
+			ft_strlcat(temp, line, ft_strlen(heredoc) + ft_strlen(line) + 1);
+			free(heredoc);
+			heredoc = temp;
+		}
+		free(line);
+	}
+	return (heredoc);
+}
 
 t_main	*parse_line(char *line)
 {
@@ -44,12 +137,18 @@ t_main	*parse_line(char *line)
 	char	**commands;
 	int		num_commands;
 	int		i;
+	int		j;
+	char *delimiter;
+	char *heredoc;
+
+	// parsed_commands = malloc(sizeof(t_main));
+	// initialize_main(parsed_commands);
 
 	commands = ft_split(line, '|');
 	num_commands = count_cmds(commands);
-	// while (commands[num_commands] != NULL)
-	// 	num_commands++;
 	parsed_commands = malloc((num_commands + 1) * sizeof(t_main));
+	initialize_main(parsed_commands);
+
 	if (!parsed_commands)
 	{
 		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
@@ -59,16 +158,43 @@ t_main	*parse_line(char *line)
 	while (i < num_commands)
 	{
 		args = ft_split(commands[i], ' '); // Split the command into arguments
-		parsed_commands[i].cmd = args[0];  // The first argument is the command
+		// parsed_commands[i].input_file = NULL;
+		// parsed_commands[i].output_file = NULL;
+		j = 0;
+		while (args[j] != NULL)
+		{
+			// args[j] = remove_quotes(args[j]); // fix this
+			ft_erase_quotes(args[j]);
+			if (ft_strcmp(args[j], "<") == 0 && args[j + 1])
+			{
+				parsed_commands[i].input_file = ft_strdup(args[j + 1]);
+				remove_args(args, j, 2);
+			}
+			else if (ft_strcmp(args[j], ">") == 0 || ft_strcmp(args[j], ">>") == 0)
+			{
+				parsed_commands[i].output_file = ft_strjoin(args[j], args[j + 1]); // Store the entire operator and filename as a single string
+				remove_args(args, j, 2);
+			}
+			else if (ft_strcmp(args[j], "<<") == 0 && args[j + 1]) // Check for heredoc
+			{
+				delimiter = args[j + 1];
+				heredoc = read_heredoc(delimiter);
+				parsed_commands[i].heredoc = heredoc;
+				remove_args(args, j, 2);
+			}
+			else
+				j++;
+		}
+		parsed_commands[i].cmd = args[0];  // Assigning command
 		if (args[1] && args[1][0] == '-') // Check if the second argument is a flag
 		{
-			parsed_commands[i].flags = args[1]; // Saving the flags
-			parsed_commands[i].args = &args[2]; // The rest are arguments
+			parsed_commands[i].flags = ft_strdup(args[1]); // Saving the flags
+			parsed_commands[i].args = copy_args(&args[2]); // The rest are arguments
 		}
 		else
 		{
 			parsed_commands[i].flags = NULL;    // No flags
-			parsed_commands[i].args = &args[1]; // The rest are arguments
+			parsed_commands[i].args = copy_args(&args[1]); // The rest are arguments
 		}
 		if (i < num_commands - 1)
 		{
@@ -82,30 +208,31 @@ t_main	*parse_line(char *line)
 	}
 	parsed_commands[num_commands].cmd = NULL;
 	free(commands);
+	// free(args);
 	return (parsed_commands);
 }
 
-// char	**copy_args(char **args)
-// {
-// 	char	**copy;
-// 	int		num_args;
-// 	int		i;
+char	**copy_args(char **args)
+{
+	char	**copy;
+	int		num_args;
+	int		i;
 
-// 	num_args = 0;
-// 	while(args[num_args] != NULL)
-// 		num_args++;
-// 	copy = malloc((num_args + 1) * sizeof(char *));
-// 	if (!copy)
-// 	{
-// 		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
-// 		return (NULL);
-// 	}
-// 	i = 0;
-// 	while (i < num_args)
-// 	{
-// 		copy[i] = ft_strdup(args[i]);
-// 		i++;
-// 	}
-// 	copy[num_args] = NULL;
-// 	return(copy);
-// }
+	num_args = 0;
+	while(args[num_args] != NULL)
+		num_args++;
+	copy = malloc((num_args + 1) * sizeof(char *));
+	if (!copy)
+	{
+		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
+		return (NULL);
+	}
+	i = 0;
+	while (i < num_args)
+	{
+		copy[i] = ft_strdup(args[i]);
+		i++;
+	}
+	copy[num_args] = NULL;
+	return(copy);
+}
