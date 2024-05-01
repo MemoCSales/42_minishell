@@ -2,15 +2,63 @@ VALGRIND CHECK:
 valgrind --leak-check=full --trace-children=yes --track-fds=all
 
 BUILTINS:
-cd $PWD             ---> ❌
-cd $PWD hi          ---> ❌
-cd 123123           ---> ✅
+echo hello world           ---> ✅
+echo "hello world"           ---> ✅
+echo 'hello world'           ---> ✅
+echo hello'world'           ---> ✅
+echo hello""world           ---> ✅
+echo ''                     ---> ✅
+echo "$PWD"             ---> ❌
+echo '$PWD'             ---> ✅
+echo "aspas ->'"        ---> ❌
+echo "aspas -> ' "      ---> ❌
+echo 'aspas ->"'        ---> ❌
+echo 'aspas -> " '      ---> ❌
+echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌
+echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌
+echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌
+echo 'exit_code ->$? user ->$USER home -> $HOME'           ---> ✅
+echo "$"                        ---> ✅
+echo '$'                        ---> ✅
+echo $                          ---> ✅
+echo $?                         ---> ✅
+echo $?HELLO                    ---> ❌
+pwd                             ---> ✅
+pwd oi                          ---> ✅
+export hello                    ---> ✅
+export HELLO=123                ---> ✅
+export A-                       ---> ✅
+export HELLO=123 A              ---> ✅
+export HELLO="123 A-"           ---> ✅
+export hello world              ---> ✅
+export HELLO-=123               ---> ✅
+export =                        ---> ✅
+export 123                      ---> ✅
+unset                           ---> ✅
+unset HELLO                     ---> ✅
+unset HELLO1 HELLO2             ---> ✅
+unset HOME                      ---> ✅
+unset PATH                      ---> ✅
+unset SHELL                     ---> ✅
+cd $PWD                         ---> ❌
+cd $PWD hi                      ---> ❌
+cd 123123                       ---> ❌
+exit 123                        ---> ✅
+exit 298                        ---> ✅
+exit +100                       ---> ✅
+exit "+100"                     ---> ✅
+exit +"100"                     ---> ✅
+exit -100                       ---> ✅
+exit "-100"                     ---> ✅
+exit -"100"                     ---> ✅
+exit hello                      ---> ✅
+exit 42 world                   ---> ✅
 
 
 REDIRECTION:
-cat input.txt | grep "pattern" > output.txt
-cat input.txt | grep "pattern" | wc -l > output.txt
-< colors.txt sort | uniq -c | sort -r | head -3 > output.txt
+cat input.txt | grep "pattern" > output.txt                     ---> ✅
+cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅
+< colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅
 
 
 PIPES:

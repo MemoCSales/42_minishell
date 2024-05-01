@@ -22,10 +22,14 @@ int	export_builtin(t_env *env_vars, char *new_var)
 	char	**name;
 
 	name = ft_split(new_var, '=');
+	if (name[0] == NULL )
+	{
+		ft_putstr_fd("miniℍΞLL: not a valid identifier\n", 2);
+		return (1);
+	}
 	if (!is_valid_var_name(name[0]))
 	{
-		ft_putstr_fd("export: not valid in this context: ", 2);
-		ft_putstr_fd(name[0], 2);
+		ft_putstr_fd("\n", 2);
 		return (1);
 	}
 
@@ -109,12 +113,29 @@ int	is_valid_var_name(char *var)
 {
 	int	i;
 	if (!var || !isalpha(var[0]) || ft_strchr(var, '='))
+	{
+		ft_putstr_fd("miniℍΞLL: export: ", 2);
+		ft_putstr_fd(var, 2);
+		ft_putstr_fd(": not a valid identifier", 2);
 		return (0);
+	}
+	if (isdigit(var[0]))
+	{
+		ft_putstr_fd("miniℍΞLL: export: ", 2);
+		ft_putstr_fd(var, 2);
+		ft_putstr_fd(": not a valid identifier", 2);
+		return (0);
+	}
 	i = 1;
 	while (var[i])
 	{
 		if (!isalnum(var[i]) && (var[i] != '_' || var[i] != '-'))
+		{
+			ft_putstr_fd("miniℍΞLL: export: ", 2);
+			ft_putstr_fd(var, 2);
+			ft_putstr_fd(": not a valid identifier", 2);
 			return (0);
+		}
 		i++;
 	}
 	return (1);
