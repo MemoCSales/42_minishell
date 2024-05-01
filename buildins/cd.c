@@ -63,6 +63,7 @@ int cd_builtin(t_env *env_vars, char *path)
 	errno = 0;
 	home = getenv("HOME");
 	prev_dir = NULL;
+	curr_dir = NULL;
 	if (path == NULL || *path == '\0')
 	{
 		if (home == NULL)
@@ -91,8 +92,6 @@ int cd_builtin(t_env *env_vars, char *path)
 			ft_putstr_fd("cd: No such file or directory: ", STDERR_FILENO);
 			printf("%s\n", path);
 		}
-		if (prev_dir != NULL)
-			free(prev_dir);
 	}
 	if (prev_dir != NULL)
 		free(prev_dir);
