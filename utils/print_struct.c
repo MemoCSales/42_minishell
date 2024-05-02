@@ -24,32 +24,34 @@
 // 	char	*output_file;
 // }			t_main;
 
-void	print_struct(t_main *main)
+void	print_struct(t_main *main, int num_commands)
 {
 	int		i;
+	// int 	j;
 	char	**args;
 
 	i = 0;
-	while (main[i].cmd != NULL)
+	// j = 0;
+	while (i < num_commands)
 	{
 		printf("Command: %s\n", main[i].cmd);
-		if (main[i].flags != NULL)
-			printf("Flags: %s\n", main[i].flags);
-		if (main[i].args != NULL)
+		printf("Flags: %s\n", main[i].flags);
+		args = main[i].args;
+		printf("Arguments: \n");// DEVERIA CONTAR OS ARGUMENTOS, E IMPRIMIR ATE O ULTIMO?
+		while (*args != NULL)
+		// while (j < 10)
 		{
-			args = main[i].args;
-			printf("Arguments: ");
-			while (*args != NULL)
-			{
-				printf("%s ", *args);
-				args++;
-			}
-			printf("\n");
+			printf("%s \n", *args);
+			args++;
+			// j++;
 		}
 		printf("Input file: %s\n", main[i].input_file);
 		printf("Output file: %s\n", main[i].output_file);
+		printf("Heredoc: %s\n", main[i].heredoc);
 		printf("File descriptor (read end): %d\n", main[i].fd[0]);
 		printf("File descriptor (write end): %d\n", main[i].fd[1]);
+		printf("PID: %d\n", main[i].pid);
+		printf("\n");
 		i++;
 	}
 }

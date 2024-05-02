@@ -54,3 +54,14 @@ void	free_main(t_main *main_var)
 	}
 	free(main_var);
 }
+
+void free_args(char **args)// IN CASE IT IS NEEDED
+{
+    int i = 0;
+    while (args[i] != NULL)
+    {
+        free(args[i]);
+        i++;
+    }
+    free(args);
+}

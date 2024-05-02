@@ -15,6 +15,7 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
+# include "./utils/color_code.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -23,7 +24,8 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <limits.h>
+# include <assert.h> // to test parsing functions
+# include <stdio.h> // to test parsing functions
 
 # define MAX_CMD_LEN 1024
 # define EXEC_ERROR 127
@@ -35,6 +37,7 @@ typedef struct s_main
 	char	**args;
 	char	*input_file;
 	char	*output_file;
+	char	*heredoc;
 	int		fd[2];
 	pid_t	pid;
 }			t_main;
@@ -93,6 +96,14 @@ char		**copy_args(char **args);
 // utils
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
-void		print_struct(t_main *main);
+void		print_struct(t_main *main_var, int num_commands);
+void		free_args(char **args); //added due to segfault while testing parsing
+
+// parse_utils
+t_main		*initialize_main(t_main *main_var);
+int 		ft_strcpy(char *dst, const char *src);
+char		*ft_strncpy(char *dest, char *src, size_t n);
+void 		test_parser();
+char		*space_output(char *command);
 
 #endif
