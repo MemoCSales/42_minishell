@@ -112,14 +112,14 @@ int	check_duplicate(t_env *env_vars, char *new_var)
 int	is_valid_var_name(char *var)
 {
 	int	i;
-	if (!var || !isalpha(var[0]) || ft_strchr(var, '='))
+	if (!var || !ft_isalpha(var[0]) || ft_strchr(var, '='))
 	{
 		ft_putstr_fd("miniℍΞLL: export: ", 2);
 		ft_putstr_fd(var, 2);
 		ft_putstr_fd(": not a valid identifier", 2);
 		return (0);
 	}
-	if (isdigit(var[0]))
+	if (ft_isdigit(var[0]))
 	{
 		ft_putstr_fd("miniℍΞLL: export: ", 2);
 		ft_putstr_fd(var, 2);
@@ -129,7 +129,7 @@ int	is_valid_var_name(char *var)
 	i = 1;
 	while (var[i])
 	{
-		if (!isalnum(var[i]) && (var[i] != '_' || var[i] != '-'))
+		if (!ft_isalnum(var[i]) && (var[i] != '_' || var[i] != '-'))
 		{
 			ft_putstr_fd("miniℍΞLL: export: ", 2);
 			ft_putstr_fd(var, 2);
