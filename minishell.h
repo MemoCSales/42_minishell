@@ -16,16 +16,16 @@
 
 # include "./libft/libft.h"
 # include "./utils/color_code.h"
+# include <assert.h> // to test parsing functions
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
+# include <stdio.h> // to test parsing functions
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <assert.h> // to test parsing functions
-# include <stdio.h> // to test parsing functions
 
 # define MAX_CMD_LEN 1024
 # define EXEC_ERROR 127
@@ -54,7 +54,7 @@ void		main_loop(t_env env_var, t_main *main_var);
 // Functions for the buildins
 int			builtins_no_output(char *cmd);
 int			builtins_with_output(char *cmd);
-int cd_builtin(t_env *env_vars, char *path);
+int			cd_builtin(t_env *env_vars, char *path);
 int			pwd_builtin(void);
 int			env_builtin(t_env *env_vars);
 int			unset_builtin(t_env *env_vars, char *var_name);
@@ -65,6 +65,7 @@ int			check_duplicate(t_env *env_vars, char *new_var);
 int			echo_builtin(t_main *main, t_env *env);
 int			exit_builtin(t_main *main);
 int			exec_builtin(t_env *env_vars, t_main *main);
+void		ft_strcpy_memo(char *dst, char *src);
 
 // Environment variables
 void		init_env(t_env *env_vars, char **env);
@@ -85,7 +86,7 @@ void		handle_input_redirection(t_main *main, int i);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
 // void	pipe_redirection(t_main *main, t_env *env_vars, int i);
-int	pipe_redirection(t_main *main, int i);
+int			pipe_redirection(t_main *main, int i);
 char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 // parsing
@@ -97,13 +98,14 @@ char		**copy_args(char **args);
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
 void		print_struct(t_main *main_var, int num_commands);
-void		free_args(char **args); //added due to segfault while testing parsing
+void	free_args(char **args); // added due to segfault while testing parsing
 
 // parse_utils
-t_main		*initialize_main(t_main *main_var);
-int 		ft_strcpy(char *dst, const char *src);
+// t_main		*initialize_main(t_main *main_var);
+t_main		*initialize_main(t_main *main_var, int num_commands);
+int			ft_strcpy(char *dst, const char *src);
 char		*ft_strncpy(char *dest, char *src, size_t n);
-void 		test_parser();
+void		test_parser(void);
 char		*space_output(char *command);
 
 #endif

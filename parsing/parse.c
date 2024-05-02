@@ -149,7 +149,7 @@ t_main	*parse_line(char *line)
 	num_commands = count_cmds(commands);
 	// parsed_commands = malloc((num_commands + 1) * sizeof(t_main));
 	parsed_commands = NULL;
-	parsed_commands = initialize_main(parsed_commands);
+	parsed_commands = initialize_main(parsed_commands, num_commands);
 	if (!parsed_commands)
 	{
 		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
@@ -196,11 +196,16 @@ t_main	*parse_line(char *line)
 		parsed_commands[i].cmd = args[0];  // Assigning command
 		if (args[1] && args[1][0] == '-') // Check if the second argument is a flag
 		{
-			parsed_commands[i].flags = ft_strdup(args[1]); // Saving the flags
+			// printf("args 1: %s\n", args[1]);
+			// exit(0);
+			parsed_commands[i].flags = args[1]; // Saving the flags -- ANTES era ft_strdup(args[1])
+			// printf("%s\n", parsed_commands[i].flags);
 			parsed_commands[i].args = copy_args(&args[2]); // The rest are arguments
+			// printf("%s\n", parsed_commands[i].flags);
 		}
 		else
 		{
+			// printf("NO FLAGS\n");
 			parsed_commands[i].flags = NULL;    // No flags
 			parsed_commands[i].args = copy_args(&args[1]); // The rest are arguments
 		}
@@ -211,6 +216,7 @@ t_main	*parse_line(char *line)
 				perror("Pipe error");
 				exit(EXIT_FAILURE);
 			}
+			// printf("WITH PIPES\n");
 		}
 		i++;
 	}

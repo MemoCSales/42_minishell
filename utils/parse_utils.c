@@ -61,9 +61,9 @@ char *space_output(char *command) // This function adds spaces around the '>' ch
 	return (changed);
 }
 
-t_main	*initialize_main(t_main *main_var)
+t_main	*initialize_main(t_main *main_var, int num_commands)
 {
-	main_var = (t_main *)malloc(sizeof(t_main));
+	main_var = malloc((num_commands + 1) * sizeof(t_main));
 	if (!main_var)
 	{
 		ft_putstr_fd("Error: malloc failed\n", 2);
@@ -75,9 +75,9 @@ t_main	*initialize_main(t_main *main_var)
 	main_var->input_file = NULL;
 	main_var->output_file = NULL;
 	main_var->heredoc = NULL;
-	main_var->fd[0] = 0;
-	main_var->fd[1] = 1;
-	main_var->pid = 0;
+	// main_var->fd[0] = 0;
+	// main_var->fd[1] = 0;
+	// main_var->pid = 0;
 	return (main_var);
 }
 

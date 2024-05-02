@@ -45,6 +45,7 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	while (dir_paths[i])
 	{
 		path_cmd = ft_strjoin(dir_paths[i], "/");
+		// printf("%s\n", path_cmd);
 		prog = ft_strjoin(path_cmd, main->cmd);
 		free(path_cmd);
 		if (access(prog, F_OK | X_OK) == 0)

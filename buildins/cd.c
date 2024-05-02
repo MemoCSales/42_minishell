@@ -13,7 +13,7 @@
 
 #include "../minishell.h"
 
-void	ft_strcpy(char *dst, char *src)
+void	ft_strcpy_memo(char *dst, char *src)
 {
 	while (*src)	
 		*dst++ = *src++;
@@ -36,7 +36,7 @@ void	update_env_var(t_env *env, char *var_name, char *new_value)
 	// Construct the new value
 	ft_memcpy(new_var, var_name, var_name_len);
 	new_var[var_name_len] = '=';
-	ft_strcpy(new_var + var_name_len + 1, new_value);
+	ft_strcpy_memo(new_var + var_name_len + 1, new_value);
 	i = 0;
 	while (env->env_vars[i])
 	{

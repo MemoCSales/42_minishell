@@ -78,7 +78,7 @@ void	handle_input_redirection(t_main *main, int i)
 
 	if (main[i].input_file != NULL)
 	{
-		// printf("Input file: %s\n", main[i].input_file);
+		// printf("Input file: %s --- %d\n", main[i].input_file, i);
 		fd = open(main[i].input_file, O_RDONLY);
 		if (fd < 0)
 		{
@@ -120,6 +120,7 @@ int	execute_command(t_env *env, t_main *main)
 	exec_args = NULL;
 	path_cmd = NULL;
 	i = 0;
+	
 	while (main[i].cmd != NULL)
 	{
 		// printf("COMMAND BEING EXECUTED %s\n", main[i].cmd);
@@ -131,6 +132,7 @@ int	execute_command(t_env *env, t_main *main)
 			perror("Error: Unable to fork\n");
 			exit(EXIT_FAILURE);
 		}
+		
 		if (main[i].pid == 0) //Child process
 		{
 			// printf("Before the pipe_redirection\n");
@@ -138,13 +140,16 @@ int	execute_command(t_env *env, t_main *main)
 			// printf("Pipe read end: %d\n", main[i].fd[0]);
 			// printf("Pipe write end: %d\n", main[i].fd[1]);
 			if (main[i].input_file != NULL)
+			{
+				// printf("JDFJls -LSAFDSA\n");
+				// printf("cmd: main[%s] -index:%d\n",main[i].cmd, i);
 				handle_input_redirection(main, i);
+			}
 			if (main[i].output_file != NULL)
 				handle_output_redirection(main, i);
 			exec_args = build_exec_args(main, exec_args, i);
 			path_env = get_env_path(env);					// Prepare the env variables!
 			path_cmd = get_cmd_path(&main[i], path_env);	// Find the full path of the command
-
 			//Grandson - executes
 			pid_t	pid;
 			// int		status;

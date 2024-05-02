@@ -33,19 +33,19 @@ void    main_loop(t_env env_var, t_main *main_var)
 		line = readline(LIGHT_RED"mini"RED"ℍ"LIGHT_RED"ΞLL>>"DEFAULT"");
 		if (ft_strlen(line) > 0)
 			add_history(line);
-		main_var = initialize_main(main_var);
+		// main_var = initialize_main(main_var, 0);
 		main_var = parse_line(line);
 		num_commands = 0;
 		while (main_var[num_commands].cmd)
 			num_commands++;
 		print_struct(main_var, num_commands); // printing parsing result
 		// printf("\n");
-		exit(0);
+		// exit(0);
 		// if (num_commands >= 1)
 		// {
 			// if (buildins(main_var->cmd) == -1)
 			// print_open_fds();
-				// env_var.status = execute_command(&env_var, main_var);
+				env_var.status = execute_command(&env_var, main_var);
 			// print_open_fds();
 		// 	else
 		// 		exec_buildin(&env_var, main_var);
