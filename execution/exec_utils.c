@@ -60,13 +60,10 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	return (cmd_path); //check this later
 }
 
-// void	pipe_redirection(t_main *main, t_env *env_vars, int i)
-void	pipe_redirection(t_main *main, int i)
+int	pipe_redirection(t_main *main, int i)
 {
 	if (i != 0) // If not the first cmd, redirect input from the previous pipe
 	{
-		// printf("PIPE REDIRECTION %s\n", main[i].cmd);
-		// printf("%d\n", main[i].fd[0]);
 		if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1) 
 		{
 			perror("dup2 error");
@@ -87,8 +84,6 @@ void	pipe_redirection(t_main *main, int i)
 	}
 	if (main[i + 1].cmd != NULL) // If not the last cmd, redirect output to the next pipe
 	{
-		// printf("%s\n", main[i].cmd);
-		// printf("%d\n", main[i].fd[1]);
 		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1) 
 		{
 			perror("dup2 error");
@@ -96,6 +91,7 @@ void	pipe_redirection(t_main *main, int i)
 		}
 		close(main[i].fd[0]);
 		close(main[i].fd[1]);
+		return (1);
 		// if (close(main[i].fd[0] == -1))
 		// {
 		// 	perror("Error closing fd[0]\n");
@@ -107,6 +103,7 @@ void	pipe_redirection(t_main *main, int i)
 		// 	exit(EXIT_FAILURE);
 		// }
 	}
+	return (0);
 }
 
 char	**build_exec_args(t_main *main, char **exec_args, int i)

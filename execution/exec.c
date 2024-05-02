@@ -114,7 +114,9 @@ int	execute_command(t_env *env, t_main *main)
 	char	*path_env;
 	char	*path_cmd;
 	int     i;
+	int		pipe_created;
 
+	pipe_created = 0;
 	exec_args = NULL;
 	path_cmd = NULL;
 	i = 0;
@@ -132,7 +134,7 @@ int	execute_command(t_env *env, t_main *main)
 		if (main[i].pid == 0) //Child process
 		{
 			// printf("Before the pipe_redirection\n");
-			pipe_redirection(main, i);
+			pipe_created = pipe_redirection(main, i);
 			// printf("Pipe read end: %d\n", main[i].fd[0]);
 			// printf("Pipe write end: %d\n", main[i].fd[1]);
 			if (main[i].input_file != NULL)
@@ -145,7 +147,7 @@ int	execute_command(t_env *env, t_main *main)
 
 			//Grandson - executes
 			pid_t	pid;
-			int		status;
+			// int		status;
 			
 			pid = fork();
 			if (pid == -1)
@@ -162,15 +164,19 @@ int	execute_command(t_env *env, t_main *main)
 				{
 					ft_putstr_fd("zsh: command not found: ", 2);
 					ft_putendl_fd(main[i].cmd, 2);
-					exit(EXEC_ERROR);
+					env->status = EXEC_ERROR;
+					exit(env->status);
 				}
 			}
-			close(main[i].fd[0]);
-			close(main[i].fd[1]);
-			wait(&status);
-			// free(path_cmd);
-			// printf("before exit process\n");
-			exit(EXIT_SUCCESS); //check this line
+			if (pipe_created)
+			{
+				close(main[i].fd[0]);
+				close(main[i].fd[1]);
+			}
+			// free(exec_args);
+			wait(&env->status);
+			env->status = WEXITSTATUS(env->status);
+			exit(env->status); //check this line
 		}
 		else // Parent process
 		{
