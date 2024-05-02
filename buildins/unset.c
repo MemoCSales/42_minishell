@@ -13,7 +13,7 @@
 
 #include "../minishell.h"
 
-void	unset_buildin(t_env *env_vars, char *var_name)
+int	unset_builtin(t_env *env_vars, char *var_name)
 {
 	int	index;
 	int	i;
@@ -21,8 +21,8 @@ void	unset_buildin(t_env *env_vars, char *var_name)
 	index = -1;
 	if (var_name == NULL)
 	{
-		ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
-		return ;
+		// ft_putstr_fd("unset: not enough arguments\n", STDERR_FILENO);
+		return (1);
 	}
 	index = find_index(env_vars, var_name);
 	if (index != -1)
@@ -34,9 +34,10 @@ void	unset_buildin(t_env *env_vars, char *var_name)
 			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
 			i++;
 		}
-		printf("ENV_VAR [%s] deleted\n", var_name); //printf for testing, might delete later
+		// printf("ENV_VAR [%s] deleted\n", var_name); //printf for testing, might delete later
 		// env_buildin(env_vars);						//can delete later
 	}
+	return (0);
 }
 
 int	find_index(t_env *env_vars, char *var_name)

@@ -1,0 +1,17 @@
+buildins
+colors.txt
+execution
+input.txt
+libft
+main.c
+Makefile
+minishell
+minishell.c
+minishell.h
+minishell_tester
+obj
+output.txt
+parsing
+test_files
+test.txt
+utils

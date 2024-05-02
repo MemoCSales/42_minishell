@@ -22,6 +22,7 @@ SRC =	main.c \
 		./buildins/echo.c \
 		./parsing/parse.c \
 		./execution/exec.c \
+		./execution/exec_utils.c \
 
 all: $(NAME) minishell
 
