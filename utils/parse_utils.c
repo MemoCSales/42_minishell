@@ -13,6 +13,54 @@
 
 #include "../minishell.h"
 
+char *space_output(char *command) // This function adds spaces around the '>' character
+{
+	char *changed;
+	int i = 0;
+	int j = 0;
+	int in_string = 0;  // Boolean variable to keep track of whether we're inside a string
+
+	changed = malloc(strlen(command) * 5 + 1);  // Allocate enough space for the preprocessed command
+	if (!changed)
+	{
+		ft_putstr_fd("Error: malloc failed\n", 2);
+		exit(1);
+	}
+
+	while (command[i] != '\0') {
+		if (command[i] == '"') {
+			in_string = !in_string;  // Toggle the in_string variable
+		}
+		if (!in_string && command[i] == '>' && command[i + 1] != ' ')  // If '>' is not followed by a space and we're not inside a string
+		{
+			changed[j++] = ' ';
+			changed[j++] = '>';
+			changed[j++] = ' ';
+		}
+		else if (!in_string && command[i] == '<' && command[i + 1] != ' ')
+		{
+			changed[j++] = ' ';
+			changed[j++] = '<';
+			changed[j++] = ' ';
+		}
+		// else if (!in_string && command[i] == '>' && command[i + 1] != '>' && command[i + 2] != ' ')
+		// {
+		// 	changed[j++] = ' ';
+		// 	changed[j++] = '>';
+		// 	changed[j++] = '>';
+		// 	changed[j++] = ' ';
+		// }
+		else
+		{
+			changed[j++] = command[i];
+		}
+		i++;
+	}
+
+	changed[j] = '\0';  // Null-terminate the preprocessed command
+	return (changed);
+}
+
 t_main	*initialize_main(t_main *main_var)
 {
 	main_var = (t_main *)malloc(sizeof(t_main));

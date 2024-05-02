@@ -15,6 +15,7 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
+# include "./utils/color_code.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -86,5 +87,6 @@ t_main		*initialize_main(t_main *main_var);
 int 		ft_strcpy(char *dst, const char *src);
 char		*ft_strncpy(char *dest, char *src, size_t n);
 void 		test_parser();
+char		*space_output(char *command);
 
 #endif

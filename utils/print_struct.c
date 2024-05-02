@@ -43,24 +43,4 @@ void	print_struct(t_main *main, int num_commands)
 		printf("\n");
 		i++;
 	}
-	// while (i < num_commands)//PENSAR MELHOR ESSA CONDICAO - ERA (main[i].cmd != NULL)
-	// {
-	// 	printf("Command: %s\n", main[i].cmd);
-	// 	if (main[i].flags != NULL)
-	// 		printf("Flags: %s\n", main[i].flags);
-	// 	if (main[i].args != NULL)
-	// 	{
-	// 		args = main[i].args;
-	// 		printf("Arguments: ");
-	// 		while (*args != NULL)
-	// 		{
-	// 			printf("%s ", *args);
-	// 			args++;
-	// 		}
-	// 		printf("\n");
-	// 	}
-	// 	printf("File descriptor (read end): %d\n", main[i].fd[0]);
-	// 	printf("File descriptor (write end): %d\n", main[i].fd[1]);
-	// 	i++;
-	// }
 }

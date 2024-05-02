@@ -138,17 +138,18 @@ t_main	*parse_line(char *line)
 	int		num_commands;
 	int		i;
 	int		j;
-	char *delimiter;
-	char *heredoc;
+	char 	*delimiter;
+	char 	*heredoc;
+	char 	*changed;
 
 	// parsed_commands = malloc(sizeof(t_main));
 	// initialize_main(parsed_commands);
 
 	commands = ft_split(line, '|');
 	num_commands = count_cmds(commands);
-	parsed_commands = malloc((num_commands + 1) * sizeof(t_main));
-	initialize_main(parsed_commands);
-
+	// parsed_commands = malloc((num_commands + 1) * sizeof(t_main));
+	parsed_commands = NULL;
+	parsed_commands = initialize_main(parsed_commands);
 	if (!parsed_commands)
 	{
 		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
@@ -157,7 +158,9 @@ t_main	*parse_line(char *line)
 	i = 0;
 	while (i < num_commands)
 	{
-		args = ft_split(commands[i], ' '); // Split the command into arguments
+		changed = space_output(commands[i]);
+		args = ft_split(changed, ' '); // Split the command into arguments
+		// args = ft_split(commands[i], ' '); // Split the command into arguments
 		// parsed_commands[i].input_file = NULL;
 		// parsed_commands[i].output_file = NULL;
 		j = 0;
@@ -170,10 +173,15 @@ t_main	*parse_line(char *line)
 				parsed_commands[i].input_file = ft_strdup(args[j + 1]);
 				remove_args(args, j, 2);
 			}
-			else if (ft_strcmp(args[j], ">") == 0 || ft_strcmp(args[j], ">>") == 0)
+			else if (ft_strcmp(args[j], ">") == 0 && args[j + 1])
 			{
-				parsed_commands[i].output_file = ft_strjoin(args[j], args[j + 1]); // Store the entire operator and filename as a single string
+				parsed_commands[i].output_file = ft_strdup(args[j + 1]);
 				remove_args(args, j, 2);
+			}
+			else if (ft_strcmp(args[j], ">") == 0 && ft_strcmp(args[j+1], ">") && args [j + 2])
+			{
+				parsed_commands[i].output_file = ft_strdup(args[j + 2]);
+				remove_args(args, j, 3);
 			}
 			else if (ft_strcmp(args[j], "<<") == 0 && args[j + 1]) // Check for heredoc
 			{
@@ -208,6 +216,7 @@ t_main	*parse_line(char *line)
 	}
 	parsed_commands[num_commands].cmd = NULL;
 	free(commands);
+	free(changed);
 	// free(args);
 	return (parsed_commands);
 }

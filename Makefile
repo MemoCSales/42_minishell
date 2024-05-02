@@ -23,7 +23,7 @@ SRC =	main.c \
 		./parsing/parse.c \
 		./execution/exec.c \
 
-all: $(NAME)
+all: $(NAME) minishell
 
 OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 
@@ -60,6 +60,7 @@ cleanlib:
 fre: fclean cleanlib all #TO DELETE THE LIBFT AND RECOMPILE IT
 
 re: fclean all
+	@./minishell
 
 norminette: 
 		norminette $(SRC) $(SUPPORT_DIR) minishell.h $(LIBFT_DIRECTORY)
