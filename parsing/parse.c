@@ -203,16 +203,18 @@ t_main	*parse_line(char *line)
 
 
 // ">>"
-			if (ft_strcmp(args[j], ">") && ft_strcmp(args[ j + 1], ">") && args [j + 2]) //== 0 && ft_strcmp(args[j+1], ">") && args [j + 2])
+			if (ft_strcmp(args[j], ">") && ft_strcmp(args[j + 1], ">") && args[j + 2]) //== 0 && ft_strcmp(args[j+1], ">") && args [j + 2])
 			{
-			printf(">>\n");
-	printf("1. j: %d\nargs[0]: %s\nargs[1]: %s\nargs[2]: %s\n", j, args[0], args[1], args[2]);
+	printf("AA j: %d\nargs[0]: %s\nargs[1]: %s\nargs[2]: %s\n", j, args[0], args[1], args[2]);
+			printf("COMPARES:%d", (ft_strcmp(args[j], ">") && ft_strcmp(args[j + 1], ">") && args[j + 2]));
+			printf("AA>>\n");
+	printf("BB. j: %d\nargs[0]: %s\nargs[1]: %s\nargs[2]: %s\n", j, args[0], args[1], args[2]);
 
 				parsed_commands[i].output_file = ft_strdup(args[j + 2]);
 				parsed_commands[i].heredoc = ft_strdup(args[j]);
 
 				remove_args(args, j, 2);
-	printf("2. j: %d\nargs[0]: %s\nargs[1]: %s\nargs[2]: %s\n", j, args[0], args[1], args[2]);
+	printf("CC. j: %d\nargs[0]: %s\nargs[1]: %s\nargs[2]: %s\n", j, args[0], args[1], args[2]);
 
 			}
 			// else if (ft_strcmp(args[j], "<<") == 0 && args[j + 1]) // Check for heredoc
@@ -226,7 +228,7 @@ t_main	*parse_line(char *line)
 // "<"
 			else if (ft_strcmp(args[j], "<") == 0 && args[j + 1])
 			{
-			printf("<\n");
+				printf("<\n");
 				parsed_commands[i].input_file = ft_strdup(args[j + 1]);
 				remove_args(args, j, 2);
 			}
