@@ -30,7 +30,7 @@ void    main_loop(t_env env_var, t_main *main_var)
 	int		num_commands;
 	while (1)			// first while loop that prints a prompt and retrieves from what it reads
 	{
-		line = readline(LIGHT_RED"ψΨ: "DEFAULT"");
+		line = readline(LIGHT_RED"ψΨ:"DEFAULT"");
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);

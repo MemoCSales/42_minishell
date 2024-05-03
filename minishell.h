@@ -91,14 +91,12 @@ char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 // parsing
 t_main		*parse_line(char *line);
-int			count_cmds(char **cmds);
-char		**copy_args(char **args);
 
 // utils
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
 void		print_struct(t_main *main_var, int num_commands);
-void	free_args(char **args); // added due to segfault while testing parsing
+void		free_args(char **args); // added due to segfault while testing parsing
 
 // parse_utils
 t_main		*initialize_main(t_main *main_var, int num_commands);
@@ -106,5 +104,11 @@ int			ft_strcpy(char *dst, const char *src);
 char		*ft_strncpy(char *dest, char *src, size_t n);
 void		test_parser(void);
 char		*insert_spaces(char *command);
+void		ft_erase_quotes(char *tkn);
+void		remove_args(char **args, int start_index, int num_args);
+char		*read_heredoc(char *delimiter);
+int			count_cmds(char **cmds);
+char		**copy_args(char **args);
+int			count_args(char **args);
 
 #endif

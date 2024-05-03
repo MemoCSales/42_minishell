@@ -84,3 +84,20 @@ ls -l | grep "\.txt$"                   ---> ✅
 ls -l | grep drw | awk '{print $9}' | sort  ---> ❌
 export GHOST=123 | env | grep GHOST
 seq 100 | echo "Line ++" | grep 'Line' | sort | uniq -c | sort -nr | head -n 5  ---> ❌
+
+PARSING:
+ls                                     ---> ✅
+ls la                                  ---> ✅
+ls -la                                 ---> ✅
+ls -la la                              ---> ✅
+ls -l -a                               ---> ❌ // -a VAI COMO ARGUMENTO. TERIA QUE JUNTAR (SIMILAR AO insert_space)?
+< buceta.txt                           ---> ✅
+<buceta.txt                            ---> ✅
+> buceta.txt                           ---> ✅
+>buceta.txt                            ---> ✅
+<< grelinho                            ---> ✅ // Segfault (quando tenta imprimir os args?). Sem imprimir, vai. Depois de controles (if) para imprimir em caso de NULL, foi.
+											   // Perguntar como quer tratar o texto do HEREDOC. Atualmente esta saindo tudo concatenado. Verificar tambem a questao do >> APPEND,
+											   // passando ">>" no *heredoc
+<<grelinho                             ---> ✅
+<<palmeiras cat                        ---> ✅ // nao sai do pgm, mas imprime tudo bem. Provavelmente um problema posterior ao parse_line, quando o exec receb a struct.
+<< palmeiras cat                       ---> ✅ // nao sai do pgm, mas imprime tudo bem. Provavelmente um problema posterior ao parse_line, quando o exec receb a struct.
