@@ -86,17 +86,38 @@ void	ft_erase_quotes(char *tkn)
 // 	return (new_str);
 // }
 
-void	remove_args(char **args, int start_index, int num_args)
+void remove_args(char **args, int start_index, int num_args)
 {
-	int	i;
+    int i;
+    int j;
 
-	i = start_index;
-	while (args[i] != NULL)
-	{
-		args[i] = args[i + num_args];
-		i++;
-	}
+    i = start_index;
+    j = start_index + num_args;
+    while (args[j] != NULL)
+    {
+        args[i] = args[j];
+        i++;
+        j++;
+    }
+    while (args[i] != NULL)
+    {
+        args[i] = NULL;
+        i++;
+    }
 }
+// In this function, you're shifting the elements of the args array to the left by num_args positions starting from start_index. However, you're not ensuring that i + num_args is a valid index of the args array. If i + num_args is out of bounds of the args array, then args[i + num_args] will be accessing memory that it's not supposed to, which could be causing the segmentation fault.
+// void	remove_args(char **args, int start_index, int num_args)
+
+// {
+// 	int	i;
+
+// 	i = start_index;
+// 	while (args[i] != NULL)
+// 	{
+// 		args[i] = args[i + num_args];
+// 		i++;
+// 	}
+// }
 
 char *read_heredoc(char *delimiter)
 {
@@ -138,62 +159,92 @@ t_main	*parse_line(char *line)
 	int		num_commands;
 	int		i;
 	int		j;
-	char 	*delimiter;
+	// char 	*delimiter;
 	char 	*heredoc;
 	char 	*changed;
 
-	// parsed_commands = malloc(sizeof(t_main));
-	// initialize_main(parsed_commands);
 
+
+	heredoc = NULL;
 	commands = ft_split(line, '|');
 	num_commands = count_cmds(commands);
 	// parsed_commands = malloc((num_commands + 1) * sizeof(t_main));
 	parsed_commands = NULL;
 	parsed_commands = initialize_main(parsed_commands, num_commands);
+
+
+
 	if (!parsed_commands)
 	{
 		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
 		return (NULL);
 	}
 	i = 0;
+
+
+
 	while (i < num_commands)
 	{
-		changed = space_output(commands[i]);
+		changed = insert_spaces(commands[i]);
 		args = ft_split(changed, ' '); // Split the command into arguments
 		// args = ft_split(commands[i], ' '); // Split the command into arguments
-		// parsed_commands[i].input_file = NULL;
-		// parsed_commands[i].output_file = NULL;
+
+
+		parsed_commands[i].input_file = NULL;
+		parsed_commands[i].output_file = NULL;
 		j = 0;
+
+
+
 		while (args[j] != NULL)
 		{
-			// args[j] = remove_quotes(args[j]); // fix this
 			ft_erase_quotes(args[j]);
-			if (ft_strcmp(args[j], "<") == 0 && args[j + 1])
+	// printf("args[0]: %s\nargs[1]: %s\nargs[2]: %s\n", args[0], args[1], args[2]);
+
+
+// ">>"
+			if (ft_strcmp(args[j], ">") && ft_strcmp(args[ j + 1], ">") && args [j + 2]) //== 0 && ft_strcmp(args[j+1], ">") && args [j + 2])
 			{
+			printf(">>\n");
+	printf("1. j: %d\nargs[0]: %s\nargs[1]: %s\nargs[2]: %s\n", j, args[0], args[1], args[2]);
+
+				parsed_commands[i].output_file = ft_strdup(args[j + 2]);
+				parsed_commands[i].heredoc = ft_strdup(args[j]);
+
+				remove_args(args, j, 2);
+	printf("2. j: %d\nargs[0]: %s\nargs[1]: %s\nargs[2]: %s\n", j, args[0], args[1], args[2]);
+
+			}
+			// else if (ft_strcmp(args[j], "<<") == 0 && args[j + 1]) // Check for heredoc
+			// {
+			// 	delimiter = args[j + 1];
+			// 	heredoc = read_heredoc(delimiter);
+			// 	parsed_commands[i].heredoc = heredoc;
+			// 	remove_args(args, j, 2);
+			// }
+
+// "<"
+			else if (ft_strcmp(args[j], "<") == 0 && args[j + 1])
+			{
+			printf("<\n");
 				parsed_commands[i].input_file = ft_strdup(args[j + 1]);
 				remove_args(args, j, 2);
 			}
+
+// ">"
 			else if (ft_strcmp(args[j], ">") == 0 && args[j + 1])
 			{
+			printf(">\n");
 				parsed_commands[i].output_file = ft_strdup(args[j + 1]);
-				remove_args(args, j, 2);
-			}
-			else if (ft_strcmp(args[j], ">") == 0 && ft_strcmp(args[j+1], ">") && args [j + 2])
-			{
-				parsed_commands[i].output_file = ft_strdup(args[j + 2]);
-				remove_args(args, j, 3);
-			}
-			else if (ft_strcmp(args[j], "<<") == 0 && args[j + 1]) // Check for heredoc
-			{
-				delimiter = args[j + 1];
-				heredoc = read_heredoc(delimiter);
-				parsed_commands[i].heredoc = heredoc;
 				remove_args(args, j, 2);
 			}
 			else
 				j++;
 		}
+
+
 		parsed_commands[i].cmd = args[0];  // Assigning command
+		
 		if (args[1] && args[1][0] == '-') // Check if the second argument is a flag
 		{
 			// printf("args 1: %s\n", args[1]);
@@ -205,7 +256,7 @@ t_main	*parse_line(char *line)
 		}
 		else
 		{
-			// printf("NO FLAGS\n");
+// printf("NO FLAGS\n");
 			parsed_commands[i].flags = NULL;    // No flags
 			parsed_commands[i].args = copy_args(&args[1]); // The rest are arguments
 		}
@@ -216,7 +267,7 @@ t_main	*parse_line(char *line)
 				perror("Pipe error");
 				exit(EXIT_FAILURE);
 			}
-			// printf("WITH PIPES\n");
+// printf("WITH PIPES\n");
 		}
 		i++;
 	}
@@ -224,6 +275,7 @@ t_main	*parse_line(char *line)
 	free(commands);
 	free(changed);
 	// free(args);
+print_struct(parsed_commands, num_commands); // printing parsing results
 	return (parsed_commands);
 }
 

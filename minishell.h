@@ -101,11 +101,10 @@ void		print_struct(t_main *main_var, int num_commands);
 void	free_args(char **args); // added due to segfault while testing parsing
 
 // parse_utils
-// t_main		*initialize_main(t_main *main_var);
 t_main		*initialize_main(t_main *main_var, int num_commands);
 int			ft_strcpy(char *dst, const char *src);
 char		*ft_strncpy(char *dest, char *src, size_t n);
 void		test_parser(void);
-char		*space_output(char *command);
+char		*insert_spaces(char *command);
 
 #endif

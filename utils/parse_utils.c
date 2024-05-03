@@ -13,7 +13,7 @@
 
 #include "../minishell.h"
 
-char *space_output(char *command) // This function adds spaces around the '>' character
+char *insert_spaces(char *command) // This function adds spaces around the '>' character
 {
 	char *changed;
 	int i = 0;
@@ -27,37 +27,53 @@ char *space_output(char *command) // This function adds spaces around the '>' ch
 		exit(1);
 	}
 
-	while (command[i] != '\0') {
-		if (command[i] == '"') {
+	while (command[i] != '\0')
+	{
+		if (command[i] == '"')
+		{
 			in_string = !in_string;  // Toggle the in_string variable
 		}
-		if (!in_string && command[i] == '>' && command[i + 1] != ' ')  // If '>' is not followed by a space and we're not inside a string
+		if (!in_string && command[i] == '>' && command[i + 1] != ' ' && command[i + 1] != '>')
 		{
+// printf("OK0>>\n");
 			changed[j++] = ' ';
 			changed[j++] = '>';
 			changed[j++] = ' ';
 		}
-		else if (!in_string && command[i] == '<' && command[i + 1] != ' ')
+		else if (!in_string && command[i] == '<' && command[i + 1] != ' ' && command[i + 1] != '<')
 		{
+// printf("OK1>>\n");
 			changed[j++] = ' ';
 			changed[j++] = '<';
 			changed[j++] = ' ';
 		}
-		// else if (!in_string && command[i] == '>' && command[i + 1] != '>' && command[i + 2] != ' ')
-		// {
-		// 	changed[j++] = ' ';
-		// 	changed[j++] = '>';
-		// 	changed[j++] = '>';
-		// 	changed[j++] = ' ';
-		// }
+		else if (!in_string && command[i] == '>' && command[i + 1] == '>' && command[i + 2] != ' ')
+		{
+// printf("OK2>>\n");
+			changed[j++] = ' ';
+			changed[j++] = '>';
+			changed[j++] = '>';
+			changed[j++] = ' ';
+			i++;
+		}
+		else if (!in_string && command[i] == '<' && command[i + 1] == '<' && command[i + 2] != ' ')
+		{
+// printf("OK3>>\n");
+			changed[j++] = ' ';
+			changed[j++] = '<';
+			changed[j++] = '<';
+			changed[j++] = ' ';
+			i++;
+		}
 		else
 		{
 			changed[j++] = command[i];
 		}
 		i++;
 	}
-
 	changed[j] = '\0';  // Null-terminate the preprocessed command
+// printf("changed: %s\n", changed);
+// exit(0);
 	return (changed);
 }
 
