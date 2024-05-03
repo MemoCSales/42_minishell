@@ -223,7 +223,7 @@ t_main	*parse_line(char *line)
 	parsed_commands[num_commands].cmd = NULL;
 	free(commands);
 	free(changed);
-	// free(args);
+	free(args);
 	return (parsed_commands);
 }
 

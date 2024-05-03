@@ -56,6 +56,7 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 		free(prog);
 		i++;
 	}
+	free(prog);
 	cleanup_split(dir_paths);
 	// printf("Despues del cleanup\n");
 	return (cmd_path); //check this later
@@ -72,16 +73,6 @@ int	pipe_redirection(t_main *main, int i)
 		}
 		close(main[i - 1].fd[0]);
 		close(main[i - 1].fd[1]);
-		// if (close(main[i - 1].fd[0] == -1))
-		// {
-		// 	perror("Error closing fd[0]\n");
-		// 	exit(EXIT_FAILURE);
-		// }
-		// if (close(main[i - 1].fd[1]) == -1)
-		// {
-		// 	perror("Error closing fd[1]\n");
-		// 	exit(EXIT_FAILURE);
-		// }
 	}
 	if (main[i + 1].cmd != NULL) // If not the last cmd, redirect output to the next pipe
 	{
@@ -93,16 +84,6 @@ int	pipe_redirection(t_main *main, int i)
 		close(main[i].fd[0]);
 		close(main[i].fd[1]);
 		return (1);
-		// if (close(main[i].fd[0] == -1))
-		// {
-		// 	perror("Error closing fd[0]\n");
-		// 	exit(EXIT_FAILURE);
-		// }
-		// if (close(main[i].fd[1]) == -1)
-		// {
-		// 	perror("Error closing fd[1]\n");
-		// 	exit(EXIT_FAILURE);
-		// }
 	}
 	return (0);
 }

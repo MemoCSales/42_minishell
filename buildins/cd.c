@@ -53,7 +53,7 @@ void	update_env_var(t_env *env, char *var_name, char *new_value)
 	env->env_vars[i + 1] = NULL;
 }
 
-int cd_builtin(t_env *env_vars, char *path)
+int cd_builtin(t_env *env_vars, char *path, t_main *main)
 {
 	int 	status;
 	char 	*home;
@@ -64,6 +64,11 @@ int cd_builtin(t_env *env_vars, char *path)
 	home = getenv("HOME");
 	prev_dir = NULL;
 	curr_dir = NULL;
+	if (main->args[1] != NULL)
+	{
+		ft_putstr_fd("bash: cd: too many arguments\n", STDERR_FILENO);
+		return (1);
+	}
 	if (path == NULL || *path == '\0')
 	{
 		if (home == NULL)
@@ -89,8 +94,9 @@ int cd_builtin(t_env *env_vars, char *path)
 		}
 		else if (errno == ENOENT)
 		{
-			ft_putstr_fd("cd: No such file or directory: ", STDERR_FILENO);
-			printf("%s\n", path);
+			ft_putstr_fd("bash: cd: ", STDERR_FILENO);
+			ft_putstr_fd(path, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		}
 	}
 	if (prev_dir != NULL)

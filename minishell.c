@@ -30,7 +30,7 @@ void    main_loop(t_env env_var, t_main *main_var)
 	int		num_commands;
 	while (1)			// first while loop that prints a prompt and retrieves from what it reads
 	{
-		line = readline(LIGHT_RED"mini"RED"ℍ"LIGHT_RED"ΞLL>>"DEFAULT"");
+		line = readline(LIGHT_RED"mini"RED"ℍ"LIGHT_RED"ΞLL>> "DEFAULT"");
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);
@@ -38,7 +38,7 @@ void    main_loop(t_env env_var, t_main *main_var)
 		num_commands = 0;
 		while (main_var[num_commands].cmd)
 			num_commands++;
-		print_struct(main_var, num_commands); // printing parsing result
+		// print_struct(main_var, num_commands); // printing parsing result
 		// printf("\n");
 		// exit(0);
 		// if (num_commands >= 1)
@@ -51,7 +51,8 @@ void    main_loop(t_env env_var, t_main *main_var)
 		// 		exec_buildin(&env_var, main_var);
 		// }
 		// free_main(main_var); // This does not goes here
-
+		// printf("MAIN EXIT CODE: %d\n", env_var.status);
+		free(main_var);
 		free(line);
 	}
 }

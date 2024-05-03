@@ -63,21 +63,28 @@ char *space_output(char *command) // This function adds spaces around the '>' ch
 
 t_main	*initialize_main(t_main *main_var, int num_commands)
 {
+	int	i;
+
 	main_var = malloc((num_commands + 1) * sizeof(t_main));
 	if (!main_var)
 	{
 		ft_putstr_fd("Error: malloc failed\n", 2);
 		exit(1);
 	}
-	main_var->cmd = NULL;
-	main_var->flags = NULL;
-	main_var->args = NULL;
-	main_var->input_file = NULL;
-	main_var->output_file = NULL;
-	main_var->heredoc = NULL;
-	// main_var->fd[0] = 0;
-	// main_var->fd[1] = 0;
-	// main_var->pid = 0;
+	i = 0;
+	while (i < num_commands)
+	{
+		main_var->cmd = NULL;
+		main_var->flags = NULL;
+		main_var->args = NULL;
+		main_var->input_file = NULL;
+		main_var->output_file = NULL;
+		main_var->heredoc = NULL;
+		// main_var->fd[0] = 0;
+		// main_var->fd[1] = 0;
+		// main_var->pid = 0;
+		i++;
+	}
 	return (main_var);
 }
 

@@ -54,7 +54,8 @@ void		main_loop(t_env env_var, t_main *main_var);
 // Functions for the buildins
 int			builtins_no_output(char *cmd);
 int			builtins_with_output(char *cmd);
-int			cd_builtin(t_env *env_vars, char *path);
+// int			cd_builtin(t_env *env_vars, char *path);
+int			cd_builtin(t_env *env_vars, char *path, t_main *main);
 int			pwd_builtin(void);
 int			env_builtin(t_env *env_vars);
 int			unset_builtin(t_env *env_vars, char *var_name);
@@ -75,7 +76,8 @@ void		check_env(t_env *env_vars);
 int			execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-int			parent_process(t_main *main, t_env *env, int i);
+// int			parent_process(t_main *main, t_env *env, int i);
+int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
 // redirections
 int			check_for_redirect_output(t_main *main);
 int			check_for_redirect_input(t_main *main);

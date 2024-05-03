@@ -66,8 +66,9 @@ re: fclean all
 norminette: 
 		norminette $(SRC) minishell.h $(LIBFT_DIRECTORY)
 
-valgrind:
-		valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
+va:
+		valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=all ./minishell
+		
 
 .PHONY: all clean fclean re
 

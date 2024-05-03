@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	main_var = NULL;
-	// main_var = initialize_main(main_var); // This function initialize the main_vars
+	// main_var = initialize_main(main_var, 0); // This function initialize the main_vars
 	init_env(&env_var, env);	// This function initialize the env_vars
 	main_loop(env_var, main_var);
 	check_env(&env_var);	// In this function it checks env_vars and frees the memory. Need to check if its needed

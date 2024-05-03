@@ -93,16 +93,20 @@ void	handle_input_redirection(t_main *main, int i)
 	}
 }
 
-int	parent_process(t_main *main, t_env *env, int i)
+int	parent_process(t_main *main, t_env *env, int i, int pipe_created)
 {
 	if (i != 0) 	// If not the 1st cmd, closes the ends of the previous pipe
 	{
 		close(main[i - 1].fd[0]);
 		close(main[i - 1].fd[1]);
 	}
-	// close(main[i].fd[0]);
-	// close(main[i].fd[1]);
 	waitpid(main[i].pid, &env->status, 0);
+	if (pipe_created)
+	{
+		close(main[i].fd[0]);
+		close(main[i].fd[1]);
+	}
+	// printf("PARENT EXIT CODE: %d\n", env->status);
 	return WEXITSTATUS(env->status);
 }
 
@@ -140,16 +144,13 @@ int	execute_command(t_env *env, t_main *main)
 			// printf("Pipe read end: %d\n", main[i].fd[0]);
 			// printf("Pipe write end: %d\n", main[i].fd[1]);
 			if (main[i].input_file != NULL)
-			{
-				// printf("JDFJls -LSAFDSA\n");
-				// printf("cmd: main[%s] -index:%d\n",main[i].cmd, i);
 				handle_input_redirection(main, i);
-			}
 			if (main[i].output_file != NULL)
 				handle_output_redirection(main, i);
 			exec_args = build_exec_args(main, exec_args, i);
 			path_env = get_env_path(env);					// Prepare the env variables!
 			path_cmd = get_cmd_path(&main[i], path_env);	// Find the full path of the command
+			// printf("%s\n", path_cmd);
 			//Grandson - executes
 			pid_t	pid;
 			// int		status;
@@ -159,11 +160,17 @@ int	execute_command(t_env *env, t_main *main)
 				printf("Error while forking grandson\n");
 			else if (pid == 0)
 			{
+				// printf("PIPE CREATED? %d\n", pipe_created);
+				// if (!pipe_created)
+				// {
+				// 	printf("Closing write end of pipe");
+				// 	close(main[i].fd[1]);
+				// }
 				if (builtins_with_output(main[i].cmd) != -1)
 				{
 					// printf("builtin en grandson\n");
+					free(path_cmd);
 					env->status = exec_builtin(env, &main[i]);
-					// free(path_cmd);
 				}
 				else if (execve(path_cmd, exec_args, env->env_vars) == -1)
 				{
@@ -173,13 +180,15 @@ int	execute_command(t_env *env, t_main *main)
 					exit(env->status);
 				}
 			}
+			// printf("PIPE CREATED? %d\n", pipe_created);
 			if (pipe_created)
 			{
-				close(main[i].fd[0]);
 				close(main[i].fd[1]);
+				close(main[i].fd[0]);
 			}
-			// free(exec_args);
 			wait(&env->status);
+			cleanup_split(exec_args);
+			free(path_cmd);
 			env->status = WEXITSTATUS(env->status);
 			exit(env->status); //check this line
 		}
@@ -187,10 +196,10 @@ int	execute_command(t_env *env, t_main *main)
 		{
 			// close(main[i].fd[0]);
 			// close(main[i].fd[1]);
-			env->status = parent_process(main, env, i);
+			env->status = parent_process(main, env, i, pipe_created);
 		}
 		i++;
+		// free(path_cmd);
 	}
-	// free(path_cmd);
 	return (env->status);
 }

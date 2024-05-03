@@ -40,7 +40,7 @@ int	builtins_with_output(char *cmd)
 int	exec_builtin(t_env *env_vars, t_main *main)
 {
 	if (ft_strcmp(main->cmd, "cd") == 0)
-		return (env_vars->status = cd_builtin(env_vars, main->args[0]));
+		return (env_vars->status = cd_builtin(env_vars, main->args[0], main));
 	else if (ft_strcmp(main->cmd, "pwd") == 0)
 		return (env_vars->status = pwd_builtin());
 	else if (ft_strcmp(main->cmd, "env") == 0)
@@ -54,6 +54,7 @@ int	exec_builtin(t_env *env_vars, t_main *main)
 	else if (ft_strcmp(main->cmd, "exit") == 0)
 	{
 		return (env_vars->status = exit_builtin(main));
+		check_env(env_vars);
 		exit(env_vars->status);
 	}
 	return (-1);

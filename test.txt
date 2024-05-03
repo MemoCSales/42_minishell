@@ -17,7 +17,7 @@ echo 'aspas -> " '      ---> ❌
 echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌
 echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌
 echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌
-echo 'exit_code ->$? user ->$USER home -> $HOME'           ---> ✅
+echo 'exit_code ->$? user ->$USER home -> $HOME'            ---> ❌ ---> ✅
 echo "$"                        ---> ✅
 echo '$'                        ---> ✅
 echo $                          ---> ✅
@@ -41,8 +41,8 @@ unset HOME                      ---> ✅
 unset PATH                      ---> ✅
 unset SHELL                     ---> ✅
 cd $PWD                         ---> ❌
-cd $PWD hi                      ---> ❌
-cd 123123                       ---> ❌
+cd $PWD hi                      ---> ✅
+cd 123123                       ---> ✅
 exit 123                        ---> ✅
 exit 298                        ---> ✅
 exit +100                       ---> ✅
@@ -63,7 +63,7 @@ cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅
 
 PIPES:
 env | sort | grep -v SHLVL | grep -v ^_ ---> ✅
-cat ./test_files/infile_big | grep oi   ---> ❌
+cat ./test_files/infile_big | grep oi   ---> ❌ this line works with 65kb file
 cat minishell.h | grep ");"$            ---> ✅
 export GHOST=123 | env | grep GHOST     ---> ❌
 pwd | wc -l                             ---> ✅
