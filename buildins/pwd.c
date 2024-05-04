@@ -12,9 +12,10 @@
 
 #include "../minishell.h"
 
-int pwd_builtin()
+int	pwd_builtin(void)
 {
 	char	cwd[MAX_CMD_LEN];
+
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		printf("%s\n", cwd);

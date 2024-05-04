@@ -21,7 +21,7 @@ int	builtins_no_output(char *cmd)
 	else if (ft_strcmp(cmd, "export") == 0)
 		return (1);
 	else if (ft_strcmp(cmd, "exit") == 0)
-		return(1);
+		return (1);
 	return (-1);
 }
 
@@ -63,7 +63,7 @@ int	exit_builtin(t_main *main)
 	int	status;
 
 	status = 0;
-	 if (main->flags != NULL)
+	if (main->flags != NULL)
 		status = ft_atoi(main->flags);
 	else if (!main->args[0])
 		exit(status);
@@ -72,9 +72,11 @@ int	exit_builtin(t_main *main)
 		ft_putstr_fd("exit: too many arguments\n", 2);
 		return (1);
 	}
-	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '-' && ft_isdigit(main->args[0][1])))
+	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '-'
+		&& ft_isdigit(main->args[0][1])))
 		status = ft_atoi(main->args[0]);
-	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '+' && ft_isdigit(main->args[0][1])))
+	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '+'
+		&& ft_isdigit(main->args[0][1])))
 		status = ft_atoi(main->args[0]);
 	else
 	{

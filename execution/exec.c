@@ -16,7 +16,6 @@ void	print_exec_args(char **exec_args)
 {
 	int	i;
 	// int	j;
-
 	i = 0;
 	while (exec_args[i])
 	{
@@ -52,28 +51,26 @@ void	print_exec_args(char **exec_args)
 // 	}
 // 	return (0);
 // }
-
-
 void	handle_output_redirection(t_main *main, int i)
 {
 	int	fd;
 
-	if(main[i].output_file != NULL)
+	if (main[i].output_file != NULL)
 	{
 		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 		{
 			perror("Error: Unable to open file\n");
-			exit(EXIT_FAILURE);
+			exit (EXIT_FAILURE);
 		}
 		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		close (fd);
 	}
 }
 
 void	handle_input_redirection(t_main *main, int i)
 {
-	int fd;
+	int	fd;
 
 	if (main[i].input_file != NULL)
 	{
@@ -81,45 +78,43 @@ void	handle_input_redirection(t_main *main, int i)
 		fd = open(main[i].input_file, O_RDONLY);
 		if (fd < 0)
 		{
-			ft_putstr_fd("zsh: no such file or directory: ", 2);
-			ft_putstr_fd(main[i].input_file, 2);
-			ft_putstr_fd("\n", 2);
+			ft_putstr_fd ("zsh: no such file or directory: ", 2);
+			ft_putstr_fd (main[i].input_file, 2);
+			ft_putstr_fd ("\n", 2);
 			// close(fd);
-			exit(EXIT_FAILURE);
+			exit (EXIT_FAILURE);
 		}
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+		dup2 (fd, STDIN_FILENO);
+		close (fd);
 	}
 }
 
 int	parent_process(t_main *main, t_env *env, int i)
 {
-	if (i != 0) 	// If not the 1st cmd, closes the ends of the previous pipe
+	if (i != 0) //If not the 1st cmd, closes the ends of the previous pipe
 	{
-		close(main[i - 1].fd[0]);
-		close(main[i - 1].fd[1]);
+		close (main[i - 1].fd[0]);
+		close (main[i - 1].fd[1]);
 	}
 	// close(main[i].fd[0]);
 	// close(main[i].fd[1]);
-	waitpid(main[i].pid, &env->status, 0);
-	return WEXITSTATUS(env->status);
+	waitpid (main[i].pid, &env->status, 0);
+	return (WEXITSTATUS(env->status));
 }
-
-
 
 int	execute_command(t_env *env, t_main *main)
 {
-	char    **exec_args;
+	char	**exec_args;
 	char	*path_env;
 	char	*path_cmd;
-	int     i;
+	int		i;
 	int		pipe_created;
+	pid_t	pid;
 
 	pipe_created = 0;
 	exec_args = NULL;
 	path_cmd = NULL;
 	i = 0;
-	
 	while (main[i].cmd != NULL)
 	{
 		// printf("COMMAND BEING EXECUTED %s\n", main[i].cmd);
@@ -128,10 +123,9 @@ int	execute_command(t_env *env, t_main *main)
 		main[i].pid = fork();
 		if (main[i].pid < 0)
 		{
-			perror("Error: Unable to fork\n");
-			exit(EXIT_FAILURE);
+			perror ("Error: Unable to fork\n");
+			exit (EXIT_FAILURE);
 		}
-		
 		if (main[i].pid == 0) //Child process
 		{
 			// printf("Before the pipe_redirection\n");
@@ -147,12 +141,12 @@ int	execute_command(t_env *env, t_main *main)
 			if (main[i].output_file != NULL)
 				handle_output_redirection(main, i);
 			exec_args = build_exec_args(main, exec_args, i);
-			path_env = get_env_path(env);					// Prepare the env variables!
-			path_cmd = get_cmd_path(&main[i], path_env);	// Find the full path of the command
+			path_env = get_env_path(env); // Prepare the env variables!
+			path_cmd = get_cmd_path(&main[i], path_env);
+										// Find full path of command
 			//Grandson - executes
-			pid_t	pid;
-			// int		status;
-			
+			// pid_t	pid;
+			// int status;
 			pid = fork();
 			if (pid == -1)
 				printf("Error while forking grandson\n");
@@ -174,13 +168,13 @@ int	execute_command(t_env *env, t_main *main)
 			}
 			if (pipe_created)
 			{
-				close(main[i].fd[0]);
-				close(main[i].fd[1]);
+				close (main[i].fd[0]);
+				close (main[i].fd[1]);
 			}
 			// free(exec_args);
-			wait(&env->status);
+			wait (&env->status);
 			env->status = WEXITSTATUS(env->status);
-			exit(env->status); //check this line
+			exit (env->status); //check this line
 		}
 		else // Parent process
 		{

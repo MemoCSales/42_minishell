@@ -30,7 +30,7 @@ char	*ft_strremove(char *string, int c)
 	}
 	new_start = new;
 	while (*string)
-	{		
+	{
 		if (*string != c)
 			*new++ = *string;
 		string++;
@@ -70,6 +70,5 @@ int	echo_builtin(t_main *main, t_env *env)
 	}
 	if (!cut_newline)
 		printf("\n");
-	return (0); // Set status to 0 if success
+	return (0);// Set status to 0 if success
 }
-

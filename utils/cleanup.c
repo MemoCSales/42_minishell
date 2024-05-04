@@ -35,10 +35,10 @@ void	free_main(t_main *main_var)
 	while (main_var[i].cmd != NULL)
 	{
 		free(main_var[i].cmd);
-		if(main_var[i].args != NULL)
+		if (main_var[i].args != NULL)
 		{
 			j = 0;
-			while(main_var[i].args[j] != NULL)
+			while (main_var[i].args[j] != NULL)
 			{
 				free(main_var[i].args[j]);
 				j++;
@@ -54,13 +54,15 @@ void	free_main(t_main *main_var)
 	free(main_var);
 }
 
-void free_args(char **args)// IN CASE IT IS NEEDED
+void	free_args(char **args)// IN CASE IT IS NEEDED
 {
-    int i = 0;
-    while (args[i] != NULL)
-    {
-        free(args[i]);
-        i++;
-    }
-    free(args);
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+	{
+		free(args[i]);
+		i++;
+	}
+	free (args);
 }

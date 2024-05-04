@@ -33,8 +33,10 @@ int	unset_builtin(t_env *env_vars, char *var_name)
 			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
 			i++;
 		}
-		// printf("ENV_VAR [%s] deleted\n", var_name); //printf for testing, might delete later
-		// env_buildin(env_vars);						//can delete later
+		// printf("ENV_VAR [%s] deleted\n", var_name);
+		//printf for testing, might delete later
+		// env_buildin(env_vars);
+		//can delete later
 	}
 	return (0);
 }
@@ -46,13 +48,15 @@ int	find_index(t_env *env_vars, char *var_name)
 
 	i = 0;
 	index = -1;
-	while (env_vars->env_vars[i] != NULL) //loop to find thei ndex of the environment var in the env_var->env_vars
+	while (env_vars->env_vars[i] != NULL) //loop to find the index
+				//of the environment var in the env_var->env_vars
 	{
-		if (ft_strncmp(env_vars->env_vars[i], var_name, ft_strlen(var_name)) == 0 \
+		if (ft_strncmp(env_vars->env_vars[i], var_name,
+				ft_strlen(var_name)) == 0
 			&& env_vars->env_vars[i][ft_strlen(var_name)] == '=')
 		{
 			index = i;
-			break;
+			break ;
 		}
 		i++;
 	}

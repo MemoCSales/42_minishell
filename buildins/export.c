@@ -31,7 +31,6 @@ int	export_builtin(t_env *env_vars, char *new_var)
 		ft_putstr_fd("\n", 2);
 		return (1);
 	}
-
 	if (check_duplicate(env_vars, new_var))
 	{
 		return (0);
@@ -79,8 +78,8 @@ int	export_builtin(t_env *env_vars, char *new_var)
 
 int	check_duplicate(t_env *env_vars, char *new_var)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 	char	*name;
 
 	name = ft_strchr(new_var, '=');
@@ -96,9 +95,10 @@ int	check_duplicate(t_env *env_vars, char *new_var)
 		{
 			free(env_vars->env_vars[i]);
 			env_vars->env_vars[i] = ft_strdup(new_var);
-			if(!env_vars->env_vars[i])
+			if (!env_vars->env_vars[i])
 			{
-				ft_putstr_fd("Error: Unable to duplicate string\n", STDERR_FILENO);
+				ft_putstr_fd("Error: Unable to duplicate string\n",
+					STDERR_FILENO);
 				return (0);
 			}
 			return (1);
@@ -111,6 +111,7 @@ int	check_duplicate(t_env *env_vars, char *new_var)
 int	is_valid_var_name(char *var)
 {
 	int	i;
+
 	if (!var || !ft_isalpha(var[0]) || ft_strchr(var, '='))
 	{
 		ft_putstr_fd("miniℍΞLL: export: ", 2);
