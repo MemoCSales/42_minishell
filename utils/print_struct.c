@@ -1,50 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
+/*   print_struct.c             ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// typedef struct s_main
-// {
-// 	char	*cmd;
-// 	char	*flags;
-// 	char	**args;
-// 	int		fd[2];
-// 	pid_t	pid;
-// 	char	*input_file;
-// 	char	*output_file;
-// }			t_main;
-
 void	print_struct(t_main *main, int num_commands)
 {
 	int		i;
-	// int 	j;
 	char	**args;
 
 	i = 0;
-	// j = 0;
 	while (i < num_commands)
 	{
 		printf("%d\n", i);
 		printf("Command: %s\n", main[i].cmd);
 		printf("Flags: %s\n", main[i].flags);
 		args = main[i].args;
-		printf("Arguments: \n");// DEVERIA CONTAR OS ARGUMENTOS, E IMPRIMIR ATE O ULTIMO?
+		printf("Arguments: \n");
 		while (*args != NULL)
-		// while (j < 10)
 		{
 			printf("%s \n", *args);
 			args++;
-			// j++;
 		}
 		printf("Input file: %s\n", main[i].input_file);
 		printf("Output file: %s\n", main[i].output_file);

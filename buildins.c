@@ -1,13 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   buildins.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
+/*   buildins.c                 ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/02 13:37:46 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/04/02 13:37:47 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +42,7 @@ int	buildins(char **cmd)
 
 void	cd_buildin(char *path)
 {
-	int	status;
+	int		status;
 	char	*home;
 
 	errno = 0;
@@ -52,13 +51,16 @@ void	cd_buildin(char *path)
 	if (path == NULL || *path == '\0')
 	{
 		if (home == NULL)
-			ft_putstr_fd("cd: HOME environment variable not set\n", STDERR_FILENO);
+		{
+			ft_putstr_fd("cd: HOME environment variable not set\n",
+				STDERR_FILENO);
+		}
 		path = home;
 	}
 	status = chdir(path);
 	if (status == 0)
 		printf("cd: Directory changed to %s\n", path);
-	else 
+	else
 	{
 		if (errno == EACCES)
 		{
@@ -73,9 +75,10 @@ void	cd_buildin(char *path)
 	}
 }
 
-void pwd_buildin()
+void	pwd_buildin(void)
 {
 	char	cwd[MAX_CMD_LEN];
+
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
@@ -85,10 +88,7 @@ void pwd_buildin()
 //env buildin
 // void env_buildin()
 // {
-
 // }
-
-
 // First create the env buildin
 // void	unset_buildin(char *variable)
 // {
