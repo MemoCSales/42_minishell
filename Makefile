@@ -88,10 +88,10 @@ re: fclean all
 	@# @./minishell
 
 norminette: 
-		norminette $(SRC) $(SUPPORT_DIR) minishell.h $(LIBFT_DIRECTORY)
+		norminette $(SRC) minishell.h $(LIBFT_DIRECTORY)
 
 valgrind:
-		valgrind --leak-check=full --show-leak-kinds=all ./minishell
+		valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
 
 .PHONY: all clean fclean re
 
