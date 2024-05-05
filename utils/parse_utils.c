@@ -143,8 +143,9 @@ char	*read_heredoc(char *delimiter)
 	}
 	while (1)
 	{
-		line = readline("");
-		if (strcmp(line, delimiter) == 0)
+		ft_putstr_fd("heredoc>", 1);
+		line = get_next_line(0);
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 		{
 			free (line);
 			break ;

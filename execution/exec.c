@@ -51,6 +51,28 @@ void	print_exec_args(char **exec_args)
 // 	}
 // 	return (0);
 // }
+
+void	handle_heredoc(t_main *main, int i)
+{
+	char	*tmp;
+	int		fd;
+
+	tmp = "/tmp/minishell_heredoc";
+	if (main[i].heredoc != NULL)
+	{
+		fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+		{
+			printf("HEREDOC\n");
+			perror("Error: Unable to open file\n");
+			exit(EXIT_FAILURE);
+		}
+		write(fd, main[i].heredoc, ft_strlen(main[i].heredoc));
+		close(fd);
+		main[i].input_file = tmp;
+	}
+}
+
 void	handle_output_redirection(t_main *main, int i)
 {
 	int	fd;
@@ -147,6 +169,8 @@ int	execute_command(t_env *env, t_main *main)
 			pipe_created = pipe_redirection(main, i);
 			// printf("Pipe read end: %d\n", main[i].fd[0]);
 			// printf("Pipe write end: %d\n", main[i].fd[1]);
+			if (main[i].heredoc != NULL)
+				handle_heredoc(main, i);
 			if (main[i].input_file != NULL)
 				handle_input_redirection(main, i);
 			if (main[i].output_file != NULL)
