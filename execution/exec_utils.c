@@ -1,13 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
+/*   exec_utils.c               ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/29 13:55:37 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/03/29 13:56:13 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +65,7 @@ int	pipe_redirection(t_main *main, int i)
 {
 	if (i != 0) // If not the first cmd, redirect input from the previous pipe
 	{
-		if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1) 
+		if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1)
 		{
 			perror("dup2 error");
 			exit(EXIT_FAILURE);
@@ -74,9 +73,10 @@ int	pipe_redirection(t_main *main, int i)
 		close(main[i - 1].fd[0]);
 		close(main[i - 1].fd[1]);
 	}
-	if (main[i + 1].cmd != NULL) // If not the last cmd, redirect output to the next pipe
+	if (main[i + 1].cmd != NULL) // If not the last cmd,
+					//redirect output to the next pipe
 	{
-		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1) 
+		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error");
 			exit(EXIT_FAILURE);
@@ -94,7 +94,7 @@ char	**build_exec_args(t_main *main, char **exec_args, int i)
 	int	j;
 
 	num_args = 0;
-	while(main[i].args[num_args] != NULL)
+	while (main[i].args[num_args] != NULL)
 		num_args++;
 	exec_args = malloc((num_args + 3) * sizeof(char *));
 	exec_args[0] = main[i].cmd;
@@ -114,7 +114,8 @@ char	**build_exec_args(t_main *main, char **exec_args, int i)
 		j = 0;
 		while (j < num_args)
 		{
-			// if (ft_strcmp(main[i].args[j], "<") == 0 || ft_strcmp(main[i].args[j], ">") == 0)
+			// if (ft_strcmp(main[i].args[j], "<") == 0
+			// || ft_strcmp(main[i].args[j], ">") == 0)
 			// {
 			// 	printf("print < or >");
 			// 	j++;

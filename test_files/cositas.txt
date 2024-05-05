@@ -1,0 +1,81 @@
+//PRINT PARSE_COMMANDS
+	printf("\nTEXTO DONDE ESTOY\n");
+	printf("i: %d  /  j: %d  /  argv[j]: %s\n", i, j, args[j]);
+	printf("parsed_commands[i].cmd: %s\n", parsed_commands[i].cmd);
+	printf("parsed_commands[i].flags: %s\n", parsed_commands[i].flags);
+	while (j < num_commands - 1)
+	{
+		printf("parsed_commands[i].args[j]: %s\n", parsed_commands[i].args[j]);
+		j++;
+	}
+	j = 0;
+	printf("parsed_commands[i].input_file: %s\n", parsed_commands[i].input_file);
+	printf("parsed_commands[i].output_file: %s\n", parsed_commands[i].output_file);
+	printf("parsed_commands[i].heredoc: %s\n", parsed_commands[i].heredoc);
+	printf("parsed_commands[i].fd[0]: %d\n", parsed_commands[i].fd[0]);
+	printf("parsed_commands[i].fd[1]: %d\n", parsed_commands[i].fd[1]);
+//end PRINT PARSE_COMMANDS
+
+								//PRINT ARGS
+								temp = j;
+								j = 0;
+								while (j < count_args(parsed_commands[i].args))
+								{
+
+									if (parsed_commands[i].args && parsed_commands[i].args[j])
+									{
+										printf("parsed_commands[i].args[%d]: %s\n", j, parsed_commands[i].args[j]);
+									}
+									else
+									{
+										printf("parsed_commands[i].args[%d]: NULL\n", j);
+									}
+									j++;
+								}
+								j = temp;
+								//end PRINT ARGS
+
+
+
+
+// // ψΨψΨψΨψΨψΨψΨψΨψΨψΨ ATE AQUI, TESTANDO ψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨ
+// exit(0);
+// // ψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨψΨΨψΨψΨψ
+
+
+
+
+
+#############################################
+// BASURA
+
+//PRINT ARGS
+j = 0;
+while (parsed_commands[i].args[j] != NULL)
+{
+	printf("parsed_commands[i].args[%d]: %s\n", j, parsed_commands[i].args[j]);
+	j++;
+}
+j = 0;
+//end PRINT ARGS
+
+//PRINT ARGS
+	while (args[j] != NULL)
+	{
+		printf("args[%d]:%s\n", j, args[j]);
+		j++;
+	}
+	j = 0;
+
+//PRINT ARGS
+	i_temp = i;
+	i = 0;
+	while (i < num_args)
+	{
+		printf("\nargs[%d]:%s", i, args[i]);
+		i++;
+	}
+	i = i_temp;
+//end PRINT ARGS
+
+// printf("\n\nargs[%d]:%s\nargs[%d]:%s\nargs[%d]:%s\n\n", j, args[j], j + 1, args[j+1], j + 2, args[j+2]);

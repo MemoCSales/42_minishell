@@ -1,13 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   buildins.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
+/*   cd.c                       ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/02 13:37:46 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/04/02 13:37:47 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +14,7 @@
 
 void	ft_strcpy_memo(char *dst, char *src)
 {
-	while (*src)	
+	while (*src)
 		*dst++ = *src++;
 	*dst = '\0';
 }
@@ -40,7 +39,8 @@ void	update_env_var(t_env *env, char *var_name, char *new_value)
 	i = 0;
 	while (env->env_vars[i])
 	{
-		if (ft_strncmp(env->env_vars[i], var_name, var_name_len) == 0 && env->env_vars[i][var_name_len] == '=')
+		if (ft_strncmp(env->env_vars[i], var_name, var_name_len) == 0
+			&& env->env_vars[i][var_name_len] == '=')
 		{
 			free(env->env_vars[i]);
 			env->env_vars[i] = new_var;
@@ -55,9 +55,9 @@ void	update_env_var(t_env *env, char *var_name, char *new_value)
 
 int cd_builtin(t_env *env_vars, char *path, t_main *main)
 {
-	int 	status;
-	char 	*home;
-	char 	*prev_dir;
+	int		status;
+	char	*home;
+	char	*prev_dir;
 	char	*curr_dir;
 
 	errno = 0;
@@ -72,11 +72,14 @@ int cd_builtin(t_env *env_vars, char *path, t_main *main)
 	if (path == NULL || *path == '\0')
 	{
 		if (home == NULL)
-			ft_putstr_fd("cd: HOME environment variable not set\n", STDERR_FILENO);
+		{
+			ft_putstr_fd("cd: HOME environment variable not set\n",
+				STDERR_FILENO);
+		}
 		path = home;
 	}
 	else if (strcmp(path, "..") == 0)
-			path = "..";
+		path = "..";
 	prev_dir = getcwd(NULL, 0); // Save current directory
 	status = chdir(path);
 	if (status == 0)
@@ -85,7 +88,7 @@ int cd_builtin(t_env *env_vars, char *path, t_main *main)
 		update_env_var(env_vars, "OLDPWD", prev_dir);
 		update_env_var(env_vars, "PWD", curr_dir);
 	}
-	else 
+	else
 	{
 		if (errno == EACCES)
 		{

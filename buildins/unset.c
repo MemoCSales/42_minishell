@@ -1,13 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   buildins.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
+/*   unset.c                    ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/02 13:37:46 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/04/02 13:37:47 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +33,10 @@ int	unset_builtin(t_env *env_vars, char *var_name)
 			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
 			i++;
 		}
-		// printf("ENV_VAR [%s] deleted\n", var_name); //printf for testing, might delete later
-		// env_buildin(env_vars);						//can delete later
+		// printf("ENV_VAR [%s] deleted\n", var_name);
+		//printf for testing, might delete later
+		// env_buildin(env_vars);
+		//can delete later
 	}
 	return (0);
 }
@@ -47,13 +48,15 @@ int	find_index(t_env *env_vars, char *var_name)
 
 	i = 0;
 	index = -1;
-	while (env_vars->env_vars[i] != NULL) //loop to find thei ndex of the environment var in the env_var->env_vars
+	while (env_vars->env_vars[i] != NULL) //loop to find the index
+				//of the environment var in the env_var->env_vars
 	{
-		if (ft_strncmp(env_vars->env_vars[i], var_name, ft_strlen(var_name)) == 0 \
+		if (ft_strncmp(env_vars->env_vars[i], var_name,
+				ft_strlen(var_name)) == 0
 			&& env_vars->env_vars[i][ft_strlen(var_name)] == '=')
 		{
 			index = i;
-			break;
+			break ;
 		}
 		i++;
 	}

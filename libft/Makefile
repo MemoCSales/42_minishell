@@ -16,7 +16,9 @@ SRC = ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_putnbr_fd.c ft_lstlast.c ft_lstadd_back.c \
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c \
 		ft_lstiter.c ft_lstmap.c \
-		ft_lstnew.c ft_lstadd_front.c ft_lstadd_back.c ### ADDED THIS LINE
+		get_next_line.c \
+		get_next_line_utils.c \
+		ft_lstnew.c ft_lstadd_front.c ft_lstadd_back.c	 ### ADDED THIS LINE
 
 BONUS_SRC = ft_lstsize.c ft_lstlast.c \
 			ft_lstdelone.c ft_lstclear.c \
@@ -36,7 +38,7 @@ OBJ = $(SRC:.c=.o)
 BONUS_OBJ = $(BONUS_SRC:.c=.o)
 
 message:
-	@echo "$(LIGHT_BLUE)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
+	@echo "$(LIGHT_BLUE)┌────────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
 	@printf "$(LIGHT_BLUE)│Creating LIBFT......"
 
 %.o: %.c message
@@ -46,7 +48,7 @@ message:
 $(NAME): $(OBJ) ./libft.h
 	$(AR) $(ARFLAGS) $(NAME) $(OBJ)
 	@echo "$(LIGHT_BLUE)..Libft OK!│$(DEFAULT)"
-	@echo "$(LIGHT_BLUE)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
+	@echo "$(LIGHT_BLUE)└────────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
 	@sleep 0.5
 
 bonus: $(BONUS_OBJ) ./libft.h

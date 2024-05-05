@@ -1,13 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mcruz-sa <mcruz-sa@student.42.fr>          +#+  +:+       +#+        */
-/*   By: demrodri <demrodri@student.42wolfsburg.de>*/
+/*   minishell.h                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/02 13:10:22 by mcruz-sa          #+#    #+#             */
-/*   Updated: 2024/04/02 13:10:23 by mcruz-sa         ###   ########.fr       */
+/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +15,13 @@
 
 # include "./libft/libft.h"
 # include "./utils/color_code.h"
-# include <assert.h> // to test parsing functions
+# include <assert.h> //to test parsing functions
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
-# include <stdio.h> // to test parsing functions
+# include <stdio.h> //to test parsing functions
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -93,21 +92,38 @@ char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 // parsing
 t_main		*parse_line(char *line);
-int			count_cmds(char **cmds);
-char		**copy_args(char **args);
 
 // utils
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
 void		print_struct(t_main *main_var, int num_commands);
-void	free_args(char **args); // added due to segfault while testing parsing
+void		free_args(char **args); //due segfault when testing parsing
 
 // parse_utils
-// t_main		*initialize_main(t_main *main_var);
 t_main		*initialize_main(t_main *main_var, int num_commands);
 int			ft_strcpy(char *dst, const char *src);
 char		*ft_strncpy(char *dest, char *src, size_t n);
 void		test_parser(void);
-char		*space_output(char *command);
+char		*insert_spaces(char *command);
+void		ft_erase_quotes(char *tkn);
+void		remove_args(char **args, int start_index, int num_args);
+char		*read_heredoc(char *delimiter);
+int			count_cmds(char **cmds);
+char		**copy_args(char **args);
+int			count_args(char **args);
+
+// parse_utils_2
 
 #endif
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   minishell.h                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
+/*                                                                            */
+/* ************************************************************************** */

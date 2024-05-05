@@ -16,6 +16,13 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdio.h>
+# include <fcntl.h>
+# include <stdarg.h>
+
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
 
 typedef struct s_list
 {
@@ -71,5 +78,17 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+// get_next_line.c
+char	*get_next_line(int fc);
+char	*read_from_file(int fd, char *buffer, char *backup);
+char	*read_line(char *full_line);
+void	*ft_calloc(size_t count, size_t size);
+
+// get_next_line_utils.c
+char	*ft_strchr2(char *s, int c);
+// size_t	ft_strlen(const char *s);
+// char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin2(char *s1, char *s2);
 
 #endif
