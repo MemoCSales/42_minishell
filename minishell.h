@@ -91,24 +91,46 @@ char		**build_exec_args(t_main *main, char **exec_args, int i);
 // parsing
 t_main		*parse_line(char *line);
 
+// parse_utils
+	// parse_utils_1
+	t_main		*initialize_main(t_main *main_var, int num_commands);
+	char		*read_heredoc(char *delimiter);
+	char		*loop_heredoc(char *delimiter, char *heredoc);
+	// parse_utils_2
+	char		*insert_spaces(char *command);
+	char		*insertions(char *changed, char *command, int *i, int *j);
+	void		spaces_more_less(char *changed, int *j, int *i, char symbol);
+	void		spaces_app_hdoc(char *changed, int *j, int *i, char *symbol);
+	// parse_utils_3
+	void		check_malloc(char *function);
+	void		remove_args(char **args, int start_index, int num_args);
+	char		**copy_args(char **args);
+	void		ft_erase_quotes(char *tkn);
+	// parse_utils_4
+	int			count_cmds(char **cmds);
+	int			count_args(char **args);
+	int			ft_strcpy(char *dst, const char *src);
+	char		*ft_strncpy(char *dest, const char *src, size_t n);
+	// void		test_parser(void);
+
 // utils
-void		cleanup_split(char **split);
-void		free_main(t_main *main_var);
-void		print_struct(t_main *main_var, int num_commands);
-void		free_args(char **args); //due segfault when testing parsing
+void			cleanup_split(char **split);
+void			free_main(t_main *main_var);
+void			print_struct(t_main *main_var, int num_commands);
+void			free_args(char **args); //due segfault when testing parsing
 
 // parse_utils
-t_main		*initialize_main(t_main *main_var, int num_commands);
-int			ft_strcpy(char *dst, const char *src);
-char		*ft_strncpy(char *dest, char *src, size_t n);
-void		test_parser(void);
-char		*insert_spaces(char *command);
-void		ft_erase_quotes(char *tkn);
-void		remove_args(char **args, int start_index, int num_args);
-char		*read_heredoc(char *delimiter);
-int			count_cmds(char **cmds);
-char		**copy_args(char **args);
-int			count_args(char **args);
+// t_main		*initialize_main(t_main *main_var, int num_commands);
+// int			ft_strcpy(char *dst, const char *src);
+// char		*ft_strncpy(char *dest, char *src, size_t n);
+// void		test_parser(void);
+// char		*insert_spaces(char *command);
+// void		ft_erase_quotes(char *tkn);
+// void		remove_args(char **args, int start_index, int num_args);
+// char		*read_heredoc(char *delimiter);
+// int			count_cmds(char **cmds);
+// char		**copy_args(char **args);
+// int			count_args(char **args);
 
 // parse_utils_2
 

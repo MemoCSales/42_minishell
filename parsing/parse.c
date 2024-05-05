@@ -42,7 +42,7 @@ t_main	*parse_line(char *line)
 	while (i < num_commands) // Loop Geral do parse_line !!!
 	{
 		changed = insert_spaces(commands[i]);
-										// printf("CHANGED:%s\n", changed);
+										printf("CHANGED:%s:\n", changed);
 		args = ft_split(changed, ' '); // Split the command into arguments
 		num_args = count_args(args);
 		// args = ft_split(commands[i], ' ');
