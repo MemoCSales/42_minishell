@@ -138,7 +138,7 @@ char	*read_heredoc(char *delimiter)
 	heredoc = NULL;
 	if (!delimiter)
 	{
-		ft_putstr_fd("Error: No delimiter specified\n", STDERR_FILENO);
+		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", STDERR_FILENO);
 		return (NULL);
 	}
 	while (1)
