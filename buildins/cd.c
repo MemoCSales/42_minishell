@@ -103,9 +103,15 @@ int cd_builtin(t_env *env_vars, char *path, t_main *main)
 		}
 	}
 	if (prev_dir != NULL)
+	{
+		printf("AQUI");
 		free(prev_dir);
+	}
 	if (curr_dir != NULL)
+	{
+		printf("AQUI");
 		free(curr_dir);
+	}
 	if (status == 0)
 		return (0);
 	else

@@ -55,7 +55,7 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 		free(prog);
 		i++;
 	}
-	free(prog);
+	// free(prog);
 	cleanup_split(dir_paths);
 	// printf("Despues del cleanup\n");
 	return (cmd_path); //check this later

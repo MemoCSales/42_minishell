@@ -108,7 +108,7 @@ void	remove_args(char **args, int start_index, int num_args)
 		args[i] = NULL;
 		i++;
 	}
-	printf("SAIU DO REMOVE_ARGS\n");
+	// printf("SAIU DO REMOVE_ARGS\n");
 }
 // In this function, you're shifting the elements of the args 
 // array to the left by num_args positions starting from start_index.
@@ -164,7 +164,7 @@ char	*read_heredoc(char *delimiter)
 		}
 		free (line);
 	}
-	printf("SAIU DO HEREDOC\n");
+	// printf("SAIU DO HEREDOC\n");
 	return (heredoc);
 }
 
@@ -262,7 +262,7 @@ t_main	*initialize_main(t_main *main_var, int num_commands)
 		exit (1);
 	}
 	i = 0;
-	while (i < num_commands)
+	while (i <= num_commands)
 	{
 		main_var->cmd = NULL;
 		main_var->flags = NULL;
@@ -270,8 +270,8 @@ t_main	*initialize_main(t_main *main_var, int num_commands)
 		main_var->input_file = NULL;
 		main_var->output_file = NULL;
 		main_var->heredoc = NULL;
-		// main_var->fd[0] = 0;
-		// main_var->fd[1] = 0;
+		main_var->fd[0] = 0;
+		main_var->fd[1] = 0;
 		// main_var->pid = 0;
 		i++;
 	}

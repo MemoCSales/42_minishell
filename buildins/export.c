@@ -20,10 +20,26 @@ int	export_builtin(t_env *env_vars, char *new_var)
 	char	*temp;
 	char	**name;
 
+	if (new_var == NULL)
+	{
+		i = 0;
+		while (env_vars->env_vars[i]  != NULL)
+		{
+			printf("declare -x %s\n", env_vars->env_vars[i]);
+			i++;
+		}
+		return (0);
+	}
 	name = ft_split(new_var, '=');
-	if (name[0] == NULL )
+	if (name[0] == NULL || !is_valid_var_name(name[0]))
 	{
 		ft_putstr_fd("miniℍΞLL: not a valid identifier\n", 2);
+		return (1);
+	}
+	if ((name[0][ft_strlen(name[0]) - 1] == ' ')  || (name[1] && name[1][0] == ' '))
+	{
+		ft_putstr_fd("bash: export: '=': nor a valid identifier", 2);
+		free(name);
 		return (1);
 	}
 	if (!is_valid_var_name(name[0]))

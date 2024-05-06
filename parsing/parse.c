@@ -21,7 +21,7 @@ t_main	*parse_line(char *line)
 	// int		num_args;
 	int		i;
 	int		j;
-	int		temp;
+	// int		temp;
 	char	*delimiter;
 	char	*heredoc;
 	char	*changed;
@@ -29,7 +29,7 @@ t_main	*parse_line(char *line)
 	heredoc = NULL;
 	changed = NULL;
 	i = 0;
-	temp = 0;
+	// temp = 0;
 	commands = ft_split(line, '|');
 	num_commands = count_cmds(commands);
 	parsed_commands = NULL;
@@ -60,45 +60,45 @@ t_main	*parse_line(char *line)
 			if (ft_strcmp(args[j], ">>") == 0
 				&& args[j + 1]) // Check for heredoc
 			{
-				printf("ENTROU NO >> APPEND\n");
+				// printf("ENTROU NO >> APPEND\n");
 				parsed_commands[i].output_file = ft_strdup(args[j + 1]);
 				parsed_commands[i].heredoc = ft_strdup(args[j]);
 				//passing ">>" to heredoc, to signal that it is a append
 				remove_args(args, j, 2);
 			//PRINT PARSE_COMMANDS
-				printf("\nEND PARSED APPEND\n");
-				printf("i: %d  /  j: %d  /  argv[j]: %s\n", i, j, args[j]);
-				printf("parsed_commands[i].cmd: %s\n", parsed_commands[i].cmd);
-				printf("parsed_commands[i].flags: %s\n",
-					parsed_commands[i].flags);
+				// printf("\nEND PARSED APPEND\n");
+				// printf("i: %d  /  j: %d  /  argv[j]: %s\n", i, j, args[j]);
+				// printf("parsed_commands[i].cmd: %s\n", parsed_commands[i].cmd);
+				// printf("parsed_commands[i].flags: %s\n",
+				// 	parsed_commands[i].flags);
 			//PRINT ARGS
-				temp = j;
-				j = 0;
-				while (j <= count_args(parsed_commands[i].args))
-				{
-					if (parsed_commands[i].args && parsed_commands[i].args[j])
-					{
-						printf("parsed_commands[i].args[%d]: %s\n", j,
-							parsed_commands[i].args[j]);
-					}
-					else
-					{
-						printf("parsed_commands[i].args[%d]: NULL\n", j);
-					}
-					j++;
-				}
-				j = temp;
-			//end PRINT ARGS
-				printf("parsed_commands[i].input_file: %s\n",
-					parsed_commands[i].input_file);
-				printf("parsed_commands[i].output_file: %s\n",
-					parsed_commands[i].output_file);
-				printf("parsed_commands[i].heredoc: %s\n",
-					parsed_commands[i].heredoc);
-				printf("parsed_commands[i].fd[0]: %d\n",
-					parsed_commands[i].fd[0]);
-				printf("parsed_commands[i].fd[1]: %d\n",
-					parsed_commands[i].fd[1]);
+			// 	temp = j;
+			// 	j = 0;
+			// 	while (j <= count_args(parsed_commands[i].args))
+			// 	{
+			// 		if (parsed_commands[i].args && parsed_commands[i].args[j])
+			// 		{
+			// 			printf("parsed_commands[i].args[%d]: %s\n", j,
+			// 				parsed_commands[i].args[j]);
+			// 		}
+			// 		else
+			// 		{
+			// 			printf("parsed_commands[i].args[%d]: NULL\n", j);
+			// 		}
+			// 		j++;
+			// 	}
+			// 	j = temp;
+			// //end PRINT ARGS
+			// 	printf("parsed_commands[i].input_file: %s\n",
+			// 		parsed_commands[i].input_file);
+			// 	printf("parsed_commands[i].output_file: %s\n",
+			// 		parsed_commands[i].output_file);
+			// 	printf("parsed_commands[i].heredoc: %s\n",
+			// 		parsed_commands[i].heredoc);
+			// 	printf("parsed_commands[i].fd[0]: %d\n",
+			// 		parsed_commands[i].fd[0]);
+			// 	printf("parsed_commands[i].fd[1]: %d\n",
+			// 		parsed_commands[i].fd[1]);
 			//end PRINT PARSE_COMMANDS
 				break ;
 			}
@@ -106,52 +106,52 @@ t_main	*parse_line(char *line)
 			else if (ft_strcmp(args[j], "<<") == 0
 				&& args[j + 1]) // Check for heredoc
 			{
-				printf ("ENTROU NO << HEREDOC\n");
+				// printf ("ENTROU NO << HEREDOC\n");
 				delimiter = args[j + 1];
 				heredoc = read_heredoc(delimiter);
 				parsed_commands[i].heredoc = heredoc;
 				remove_args (args, j, 2);
 			//PRINT PARSE_COMMANDS
-				printf("\nEND PARSED HEREDOC\n");
-				printf("i: %d  /  j: %d  /  argv[j]: %s\n", i, j, args[j]);
-				printf("parsed_commands[i].cmd: %s\n", parsed_commands[i].cmd);
-				printf("parsed_commands[i].flags: %s\n",
-					parsed_commands[i].flags);
-			//PRINT ARGS
-				temp = j;
-				j = 0;
-				while (j <= count_args(parsed_commands[i].args))
-				{
-					if (parsed_commands[i].args && parsed_commands[i].args[j])
-					{
-						printf("parsed_commands[i].args[%d]: %s\n", j,
-							parsed_commands[i].args[j]);
-					}
-					else
-					{
-						printf("parsed_commands[i].args[%d]: NULL\n", j);
-					}
-					j++;
-				}
-				j = temp;
+			// 	printf("\nEND PARSED HEREDOC\n");
+			// 	printf("i: %d  /  j: %d  /  argv[j]: %s\n", i, j, args[j]);
+			// 	printf("parsed_commands[i].cmd: %s\n", parsed_commands[i].cmd);
+			// 	printf("parsed_commands[i].flags: %s\n",
+			// 		parsed_commands[i].flags);
+			// //PRINT ARGS
+			// 	temp = j;
+			// 	j = 0;
+			// 	while (j <= count_args(parsed_commands[i].args))
+			// 	{
+			// 		if (parsed_commands[i].args && parsed_commands[i].args[j])
+			// 		{
+			// 			printf("parsed_commands[i].args[%d]: %s\n", j,
+			// 				parsed_commands[i].args[j]);
+			// 		}
+			// 		else
+			// 		{
+			// 			printf("parsed_commands[i].args[%d]: NULL\n", j);
+			// 		}
+			// 		j++;
+			// 	}
+			// 	j = temp;
 			//end PRINT ARGS
-				printf("parsed_commands[i].input_file: %s\n",
-					parsed_commands[i].input_file);
-				printf("parsed_commands[i].output_file: %s\n",
-					parsed_commands[i].output_file);
-				printf("parsed_commands[i].heredoc: %s\n",
-					parsed_commands[i].heredoc);
-				printf("parsed_commands[i].fd[0]: %d\n",
-					parsed_commands[i].fd[0]);
-				printf("parsed_commands[i].fd[1]: %d\n",
-					parsed_commands[i].fd[1]);
+				// printf("parsed_commands[i].input_file: %s\n",
+				// 	parsed_commands[i].input_file);
+				// printf("parsed_commands[i].output_file: %s\n",
+				// 	parsed_commands[i].output_file);
+				// printf("parsed_commands[i].heredoc: %s\n",
+				// 	parsed_commands[i].heredoc);
+				// printf("parsed_commands[i].fd[0]: %d\n",
+				// 	parsed_commands[i].fd[0]);
+				// printf("parsed_commands[i].fd[1]: %d\n",
+				// 	parsed_commands[i].fd[1]);
 			//end PRINT PARSE_COMMANDS
 				break ;
 			}
 // "<" INPUT
 			else if (ft_strcmp(args[j], "<") == 0 && args[j + 1])
 			{
-				printf("\n### (( \"<\" INPUT ))\n\n");
+				// printf("\n### (( \"<\" INPUT ))\n\n");
 				parsed_commands[i].input_file = ft_strdup(args[j + 1]);
 				remove_args(args, j, 2);
 				break ;
@@ -159,7 +159,7 @@ t_main	*parse_line(char *line)
 // ">" OUTPUT
 			else if (ft_strcmp(args[j], ">") == 0 && args[j + 1])
 			{
-				printf("\n### (( \">\" OUTPUT ))\n\n");
+				// printf("\n### (( \">\" OUTPUT ))\n\n");
 				parsed_commands[i].output_file = ft_strdup(args[j + 1]);
 				remove_args(args, j, 2);
 				break ;
@@ -178,7 +178,7 @@ t_main	*parse_line(char *line)
 		if (args[1] && args[1][0] == '-')
 		// Check if the second argument is a flag
 		{
-			printf("FLAGS\n");
+			// printf("FLAGS\n");
 			// printf("args 1: %s\n", args[1]);
 			// exit(0);
 			parsed_commands[i].flags = args[1];
@@ -208,35 +208,35 @@ t_main	*parse_line(char *line)
 		// printf("WITH PIPES\n");
 		}
 	//PRINT PARSE_COMMANDS
-		printf("\nEND PARSED COMMANDS\n");
-		// printf("i: %d  /  j: %d  /  argv[j]: %s\n", i, j, args[j]);
-		printf("parsed_commands[i].cmd: %s\n", parsed_commands[i].cmd);
-		printf("parsed_commands[i].flags: %s\n", parsed_commands[i].flags);
+		// printf("\nEND PARSED COMMANDS\n");
+		// // printf("i: %d  /  j: %d  /  argv[j]: %s\n", i, j, args[j]);
+		// printf("parsed_commands[i].cmd: %s\n", parsed_commands[i].cmd);
+		// printf("parsed_commands[i].flags: %s\n", parsed_commands[i].flags);
 	//PRINT ARGS
-		temp = j;
-		j = 0;
-		while (j <= count_args(parsed_commands[i].args))
-		{
-			if (parsed_commands[i].args && parsed_commands[i].args[j])
-			{
-				printf("parsed_commands[i].args[%d]: %s\n", j,
-					parsed_commands[i].args[j]);
-			}
-			else
-			{
-				printf("parsed_commands[i].args[%d]: NULL\n", j);
-			}
-			j++;
-		}
-		j = temp;
-	//end PRINT ARGS
-		printf("parsed_commands[i].input_file: %s\n",
-			parsed_commands[i].input_file);
-		printf("parsed_commands[i].output_file: %s\n",
-			parsed_commands[i].output_file);
-		printf("parsed_commands[i].heredoc: %s\n", parsed_commands[i].heredoc);
-		printf("parsed_commands[i].fd[0]: %d\n", parsed_commands[i].fd[0]);
-		printf("parsed_commands[i].fd[1]: %d\n", parsed_commands[i].fd[1]);
+		// temp = j;
+		// j = 0;
+		// while (j <= count_args(parsed_commands[i].args))
+		// {
+		// 	if (parsed_commands[i].args && parsed_commands[i].args[j])
+		// 	{
+		// 		printf("parsed_commands[i].args[%d]: %s\n", j,
+		// 			parsed_commands[i].args[j]);
+		// 	}
+		// 	else
+		// 	{
+		// 		printf("parsed_commands[i].args[%d]: NULL\n", j);
+		// 	}
+		// 	j++;
+		// }
+		// j = temp;
+	// //end PRINT ARGS
+		// printf("parsed_commands[i].input_file: %s\n",
+		// 	parsed_commands[i].input_file);
+		// printf("parsed_commands[i].output_file: %s\n",
+		// 	parsed_commands[i].output_file);
+		// printf("parsed_commands[i].heredoc: %s\n", parsed_commands[i].heredoc);
+		// printf("parsed_commands[i].fd[0]: %d\n", parsed_commands[i].fd[0]);
+		// printf("parsed_commands[i].fd[1]: %d\n", parsed_commands[i].fd[1]);
 	//end PRINT PARSE_COMMANDS
 		i++;// Increment the command index, so we can move to the next command
 	}
@@ -245,9 +245,9 @@ t_main	*parse_line(char *line)
 // print_struct(parsed_commands, num_commands); // printing parsing results
 	// printf("RETURN\n");
 // FREE MEMORY
-	free (commands);
+	// free (commands);
 	// printf("FREED COMMANDS\n");
-	free (changed);
+	// free (changed);
 	// printf("FREED CHANGED\n");
 	// free (args);
 	// printf("FREED ARGS\n");

@@ -58,12 +58,13 @@ exit 42 world                   ---> ✅ ✅
 REDIRECTION:
 cat input.txt | grep "pattern" > output.txt                     ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
 cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ❌ //zsh: segmentation fault  ./minishell ✅ //WORKING
-< colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
+< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
 
 APPEND:	
 date >> file.txt																---> ✅ // working
 ls -la >> file.txt																---> ✅ // working
-< ./test_files/colors.txt | uniq -c | sort -r | head -3 >> outputcolor.txt		---> ❌ // SEG FAULT
+< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt		---> ✅
+cat ./test_files/input.txt | grep "pattern" >> outputtest.txt						---> ✅
 
 HEREDOC:
 cat <<EOF							---> ✅
@@ -92,6 +93,7 @@ heredoc>This text
 heredoc>should be in the
 heredoc>output.txt file
 heredoc>EOF
+
 
 PIPES:
 env | sort | grep -v SHLVL | grep -v ^_ ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
@@ -133,3 +135,55 @@ ls -l -a                               --->     ❌ // -a VAI COMO ARGUMENTO. TE
 <<grelinho                             --->     ✅
 <<palmeiras cat                        --->     ✅ // nao sai do pgm, mas imprime tudo bem. Provavelmente um problema posterior ao parse_line, quando o exec receb a struct.
 << palmeiras cat                       --->     ✅ // nao sai do pgm, mas imprime tudo bem. Provavelmente um problema posterior ao parse_line, quando o exec receb a struct.
+
+
+EDGE CASES
+./minishell						--->     ❌  //running the minishell should working
+cat | ls						--->     ❌ 
+
+(readline history is staying in readline buffer)
+
+ψΨ:mkdir a
+ψΨ:cd a
+ψΨ:ls
+ψΨ:pwd
+/home/mcruz-sa/Documents/GIT_minishell/a
+double free or corruption (fasttop)
+ψΨ:rm -rf ../a
+ψΨ:pwd
+pwd: error retrieving current directoryψΨ:ls
+ψΨ:ls
+ψΨ:cd ..
+zsh: segmentation fault (core dumped)  ./minishell
+chdir("~");
+
+mcruz-sa@c2r10s1:~$ 'echo USER'
+echo USER: command not found
+
+ψΨ:export
+Segmentation fault (core dumped)
+"  21  		char	**name;
+   22  	
+   23  		name = ft_split(new_var, '=');
+-> 24  		if (name[0] == NULL )
+   25  		{
+   26  			ft_putstr_fd("miniℍΞLL: not a valid identifier\n", 2);
+   27  			return (1);"
+
+ψΨ:<<stop <<stop2 <<stop3
+heredoc>hi
+heredoc>stop2
+
+
+ψΨ:echo "this  | this is is is"
+free(): double free detected in tcache 2
+
+cat <"infile"                             --> ❌
+zsh: no such file or directory: "infile"
+
+ψΨ:echo "hola'hihi'fdsfa"                 --> ❌
+holahihifdsfa
+SHOULD be: hola'hihi'fdfs
+
+ψΨ:echo "cat lol.c | cat > lol.c"         --> ❌
+This should return a string

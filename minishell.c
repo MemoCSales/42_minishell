@@ -34,7 +34,7 @@ void	main_loop(t_env env_var, t_main *main_var)
 
 	while (1) //prints a prompt and retrieves from what it reads
 	{
-		line = readline(LIGHT_RED"ψΨ:"DEFAULT"");
+		line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);
@@ -49,14 +49,15 @@ void	main_loop(t_env env_var, t_main *main_var)
 		// {
 			// if (buildins(main_var->cmd) == -1)
 			// print_open_fds();
-		env_var.status = execute_command(&env_var, main_var);
+			// printf("\n");
+			env_var.status = execute_command(&env_var, main_var);
 			// print_open_fds();
 		// 	else
 		// 		exec_buildin(&env_var, main_var);
 		// }
 		// free_main(main_var); // This does not goes here
 		// printf("MAIN EXIT CODE: %d\n", env_var.status);
-		free(main_var);
-		free(line);
+		// free(main_var);
+		// free(line);
 	}
 }

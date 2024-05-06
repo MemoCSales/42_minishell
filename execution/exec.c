@@ -57,13 +57,14 @@ void	handle_heredoc(t_main *main, int i)
 	char	*tmp;
 	int		fd;
 
+	// printf("INSIDE HANDLE HEREDOC\n");
 	tmp = "/tmp/minishell_heredoc";
 	if (main[i].heredoc != NULL)
 	{
 		fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 		{
-			printf("HEREDOC\n");
+			// printf("HEREDOC\n");
 			perror("Error: Unable to open file\n");
 			exit(EXIT_FAILURE);
 		}
@@ -155,6 +156,8 @@ int	execute_command(t_env *env, t_main *main)
 	while (main[i].cmd != NULL)
 	{
 		// printf("COMMAND BEING EXECUTED %s\n", main[i].cmd);
+		// printf("INPUT FILE %s\n", main[i].input_file);
+		// printf("OUTPUT FILE %s\n", main[i].output_file);
 		if (builtins_no_output(main->cmd) != -1)
 			return (env->status = exec_builtin(env, &main[i]));
 		main[i].pid = fork();
@@ -169,7 +172,7 @@ int	execute_command(t_env *env, t_main *main)
 			pipe_created = pipe_redirection(main, i);
 			// printf("Pipe read end: %d\n", main[i].fd[0]);
 			// printf("Pipe write end: %d\n", main[i].fd[1]);
-			if (main[i].heredoc != NULL)
+			if (main[i].heredoc != NULL && ft_strcmp(main[i].heredoc, ">>") != 0)
 				handle_heredoc(main, i);
 			if (main[i].input_file != NULL)
 				handle_input_redirection(main, i);
@@ -177,7 +180,10 @@ int	execute_command(t_env *env, t_main *main)
 				handle_output_redirection(main, i);
 			exec_args = build_exec_args(main, exec_args, i);
 			path_env = get_env_path(env); // Prepare the env variables!
-			path_cmd = get_cmd_path(&main[i], path_env);
+			if (main[i].cmd[0] == '/')
+				path_cmd = ft_strdup(main[i].cmd);
+			else
+				path_cmd = get_cmd_path(&main[i], path_env);
 										// Find full path of command
 			//Grandson - executes
 			// pid_t	pid;
@@ -193,6 +199,7 @@ int	execute_command(t_env *env, t_main *main)
 				// 	printf("Closing write end of pipe");
 				// 	close(main[i].fd[1]);
 				// }
+				// printf("%s\n", exec_args[2]);
 				if (builtins_with_output(main[i].cmd) != -1)
 				{
 					// printf("builtin en grandson\n");
@@ -201,8 +208,8 @@ int	execute_command(t_env *env, t_main *main)
 				}
 				else if (execve(path_cmd, exec_args, env->env_vars) == -1)
 				{
-					ft_putstr_fd("zsh: command not found: ", 2);
-					ft_putendl_fd(main[i].cmd, 2);
+					ft_putstr_fd(main[i].cmd, 2);
+					ft_putstr_fd(": command not found\n", 2);
 					env->status = EXEC_ERROR;
 					exit(env->status);
 				}
@@ -215,7 +222,7 @@ int	execute_command(t_env *env, t_main *main)
 			}
 			wait(&env->status);
 			cleanup_split(exec_args);
-			free(path_cmd);
+			// free(path_cmd);
 			env->status = WEXITSTATUS(env->status);
 			exit (env->status); //check this line
 		}

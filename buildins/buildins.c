@@ -52,8 +52,10 @@ int	exec_builtin(t_env *env_vars, t_main *main)
 		return (env_vars->status = echo_builtin(main, env_vars));
 	else if (ft_strcmp(main->cmd, "exit") == 0)
 	{
-		return (env_vars->status = exit_builtin(main));
-		check_env(env_vars);
+		// return (env_vars->status = exit_builtin(main));
+		env_vars->status = exit_builtin(main);
+		// check_env(env_vars);
+		// printf("exit\n");
 		exit(env_vars->status);
 	}
 	return (-1);
@@ -67,10 +69,14 @@ int	exit_builtin(t_main *main)
 	if (main->flags != NULL)
 		status = ft_atoi(main->flags);
 	else if (!main->args[0])
+	{
+		printf("exit\n");
 		exit(status);
+	}
 	else if (main->args[1] != NULL)
 	{
-		ft_putstr_fd("exit: too many arguments\n", 2);
+		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("bash: exit: too many arguments\n", 2);
 		return (1);
 	}
 	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '-'
@@ -84,5 +90,6 @@ int	exit_builtin(t_main *main)
 		ft_putstr_fd("exit: numeric argument required\n", 2);
 		return (2);
 	}
+	printf("exit\n");
 	exit(status);
 }
