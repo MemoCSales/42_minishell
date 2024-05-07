@@ -43,22 +43,22 @@ unset SHELL                     ---> ✅  ?
 cd $PWD                         ---> ❌ ❌ //cd: No such file or directory: $PWD
 cd $PWD hi                      ---> ❌ ❌ ✅ //Tem que testar no bash: bash: cd: too many arguments
 cd 123123                       ---> ❌  ? ✅ //bash: cd: 123123: No such file or directory --> exit code: 1
-exit 123                        ---> ✅  ? //SAI, MAS NAO IMPRIME "exit"
-exit 298                        ---> ✅ ❌ //SAI, MAS NAO FECHA O TERMINAL
-exit +100                       ---> ✅  ? //SAI, MAS NAO IMPRIME "exit"
-exit "+100"                     ---> ✅ ❌ //SAI, MAS NAO FECHA O TERMINAL
-exit +"100"                     ---> ✅  ? //SAI, MAS NAO IMPRIME "exit"
-exit -100                       ---> ✅ ❌ //SAI, MAS NAO FECHA O TERMINAL
-exit "-100"                     ---> ✅  ? //SAI, MAS NAO IMPRIME "exit" -- TRATA O -100 COMO FLAG
-exit -"100"                     ---> ✅  ? //SAI, MAS NAO IMPRIME "exit" -- TRATA O -100 COMO FLAG
-exit hello                      ---> ✅  ? //TEXTO DIFERENTE
+exit 123                        ---> ✅  ✅ //SAI, MAS NAO IMPRIME "exit" // SOLVED
+exit 298                        ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not need to close the terminal
+exit +100                       ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" // SOLVED
+exit "+100"                     ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not need to close the terminal
+exit +"100"                     ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" // SOLVED
+exit -100                       ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not neet to close the terminal
+exit "-100"                     ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" -- TRATA O -100 COMO FLAG // SOLVED
+exit -"100"                     ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" -- TRATA O -100 COMO FLAG // SOLVED
+exit hello                      ---> ✅ ✅ //TEXTO DIFERENTE // SOLVED AND PRINTS EXIT
 exit 42 world                   ---> ✅ ✅
 
 
 REDIRECTION:
-cat input.txt | grep "pattern" > output.txt                     ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
-cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ❌ //zsh: segmentation fault  ./minishell ✅ //WORKING
-< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
+cat input.txt | grep "pattern" > output.txt                                  ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
+cat input.txt | grep "pattern" | wc -l > output.txt                          ---> ✅ ❌ //zsh: segmentation fault  ./minishell
+< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅ ❌  //APARENTEMENTE SIM, CONFIRMAR // Nao funciona parece que nao esta entrando no execution
 
 APPEND:	
 date >> file.txt																---> ✅ // working
@@ -82,13 +82,13 @@ This is line 1
 This is line 2
 EOF
 
-cat <<EOF | grep "line" | wc -l		---> ✅
+cat <<EOF | grep "line" | wc -l		---> ✅ ❌
 heredoc>This is 1 line
 heredoc>This is 2 line
 heredoc>This is 3 line
 heredoc>EOF
 
-cat <<EOF > output.txt				---> ❌  // The parsing is considering "> output.txt" as arguments
+cat <<EOF > output.txt				---> ❌  ✅ // The parsing is considering "> output.txt" as arguments // SOLVED
 heredoc>This text
 heredoc>should be in the
 heredoc>output.txt file
@@ -136,7 +136,7 @@ ls -l -a                               --->     ❌ // -a VAI COMO ARGUMENTO. TE
 <<palmeiras cat                        --->     ✅ // nao sai do pgm, mas imprime tudo bem. Provavelmente um problema posterior ao parse_line, quando o exec receb a struct.
 << palmeiras cat                       --->     ✅ // nao sai do pgm, mas imprime tudo bem. Provavelmente um problema posterior ao parse_line, quando o exec receb a struct.
 
-
+------------------------------------------------------------------------------------------------
 EDGE CASES
 ./minishell						--->     ❌  //running the minishell should working
 cat | ls						--->     ❌ 

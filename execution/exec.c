@@ -52,10 +52,10 @@ void	print_exec_args(char **exec_args)
 // 	return (0);
 // }
 
-void	handle_heredoc(t_main *main, int i)
+int	handle_heredoc(t_main *main, int i)
 {
 	char	*tmp;
-	int		fd;
+	int		fd = -1;
 
 	// printf("INSIDE HANDLE HEREDOC\n");
 	tmp = "/tmp/minishell_heredoc";
@@ -68,17 +68,24 @@ void	handle_heredoc(t_main *main, int i)
 			perror("Error: Unable to open file\n");
 			exit(EXIT_FAILURE);
 		}
+		// printf("INISDIE HEREDOC\n");
 		write(fd, main[i].heredoc, ft_strlen(main[i].heredoc));
 		close(fd);
-		main[i].input_file = tmp;
+		fd = open(tmp, O_RDONLY);
+		if (fd < 0)
+		{
+			perror("Error: Unable to open file\n");
+			exit(EXIT_FAILURE);
+		}
 	}
+	return (fd);
 }
 
 void	handle_output_redirection(t_main *main, int i)
 {
 	int	fd;
 
-	if (main[i].output_file && ft_strcmp(main[i].heredoc, ">>") == 0)
+	if (main[i].output_file && ft_strcmp(main[i].heredoc, ">>") == 0) //appending
 	{
 		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
@@ -89,7 +96,7 @@ void	handle_output_redirection(t_main *main, int i)
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
-	else if (main[i].output_file != NULL && main[i].heredoc == NULL)
+	else if (main[i].output_file != NULL) //overwritting an existing file or creating a newone
 	{
 		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
@@ -147,9 +154,11 @@ int	execute_command(t_env *env, t_main *main)
 	char	*path_cmd;
 	int		i;
 	int		pipe_created;
+	int		heredoc_fd;
 	pid_t	pid;
 
 	pipe_created = 0;
+	heredoc_fd = 0;
 	exec_args = NULL;
 	path_cmd = NULL;
 	i = 0;
@@ -170,17 +179,35 @@ int	execute_command(t_env *env, t_main *main)
 		{
 			// printf("Before the pipe_redirection\n");
 			pipe_created = pipe_redirection(main, i);
+			// printf("PIPE REDIRECTION: %d\n", pipe_created);
 			// printf("Pipe read end: %d\n", main[i].fd[0]);
 			// printf("Pipe write end: %d\n", main[i].fd[1]);
-			if (main[i].heredoc != NULL && ft_strcmp(main[i].heredoc, ">>") != 0)
-				handle_heredoc(main, i);
-			if (main[i].input_file != NULL)
-				handle_input_redirection(main, i);
 			if (main[i].output_file != NULL)
+			{
+				printf("OUTPUT REDIRECTION\n");
 				handle_output_redirection(main, i);
+			}
+			if (main[i].heredoc != NULL && ft_strcmp(main[i].heredoc, ">>") != 0)
+			{
+				printf("HEREDOC EXEC\n");
+				// handle_heredoc(main, i);
+				heredoc_fd = handle_heredoc(main, i);
+				// printf("HEREDOC_DOC: %d\n", heredoc_fd);
+				if (heredoc_fd >= 0)
+				{
+					// printf("HEREDOC_FD: %d\n", heredoc_fd);
+					dup2(heredoc_fd, STDIN_FILENO);
+					close(heredoc_fd);
+				}
+			}
+			if (main[i].input_file != NULL)
+			{
+				printf("INPUT REDIRECTION\n");
+				handle_input_redirection(main, i);
+			}
 			exec_args = build_exec_args(main, exec_args, i);
 			path_env = get_env_path(env); // Prepare the env variables!
-			if (main[i].cmd[0] == '/')
+			if (main[i].cmd[0] == '/' || ft_strncmp(main[i].cmd, "./", 2) == 0)
 				path_cmd = ft_strdup(main[i].cmd);
 			else
 				path_cmd = get_cmd_path(&main[i], path_env);
@@ -220,6 +247,8 @@ int	execute_command(t_env *env, t_main *main)
 				close (main[i].fd[0]);
 				close (main[i].fd[1]);
 			}
+			if (heredoc_fd)
+				close(heredoc_fd);
 			wait(&env->status);
 			cleanup_split(exec_args);
 			// free(path_cmd);

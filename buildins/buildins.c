@@ -87,7 +87,8 @@ int	exit_builtin(t_main *main)
 		status = ft_atoi(main->args[0]);
 	else
 	{
-		ft_putstr_fd("exit: numeric argument required\n", 2);
+		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("bash: exit: numeric argument required\n", 2);
 		return (2);
 	}
 	printf("exit\n");
