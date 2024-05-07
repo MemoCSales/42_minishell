@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   minishell.c                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
-/*                                                      :+:      :+:    :+:   */
-/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
-/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
+/*   Updated: 2024/05/06 22:53:18 by demacinema       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ void	main_loop(t_env env_var, t_main *main_var)
 
 	while (1) //prints a prompt and retrieves from what it reads
 	{
-		line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
+		// line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
+		line = readline("\033[1;31mψΨ:\033[0m");
+		
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);

@@ -13,6 +13,7 @@ SRC =	main.c \
 		./utils/cleanup.c \
 		./utils/print_struct.c \
 		./utils/parse_utils.c \
+		./utils/parse_utils_2.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \

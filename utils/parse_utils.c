@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   parse_utils.c              ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
-/*                                                      :+:      :+:    :+:   */
-/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
-/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
+/*   Updated: 2024/05/07 03:03:21 by demacinema       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	count_args(char **args)
 	num_args = 0;
 	while (args[num_args] != NULL)
 		num_args++;
+printf ("NUM ARGS ARGS: %d\n", num_args);
 	return (num_args);
 }
 
@@ -255,13 +256,11 @@ t_main	*initialize_main(t_main *main_var, int num_commands)
 	// 	ft_putstr_fd("Error: main_var is NULL\n", 2);
 	// 	exit(1);
 	// }
-	main_var = malloc((num_commands + 1) * sizeof(t_main));
-	if (!main_var)
-	{
-		ft_putstr_fd("Error: malloc failed\n", 2);
-		exit (1);
-	}
+
 	i = 0;
+	main_var = malloc((num_commands + 1) * sizeof(t_main));
+	check_malloc(main_var);
+	
 	while (i <= num_commands)
 	{
 		main_var->cmd = NULL;

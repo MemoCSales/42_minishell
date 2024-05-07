@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   minishell.h                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
-/*                                                      :+:      :+:    :+:   */
-/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
-/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
+/*   Updated: 2024/05/07 05:18:36 by demacinema       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 typedef struct s_main
 {
 	char	*cmd;
+	// char	**flags;
 	char	*flags;
 	char	**args;
 	char	*input_file;
@@ -96,7 +97,7 @@ t_main		*parse_line(char *line);
 // utils
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
-void		print_struct(t_main *main_var, int num_commands);
+void		old_print_struct(t_main *main_var, int num_commands);
 void		free_args(char **args); //due segfault when testing parsing
 
 // parse_utils
@@ -113,6 +114,11 @@ char		**copy_args(char **args);
 int			count_args(char **args);
 
 // parse_utils_2
+void		print_args(char **args);
+void		print_struct(t_main *main_var, int i);
+void		check_malloc(void *ptr);
+int			check_redir(char **args, int j);
+t_main		*redirection(t_main *parsed_struct, char **args, int i, int j);
 
 #endif
 
