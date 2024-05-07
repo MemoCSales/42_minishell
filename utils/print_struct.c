@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   print_struct.c             ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
-/*                                                      :+:      :+:    :+:   */
-/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
-/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
+/*                                                        :::      ::::::::   */
+/*   print_struct.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
+/*   Updated: 2024/05/07 05:16:36 by demacinema       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_struct(t_main *main, int num_commands)
+void	old_print_struct(t_main *main, int num_commands)
 {
 	int		i;
 	char	**args;
@@ -22,7 +22,7 @@ void	print_struct(t_main *main, int num_commands)
 	{
 		printf("%d\n", i);
 		printf("Command: %s\n", main[i].cmd);
-		printf("Flags: %s\n", main[i].flags);
+		// printf("Flags: %s\n", main[i].flags);
 		args = main[i].args;
 		printf("Arguments: \n");
 		while (*args != NULL)
