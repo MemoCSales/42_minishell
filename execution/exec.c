@@ -85,7 +85,7 @@ void	handle_output_redirection(t_main *main, int i)
 {
 	int	fd;
 
-	if (main[i].output_file && ft_strcmp(main[i].heredoc, ">>") == 0) //appending
+	if (main[i].output_file && ft_strcmp(main[i].extra, ">>") == 0) //appending
 	{
 		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
@@ -202,7 +202,7 @@ int	execute_command(t_env *env, t_main *main)
 			}
 			if (main[i].input_file != NULL)
 			{
-				printf("INPUT REDIRECTION\n");
+				// printf("INPUT REDIRECTION\n");
 				handle_input_redirection(main, i);
 			}
 			exec_args = build_exec_args(main, exec_args, i);

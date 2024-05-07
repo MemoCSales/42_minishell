@@ -63,8 +63,8 @@ cat input.txt | grep "pattern" | wc -l > output.txt                          ---
 APPEND:	
 date >> file.txt																---> ✅ // working
 ls -la >> file.txt																---> ✅ // working
-< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt		---> ✅
-cat ./test_files/input.txt | grep "pattern" >> outputtest.txt						---> ✅
+< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt		---> ✅ ❌
+cat ./test_files/input.txt | grep "pattern" >> outputtest.txt						---> ✅ ❌
 
 HEREDOC:
 cat <<EOF							---> ✅

@@ -6,7 +6,7 @@
 /*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/07 05:25:58 by demacinema       ###   ########.fr       */
+/*   Updated: 2024/05/07 20:59:34 by demacinema       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_main	*parse_line(char *line)
 	int		i;
 	int		j;
 	int		f;
+	// int		x = 1; //DEBUG
 	int		x = 0; //DEBUG
 
 	i = 0;
@@ -169,7 +170,8 @@ t_main	*parse_line(char *line)
 	{
 		if (x){
 			printf("\nSAIDA:\n");
-			print_struct(parsed_struct, w);}
+			print_struct(parsed_struct, w);
+			print_args(parsed_struct[w].args);}
 		w++;
 	}	
 	
