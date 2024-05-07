@@ -6,7 +6,7 @@
 /*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/07 05:18:36 by demacinema       ###   ########.fr       */
+/*   Updated: 2024/05/07 20:54:59 by demacinema       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_main
 	char	*input_file;
 	char	*output_file;
 	char	*heredoc;
+	char	*extra;
 	int		fd[2];
 	pid_t	pid;
 }			t_main;

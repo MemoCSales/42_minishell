@@ -6,7 +6,7 @@
 /*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/07 03:03:21 by demacinema       ###   ########.fr       */
+/*   Updated: 2024/05/07 20:56:36 by demacinema       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,7 @@ t_main	*initialize_main(t_main *main_var, int num_commands)
 		main_var->input_file = NULL;
 		main_var->output_file = NULL;
 		main_var->heredoc = NULL;
+		main_var->extra = NULL;
 		main_var->fd[0] = 0;
 		main_var->fd[1] = 0;
 		// main_var->pid = 0;
