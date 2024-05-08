@@ -1,0 +1,6 @@
+{
+	"files.associations": {
+		"color_code.h": "c",
+		"fcntl.h": "c"
+	}
+}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_utils_2.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   parse_utils_2.c            ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/07 20:59:51 by demacinema       ###   ########.fr       */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,17 @@ t_main	*redirection(t_main *parsed_struct, char **args, int i, int j)
 {
 	char	*delimiter;
 	char	*heredoc;
-	// int		x = 1; // DEBUG
 	int		x = 0; // DEBUG
 
 	heredoc = NULL;
-	
+
+	if (x){
+	printf("\n\nREDIRECTION\n\n");
+	print_args(args);
+	printf("args[%d]: %s\n", j, args[j]);
+	// exit(0);
+	}
+
 // ">>" APPEND
 	if (ft_strcmp(args[j], ">>") == 0
 		&& args[j + 1])
@@ -67,9 +73,15 @@ t_main	*redirection(t_main *parsed_struct, char **args, int i, int j)
 			printf("\n\">\" OUTPUT\n\n");
 		parsed_struct[i].output_file = ft_strdup(args[j + 1]);
 		remove_args(args, j, 2);
+
+// printf("ANTESANTES");
+// print_args(args);
+// print_struct(parsed_struct, i);
+
 		return (&parsed_struct[i]);
 		// break ;
 	}
+
 	return (&parsed_struct[i]);
 	// NO WEIRD STUFF
 // 	else
@@ -135,35 +147,6 @@ int	check_redir(char **args, int j)// COM ESPACOS OU SEM ESPACOS?
 		return (0);
 	}
 }
-
-// char	*prepared_input(char *line)
-// {
-// 	char	*prepared;
-// 	int		i;
-// 	int		j;
-
-// 	prepared = malloc(ft_strlen(line) + 1);
-// 	if (!prepared)
-// 	{
-// 		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
-// 		return (NULL);
-// 	}
-// 	i = 0;
-// 	j = 0;
-// 	while (line[i] != '\0')
-// 	{
-// 		if (line[i] == '>' || line[i] == '<')
-// 		{
-// 			prepared[j++] = ' ';
-// 			prepared[j++] = line[i++];
-// 			prepared[j++] = ' ';
-// 		}
-// 		else
-// 			prepared[j++] = line[i++];
-// 	}
-// 	prepared[j] = '\0';
-// 	return (prepared);
-// }
 
 // void	print_flags(char **flags)
 // {

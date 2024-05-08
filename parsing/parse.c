@@ -21,12 +21,18 @@ t_main	*parse_line(char *line)
 
 	int		i;
 	int		j;
-	int		f;
-	// int		x = 1; //DEBUG
+	int		f; // TO CHECK FOR MORE FLAGS IF NEEDED
 	int		x = 0; //DEBUG
 
 	i = 0;
+	j = 0;
 	f = 1;
+
+// PREPARE INPUT
+	line = prepared_input(line);
+	if (x)
+		printf("\nPREPARED INPUT: %s\n\n", line);
+
 // SPLIT LINE INTO COMMANDS
 	commands = ft_split(line, '|');
 	num_commands = count_cmds(commands);
@@ -42,40 +48,74 @@ t_main	*parse_line(char *line)
 	while (i < num_commands)
 	{
 
-// CHANGE ARGUMENTS TO HAVE SPACES
+	// CHANGE ARGUMENTS TO HAVE SPACES
 		commands[i] = insert_spaces(commands[i]);
 		// printf("CHANGED:%s\n", commands[i]);
 
-// SPLIT COMMAND INTO ARGUMENTS
+	// SPLIT COMMAND INTO ARGUMENTS
 		args = ft_split(commands[i], ' '); // Split the command into arguments
+		// args = ft_split_preserve_quotes(commands[i]);
 
-		// printf("AFTER SPLIT - args[0]:%s\n", args[0]);
-		// printf("\nAFTER SPLIT IN ARGS:\n");
-		// print_args(args);
-		// printf("\n");
+		if (x){
+			printf("SPLITTED:");
+			print_args(args);}
 
-// INPUT AND OUTPUT FILES INITIALIZED TO NULL / JA ESTAO INICIALIZADOS NO INITIALIZE_MAIN
-		// parsed_struct[i].input_file = NULL;
-		// parsed_struct[i].output_file = NULL;
-		
-		j = 0;
+	// FIRST CHARACTER FROM THE FIRST ARGUMENT, AND LAST CHARACTER FROM THE LAST ARGUMENT
+		if (x){
+				printf ("args[1][0]: %c\n", args[1][0]);
+				printf ("args[LAST]: %c\n", args[count_args(args) - 1][strlen(args[count_args(args) - 1]) - 1]);}
+
+	// IF FIRST AND LAST ARGUMENTS HAVE QUOTES
+		if ((args[1][0] == '\"' && args[count_args(args) - 1][strlen(args[count_args(args) - 1]) - 1] == '\"') ||
+			(args[1][0] == '\'' && args[count_args(args) - 1][strlen(args[count_args(args) - 1]) - 1] == '\''))
+		{
+			if (x)
+				printf("FIRST AND LAST ARGUMENTS HAVE QUOTES\n\n");
+
+		// ERASE INITIAL QUOTE
+			if ((args[1][0] == '\"') || (args[1][0] == '\''))
+			{
+				int len = strlen(args[1]);
+				for (int k = 0; k < len; k++)
+				{
+					args[1][k] = args[1][k + 1];
+				}
+				args[1][len - 1] = '\0';
+			}
+			if (x){
+				printf("CLEANED INITIAL QUOTE:");
+				print_args(args);}
+
+		// ERASE FINAL QUOTE
+			if ((args[count_args(args) - 1][strlen(args[count_args(args) - 1]) - 1] == '\"') ||
+				(args[count_args(args) - 1][strlen(args[count_args(args) - 1]) - 1] == '\''))
+			{
+				int len = strlen(args[count_args(args) - 1]);
+				args[count_args(args) - 1][len - 1] = '\0';
+			}
+			if (x){
+				printf("CLEANED FINAL QUOTE:");
+				print_args(args);}
+		}
+
+		// j = 0;
 
 // LOOP ARGUMENTOS
 		while (args[j] != NULL)
 		{
-			
-// ERASE POSSIBLE QUOTES - ELIMINAR ASSIM QUE FIZER O GET_INPUT
-			// printf("ERASE QUOTES ARGUMENTO[%s] \n", args[j]);
-			ft_erase_quotes(args[j]);
 
-//CHECK IF CURRENT ARG IS A REDIRECTION
-			if (check_redir(args, j)) // RETURN 1 IF REDIRECTION, 0 IF NOT
+		//CHECK IF CURRENT ARG IS A REDIRECTION
+			if (check_redir(args, j))
 			{
 				if (x)
 					printf("\nREDIRECTION [%s]\n\n", args[j]);
 					
 				parsed_struct = redirection(parsed_struct, args, i, j);
-				
+
+// printf("DEPOISDPOIS");
+// print_args(args);
+// print_struct(parsed_struct, i);
+// exit(0);
 				if (x)
 					print_struct(parsed_struct, i);
 					
@@ -86,20 +126,14 @@ t_main	*parse_line(char *line)
 				if (x)
 					printf("\nNO REDIRECTION [%s]\n\n", args[j]);
 			}
-			
-			// printf("\nAFTER REDIRECTION:\n");
-			// print_struct(parsed_struct, i);
+
 			if (x)
 				print_args(args);
-			// printf("J LOOP ARGS: %d\n", j);
-			// printf("\n");
-			// exit(0);
 
-//INCREMENT ARGUMENT INDEX
-			j++;
+			j++; //INCREMENT ARGUMENT INDEX
 		}
 
-// ASSIGN COMMAND
+	// ASSIGN COMMAND
 		parsed_struct[i].cmd = args[0];
 		if (x){
 			printf("ASSIGNED COMMAND:%s\n\n", parsed_struct[i].cmd);	
@@ -108,44 +142,36 @@ t_main	*parse_line(char *line)
 			// printf("\n");
 			}
 	
-// CHECK FLAGS
-// "-" FLAGS
-	if (args[1] && args[1][0] == '-')// Check if the second argument is a flag
-	{
-		// while (args[f] && args[f][0] == '-')
-		// {
-		// 	if (x)
-		// 		printf("FLAGS\n");
-		// 	parsed_struct[i].flags[f] = args[f];
-		// 	// parsed_struct[i].args = copy_args(&args[f + 1]);
-		// 	f++;	
-		// }
+	// CHECK FLAGS
+	// "-" FLAGS
+		if (args[1] && args[1][0] == '-')// Check if the second argument is a flag
+		{
+			// NO CASO DE IMPLEMENTAR UMA ** PARA AS FLAGS
+			// while (args[f] && args[f][0] == '-')
+			// {
+			// 	if (x)
+			// 		printf("FLAGS\n");
+			// 	parsed_struct[i].flags[f] = args[f];
+			// 	// parsed_struct[i].args = copy_args(&args[f + 1]);
+			// 	f++;	
+			// }
 
-		
-		// {
 			if (x)
 				printf("FLAGS\n");
-			// printf("args 1: %s\n", args[1]);
-			// exit(0);
-			parsed_struct[i].flags = args[1];
-			// Saving the flags -- ANTES era ft_strdup(args[1])
-			// printf("%s\n", parsed_commands[i].flags);
-			parsed_struct[i].args = copy_args(&args[2]);
-			// The rest are arguments
-			// printf("%s\n", parsed_commands[i].flags);
-		// }
-	}
-// NO FLAGS
-	else
-	{
-		if (x)
-			printf("NO FLAGS\n");
-		parsed_struct[i].flags = NULL; // No flags
-		parsed_struct[i].args = copy_args(&args[1]);
-		// The rest are arguments
-	}
 
-// "|" PIPES
+			parsed_struct[i].flags = args[1];
+			parsed_struct[i].args = copy_args(&args[2]);
+		}
+	// NO FLAGS
+		else
+		{
+			if (x)
+				printf("NO FLAGS\n");
+			parsed_struct[i].flags = NULL;
+			parsed_struct[i].args = copy_args(&args[1]);
+		}
+
+	// "|" PIPES
 		if (i < num_commands - 1) //IF NOT THE LAST COMMAND, CREATE A PIPE
 		{
 			if (x)
@@ -157,9 +183,8 @@ t_main	*parse_line(char *line)
 				exit (EXIT_FAILURE); // Exit the program
 			}
 		}
-		
-//INCREMENT COMMAND INDEX
-	i++;
+
+	i++; //INCREMENT COMMAND INDEX
 	}
 
 // NULL TERMINATE THE ARRAY OF COMMANDS
@@ -183,12 +208,18 @@ t_main	*parse_line(char *line)
 	// free (args);
 	// printf("FREED ARGS\n");
 
+	if (x){
+		printf ("RETURNING\n");
+		print_args(parsed_struct[w-1].args);}
+
 	return (parsed_struct);
 }
 
+
+
+
 // cat <<EOF > outfile.txt
 // cat <<EOF > output.txt
-
 
 		// // PRINT PARSE_COMMANDS
 		// 	printf("\nEND PARSED COMMANDS\n");
@@ -222,9 +253,5 @@ t_main	*parse_line(char *line)
 		// 	printf("parsed_commands[i].fd[1]: %d\n", parsed_struct[i].fd[1]);
 		// // end PRINT PARSE_COMMANDS
 
-
-
-
 		//CHECAR PORQUE IMPRIME COMANDO NO FINAL SE TEM HEREDOC
 		//CHECAR COMO LIDAR COM OS DIVERSOS FLAGS
-		

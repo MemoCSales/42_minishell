@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   minishell.h                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/07 20:54:59 by demacinema       ###   ########.fr       */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,14 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
-# include <stdio.h> //to test parsing functions
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
 # define MAX_CMD_LEN 1024
 # define EXEC_ERROR 127
+# define MAX_ARGS 100
+# define MAX_ARG_LEN 1000
 
 typedef struct s_main
 {
@@ -73,6 +74,9 @@ void		ft_strcpy_memo(char *dst, char *src);
 void		init_env(t_env *env_vars, char **env);
 void		check_env(t_env *env_vars);
 
+// echo.c
+char	*ft_strremove(char *string, int c);
+
 // exec.c
 int			execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
@@ -98,7 +102,6 @@ t_main		*parse_line(char *line);
 // utils
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
-void		old_print_struct(t_main *main_var, int num_commands);
 void		free_args(char **args); //due segfault when testing parsing
 
 // parse_utils
@@ -120,6 +123,10 @@ void		print_struct(t_main *main_var, int i);
 void		check_malloc(void *ptr);
 int			check_redir(char **args, int j);
 t_main		*redirection(t_main *parsed_struct, char **args, int i, int j);
+
+// parse_utils_3
+char		*prepared_input(char *line);
+char		**remove_start_quotes(char **args);
 
 #endif
 

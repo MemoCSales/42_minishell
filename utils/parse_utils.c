@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   parse_utils.c              ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/07 20:56:36 by demacinema       ###   ########.fr       */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	count_args(char **args)
 	num_args = 0;
 	while (args[num_args] != NULL)
 		num_args++;
-printf ("NUM ARGS ARGS: %d\n", num_args);
+// printf ("NUM ARGS ARGS: %d\n", num_args);
 	return (num_args);
 }
 

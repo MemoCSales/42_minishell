@@ -1,0 +1,34 @@
+Double Quotes with Variable Expansion: ✅
+Input: echo "Hello, $USER"
+Expected Output: Hello, username (assuming $USER is replaced with the current user's username)
+
+Nested Quotes: ✅
+Input: echo "This is 'nested' quotes" 
+Expected Output: This is 'nested' quotes // Getting: This is nested quotes
+
+Escaped Characters Inside Quotes: ✅
+Input: echo "This is a \"double quote\""
+Expected Output: This is a "double quote" // Getting: This is nested quotes
+
+Escaping Special Characters: ✅
+Input: echo "This \$100 is mine"
+Expected Output: This $100 is mine // This \ is mine
+
+Mixed Quotes: ✅
+Input: echo "This is 'mixed' and \"matched\" quotes"
+Expected Output: This is 'mixed' and "matched" quotes // Getting: This is mixed and matched quotes
+
+No Quotes: ✅
+Input: echo Hello World
+Expected Output: Hello World
+
+Single Quotes with Literal Interpretation: ✅
+Input: echo 'This is a $USER'
+Expected Output: This is a $USER // Getting: This is a demacinema
+
+Mixed Quoting with Special Characters: ✅
+Input: echo "Don't \"worry\" about \$money"
+Expected Output: Don't "worry" about $money // Getting: Dont worry about \
+
+FALTA VER ISSO: cat input.txt | grep “pattern” | wc -l > output.txt
+TEM A VER COM O remove_args - parse_utils.c - 73

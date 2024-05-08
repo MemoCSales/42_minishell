@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   minishell.c                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/06 22:53:18 by demacinema       ###   ########.fr       */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	main_loop(t_env env_var, t_main *main_var)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);
 		main_var = parse_line(line);
+// printf ("MINISHELL");
+// print_args(main_var[0].args);
 		num_commands = 0;
 		while (main_var[num_commands].cmd)
 			num_commands++;
