@@ -21,12 +21,12 @@ t_main	*parse_line(char *line)
 
 	int		i;
 	int		j;
-	int		f;
+	// int		f;
 	// int		x = 1; //DEBUG
 	int		x = 0; //DEBUG
 
 	i = 0;
-	f = 1;
+	// f = 1;
 // SPLIT LINE INTO COMMANDS
 	commands = ft_split(line, '|');
 	num_commands = count_cmds(commands);

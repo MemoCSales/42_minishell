@@ -73,12 +73,13 @@ void		ft_strcpy_memo(char *dst, char *src);
 void		init_env(t_env *env_vars, char **env);
 void		check_env(t_env *env_vars);
 
-// exec.c
+/*--------------------EXECUTION FUNCTION--------------------*/
 int			execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
 // int			parent_process(t_main *main, t_env *env, int i);
 int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
+void	handle_file_redirection(t_main *main, int i);
 // redirections
 int			check_for_redirect_output(t_main *main);
 int			check_for_redirect_input(t_main *main);

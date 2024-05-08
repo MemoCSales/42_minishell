@@ -138,7 +138,7 @@ ls -l -a                               --->     ❌ // -a VAI COMO ARGUMENTO. TE
 
 ------------------------------------------------------------------------------------------------
 EDGE CASES
-./minishell						--->     ❌  //running the minishell should working
+./minishell						--->     ❌ ✅   //running the minishell should working
 cat | ls						--->     ❌ 
 
 (readline history is staying in readline buffer)

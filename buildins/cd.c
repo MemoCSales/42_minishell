@@ -64,7 +64,12 @@ int cd_builtin(t_env *env_vars, char *path, t_main *main)
 	home = getenv("HOME");
 	prev_dir = NULL;
 	curr_dir = NULL;
-	if (main->args[1] != NULL)
+	if (main->args[0] == NULL || ft_strcmp(main->args[1], " ") == 0)
+	{
+		// printf("%s\n", main->args[0]);
+		path = home;
+	}
+	if (main->args[0] && main->args[1] != NULL)
 	{
 		ft_putstr_fd("bash: cd: too many arguments\n", STDERR_FILENO);
 		return (1);
@@ -78,7 +83,7 @@ int cd_builtin(t_env *env_vars, char *path, t_main *main)
 		}
 		path = home;
 	}
-	else if (strcmp(path, "..") == 0)
+	else if (ft_strcmp(path, "..") == 0)
 		path = "..";
 	prev_dir = getcwd(NULL, 0); // Save current directory
 	status = chdir(path);
@@ -103,15 +108,9 @@ int cd_builtin(t_env *env_vars, char *path, t_main *main)
 		}
 	}
 	if (prev_dir != NULL)
-	{
-		printf("AQUI");
 		free(prev_dir);
-	}
 	if (curr_dir != NULL)
-	{
-		printf("AQUI");
 		free(curr_dir);
-	}
 	if (status == 0)
 		return (0);
 	else

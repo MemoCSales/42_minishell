@@ -30,14 +30,18 @@ void	print_open_fds(void)
 void	main_loop(t_env env_var, t_main *main_var)
 {
 	char	*line;
+	char	*tmp;
 	int		num_commands;
 
 	while (1) //prints a prompt and retrieves from what it reads
 	{
 		// line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
 		line = readline("\033[1;31mψΨ:\033[0m");
+		tmp = ft_strdup(line);
+		free(line);
+		line = ft_strdup(tmp);
 		
-		if (ft_strlen(line) > 0)
+		// if (ft_strlen(line) > 0)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);
 		main_var = parse_line(line);
@@ -50,16 +54,16 @@ void	main_loop(t_env env_var, t_main *main_var)
 		// if (num_commands >= 1)
 		// {
 			// if (buildins(main_var->cmd) == -1)
-			// print_open_fds();
-			// printf("\n");
+			print_open_fds();
+			printf("\n");
 			env_var.status = execute_command(&env_var, main_var);
-			// print_open_fds();
+			print_open_fds();
 		// 	else
 		// 		exec_buildin(&env_var, main_var);
 		// }
 		// free_main(main_var); // This does not goes here
 		// printf("MAIN EXIT CODE: %d\n", env_var.status);
 		// free(main_var);
-		// free(line);
+		free(line);
 	}
 }

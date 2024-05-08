@@ -155,114 +155,199 @@ int	execute_command(t_env *env, t_main *main)
 	int		i;
 	int		pipe_created;
 	int		heredoc_fd;
+	// int		original_stdin;
 	pid_t	pid;
 
 	pipe_created = 0;
 	heredoc_fd = 0;
 	exec_args = NULL;
 	path_cmd = NULL;
+	// original_stdin = dup(STDIN_FILENO);
 	i = 0;
-	while (main[i].cmd != NULL)
+	if (main[i].cmd != NULL && ft_strlen(main[i].cmd) > 0)
 	{
-		// printf("COMMAND BEING EXECUTED %s\n", main[i].cmd);
-		// printf("INPUT FILE %s\n", main[i].input_file);
-		// printf("OUTPUT FILE %s\n", main[i].output_file);
-		if (builtins_no_output(main->cmd) != -1)
-			return (env->status = exec_builtin(env, &main[i]));
-		main[i].pid = fork();
-		if (main[i].pid < 0)
+		while (main[i].cmd != NULL)
 		{
-			perror ("Error: Unable to fork\n");
-			exit (EXIT_FAILURE);
-		}
-		if (main[i].pid == 0) //Child process
-		{
-			// printf("Before the pipe_redirection\n");
-			pipe_created = pipe_redirection(main, i);
-			// printf("PIPE REDIRECTION: %d\n", pipe_created);
-			// printf("Pipe read end: %d\n", main[i].fd[0]);
-			// printf("Pipe write end: %d\n", main[i].fd[1]);
-			if (main[i].output_file != NULL)
+			// printf("COMMAND BEING EXECUTED %s\n", main[i].cmd);
+			// printf("INPUT FILE %s\n", main[i].input_file);
+			// printf("OUTPUT FILE %s\n", main[i].output_file);
+			if (builtins_no_output(main->cmd) != -1)
+				return (env->status = exec_builtin(env, &main[i]));
+			main[i].pid = fork();
+			if (main[i].pid < 0)
 			{
-				printf("OUTPUT REDIRECTION\n");
-				handle_output_redirection(main, i);
+				perror ("Error: Unable to fork\n");
+				exit (EXIT_FAILURE);
 			}
-			if (main[i].heredoc != NULL && ft_strcmp(main[i].heredoc, ">>") != 0)
+			if (main[i].pid == 0) //Child process
 			{
-				printf("HEREDOC EXEC\n");
-				// handle_heredoc(main, i);
-				heredoc_fd = handle_heredoc(main, i);
-				// printf("HEREDOC_DOC: %d\n", heredoc_fd);
-				if (heredoc_fd >= 0)
+				// printf("Before the pipe_redirection\n");
+				pipe_created = pipe_redirection(main, i);
+				// printf("PIPE REDIRECTION: %d\n", pipe_created);
+				// printf("Pipe read end: %d\n", main[i].fd[0]);
+				// printf("Pipe write end: %d\n", main[i].fd[1]);
+				if (main[i].output_file != NULL)
 				{
-					// printf("HEREDOC_FD: %d\n", heredoc_fd);
-					dup2(heredoc_fd, STDIN_FILENO);
-					close(heredoc_fd);
+					printf("OUTPUT REDIRECTION\n");
+					handle_output_redirection(main, i);
 				}
-			}
-			if (main[i].input_file != NULL)
-			{
-				// printf("INPUT REDIRECTION\n");
-				handle_input_redirection(main, i);
-			}
-			exec_args = build_exec_args(main, exec_args, i);
-			path_env = get_env_path(env); // Prepare the env variables!
-			if (main[i].cmd[0] == '/' || ft_strncmp(main[i].cmd, "./", 2) == 0)
-				path_cmd = ft_strdup(main[i].cmd);
-			else
-				path_cmd = get_cmd_path(&main[i], path_env);
-										// Find full path of command
-			//Grandson - executes
-			// pid_t	pid;
-			// int status;
-			pid = fork();
-			if (pid == -1)
-				printf("Error while forking grandson\n");
-			else if (pid == 0)
-			{
+				if (main[i].heredoc != NULL && ft_strcmp(main[i].heredoc, ">>") != 0)
+				{
+					printf("HEREDOC EXEC\n");
+					// handle_heredoc(main, i);
+					heredoc_fd = handle_heredoc(main, i);
+					// printf("HEREDOC_DOC: %d\n", heredoc_fd);
+					if (heredoc_fd >= 0)
+					{
+						// printf("HEREDOC_FD: %d\n", heredoc_fd);
+						dup2(heredoc_fd, STDIN_FILENO);
+						close(heredoc_fd);
+					}
+				}
+				if (main[i].input_file != NULL)
+				{
+					// printf("INPUT REDIRECTION\n");
+					handle_input_redirection(main, i);
+				}
+				exec_args = build_exec_args(main, exec_args, i);
+				path_env = get_env_path(env); // Prepare the env variables!
+				if (main[i].cmd[0] == '/' || ft_strncmp(main[i].cmd, "./", 2) == 0)
+					path_cmd = ft_strdup(main[i].cmd);
+				else
+					path_cmd = get_cmd_path(&main[i], path_env);
+											// Find full path of command
+				//Grandson - executes
+				// pid_t	pid;
+				// int status;
+				pid = fork();
+				if (pid == -1)
+					printf("Error while forking grandson\n");
+				else if (pid == 0)
+				{
+					// printf("PIPE CREATED? %d\n", pipe_created);
+					// if (!pipe_created)
+					// {
+					// 	printf("Closing write end of pipe");
+					// 	close(main[i].fd[1]);
+					// }
+					// printf("%s\n", exec_args[2]);
+					if (builtins_with_output(main[i].cmd) != -1)
+					{
+						// printf("builtin en grandson\n");
+						free(path_cmd);
+						env->status = exec_builtin(env, &main[i]);
+					}
+					else if (execve(path_cmd, exec_args, env->env_vars) == -1)
+					{
+						ft_putstr_fd(main[i].cmd, 2);
+						ft_putstr_fd(": command not found\n", 2);
+						env->status = EXEC_ERROR;
+						exit(env->status);
+					}
+				}
 				// printf("PIPE CREATED? %d\n", pipe_created);
-				// if (!pipe_created)
-				// {
-				// 	printf("Closing write end of pipe");
-				// 	close(main[i].fd[1]);
-				// }
-				// printf("%s\n", exec_args[2]);
-				if (builtins_with_output(main[i].cmd) != -1)
+				if (pipe_created)
 				{
-					// printf("builtin en grandson\n");
-					free(path_cmd);
-					env->status = exec_builtin(env, &main[i]);
+					close (main[i].fd[0]);
+					close (main[i].fd[1]);
 				}
-				else if (execve(path_cmd, exec_args, env->env_vars) == -1)
-				{
-					ft_putstr_fd(main[i].cmd, 2);
-					ft_putstr_fd(": command not found\n", 2);
-					env->status = EXEC_ERROR;
-					exit(env->status);
-				}
+				if (heredoc_fd)
+					close(heredoc_fd);
+				wait(&env->status);
+				cleanup_split(exec_args);
+				// free(path_cmd);
+				env->status = WEXITSTATUS(env->status);
+				exit (env->status); //check this line
 			}
-			// printf("PIPE CREATED? %d\n", pipe_created);
-			if (pipe_created)
+			else // Parent process
 			{
-				close (main[i].fd[0]);
-				close (main[i].fd[1]);
+				// close(main[i].fd[0]);
+				// close(main[i].fd[1]);
+				env->status = parent_process(main, env, i, pipe_created);
 			}
-			if (heredoc_fd)
-				close(heredoc_fd);
-			wait(&env->status);
-			cleanup_split(exec_args);
+			i++;
 			// free(path_cmd);
-			env->status = WEXITSTATUS(env->status);
-			exit (env->status); //check this line
 		}
-		else // Parent process
-		{
-			// close(main[i].fd[0]);
-			// close(main[i].fd[1]);
-			env->status = parent_process(main, env, i, pipe_created);
-		}
-		i++;
-		// free(path_cmd);
+		return (env->status);
 	}
-	return (env->status);
+	else
+	{
+		
+		printf("EXECUTION WITH NO ARGUMENTS\n");
+		pipe_created = pipe_redirection(main, i);
+		printf("PIPE REDIRECTION: %d\n", pipe_created);
+		if (main[i].heredoc != NULL)
+		{
+			printf("HEREDOC EXEC\n");
+			// handle_heredoc(main, i);
+			heredoc_fd = handle_heredoc(main, i);
+			// printf("HEREDOC_DOC: %d\n", heredoc_fd);
+			if (heredoc_fd >= 0)
+			{
+				printf("HEREDOC_FD: %d\n", heredoc_fd);
+				// dup2(heredoc_fd, STDIN_FILENO);
+				// close(heredoc_fd);
+				// dup2(original_stdin, STDIN_FILENO);
+			}
+		}
+		printf("INPUT_FILE: %s\n", main[i].input_file);
+		printf("OUTPUT FILE: %s\n", main[i].output_file);
+		if ((main[i].input_file != NULL && main[i].output_file != NULL) || (main[i].heredoc != NULL && main[i].output_file))
+		{
+			printf("HANDLE FILE REDIRECTION\n");
+			handle_file_redirection(main, i, heredoc_fd);
+		}
+		if (heredoc_fd)
+		{
+			close(heredoc_fd);
+			// close(original_stdin);
+		}
+		if (pipe_created)
+		{
+			printf("PIPE_CREATED CLOSE\n");
+			close (main[i].fd[0]);
+			close (main[i].fd[1]);
+		}
+		return (env->status);
+	}
+}
+
+void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
+{
+	char	buffer[1024];
+	ssize_t	bytes;
+	int		in;
+	int		out;
+
+	if (main[i].input_file)
+	{
+		in = open(main[i].input_file, O_RDONLY);
+		if (in < 0)
+		{
+			perror("Error opening file\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (main[i].heredoc) //change this
+	{
+		in = open(main[i].input_file, O_RDONLY);
+		if (in < 0)
+		{
+			perror("Error opening file\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	out = open(main[i].output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (out < 0)
+	{
+		perror("Error opening file\n");
+		exit(EXIT_FAILURE);
+	}
+	while((bytes = read(in, buffer, sizeof(buffer) - 1)) > 0)
+	{
+		buffer[bytes] = '\0';
+		// write(out, buffer, bytes);
+	}
+	close(in);
+	close(out);
 }
