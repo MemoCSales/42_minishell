@@ -30,5 +30,26 @@ Mixed Quoting with Special Characters: ✅
 Input: echo "Don't \"worry\" about \$money"
 Expected Output: Don't "worry" about $money // Getting: Dont worry about \
 
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 FALTA VER ISSO: cat input.txt | grep “pattern” | wc -l > output.txt
 TEM A VER COM O remove_args - parse_utils.c - 73
+
+JA DA RUIM COM ls | ls > output.txt
+NAO PODERIA USAR return (&parsed_struct[i]); , MELHOR PASSAR O POINTER DA STRUCT DIRETAMENTE
+(SOLVED)
+
+
+AGORA DA PROBLEMA QDO TEM UM ARGUMENTO
+Faltava um j = 0 ANTES DE UM WHILE
+
+cat input.txt | wc
+
+APARENTEMENTE BEM, TESTAR MAIS... AS VEZES TEM Q REPETIR PARA IR...
+
+===================================================================
+
+$?
+
+
+git diff ./utils/parse_utils_2.c

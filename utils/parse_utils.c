@@ -98,6 +98,7 @@ void	remove_args(char **args, int start_index, int num_args)
 
 	i = start_index;
 	j = start_index + num_args;
+
 	while (args[j] != NULL)
 	{
 		args[i] = args[j];
@@ -129,6 +130,50 @@ void	remove_args(char **args, int start_index, int num_args)
 // 		i++;
 // 	}
 // }
+char	*read_quotes(char *delimiter)
+{
+	char	*quotes;
+	char	*line;
+	char	*temp;
+
+	quotes = NULL;
+
+	if (DEBUG)
+		printf("ENTROU NO READ_QUOTES\n");
+
+	if (!delimiter)
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", STDERR_FILENO);
+		return (NULL);
+	}
+	while (1)
+	{
+		ft_putstr_fd("> ", 1);
+		line = get_next_line(0);
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		{
+			free (line);
+			break ;
+		}
+		if (quotes == NULL)
+		{
+			quotes = ft_strdup(line);
+		}
+		else
+		{
+			temp = malloc(ft_strlen(quotes) + ft_strlen(line) + 1);
+			ft_strlcpy(temp, quotes, ft_strlen(quotes) + 1);
+			ft_strlcat(temp, line, ft_strlen(quotes) + ft_strlen(line) + 1);
+			free(quotes);
+			quotes = temp;
+		}
+		free (line);
+	}
+	if (DEBUG)
+		printf("SAIU DO QUOTES:%s\n", quotes);
+	return (quotes);
+}
+
 
 char	*read_heredoc(char *delimiter)
 {
@@ -175,6 +220,7 @@ char	*insert_spaces(char *command)// adds spaces around the '>' character
 	int		i;
 	int		j;
 	int		in_string;// keep track of whether we're inside a string
+
 	i = 0;
 	j = 0;
 	in_string = 0;
@@ -327,59 +373,32 @@ char	*ft_strncpy(char *dest, char *src, size_t n)
 	return (dest);
 }
 
-void	test_parser(void)
+char *ft_strcat(char *dest, const char *src)
 {
-	t_main	*parsed_commands;
+	size_t dest_len = strlen(dest);
+	size_t src_len = strlen(src);
+	char   *temp;
 
-	// Test command with no arguments
-	printf("Testing command with no arguments...\n");
-	parsed_commands = parse_line("ls");
-	assert(strcmp(parsed_commands[0].cmd, "ls") == 0);
-	printf("Test passed.\n");
-	// Test command with one argument
-	printf("Testing command with one argument...\n");
-	parsed_commands = parse_line("ls -l");
-	assert(strcmp(parsed_commands[0].cmd, "ls") == 0);
-	assert(strcmp(parsed_commands[0].flags, "-l") == 0);
-	printf("Test passed.\n");
-	// Test command with input redirection
-	printf("Testing command with input redirection...\n");
-	parsed_commands = parse_line("sort < file.txt");
-	assert(strcmp(parsed_commands[0].cmd, "sort") == 0);
-	assert(strcmp(parsed_commands[0].input_file, "file.txt") == 0);
-	printf("Test passed.\n");
-	// Test command with output redirection
-	printf("Testing command with output redirection...\n");
-	parsed_commands = parse_line("ls > file.txt");
-	assert(strcmp(parsed_commands[0].cmd, "ls") == 0);
-	assert(strcmp(parsed_commands[0].output_file, ">file.txt") == 0);
-	printf("Test passed.\n");
-	// Test command with output append redirection
-	printf("Testing command with output append redirection...\n");
-	parsed_commands = parse_line("ls >> file.txt");
-	assert(strcmp(parsed_commands[0].cmd, "ls") == 0);
-	assert(strcmp(parsed_commands[0].output_file, ">>file.txt") == 0);
-	printf("Test passed.\n");
-	// // Test command with heredoc
-	// printf("Testing command with heredoc...\n");
-	// parsed_commands = parse_line("cat << EOF");
-	// assert(strcmp(parsed_commands[0].cmd, "cat") == 0);
-	// assert(strcmp(parsed_commands[0].heredoc, "EOF") == 0);
-	// printf("Test passed.\n");
-	// // Test command with quotes
-	// printf("Testing command with quotes...\n");
-	// parsed_commands = parse_line("echo \"hello world\"");
-	// assert(strcmp(parsed_commands[0].cmd, "echo") == 0);
-	// assert(strcmp(parsed_commands[0].flags, "\"hello world\"") == 0);
-	// printf("Test passed.\n");
-	// Test command with multiple commands
-	printf("Testing command with multiple commands...\n");
-	parsed_commands = parse_line("ls -l | sort -r");
-	assert(strcmp(parsed_commands[0].cmd, "ls") == 0);
-	assert(strcmp(parsed_commands[0].flags, "-l") == 0);
-	assert(strcmp(parsed_commands[1].cmd, "sort") == 0);
-	assert(strcmp(parsed_commands[1].flags, "-r") == 0);
-	printf("Test passed.\n");
+	temp = NULL;
+	temp = malloc(dest_len + src_len + 1);
+	check_malloc(temp);
+
+	// Copy the destination string to the new buffer
+	ft_strncpy(temp, dest, dest_len);
+
+	// Perform the concatenation
+	ft_strncpy(temp + dest_len, (char *)src, src_len);
+
+	// Null-terminate the new string
+	temp[dest_len + src_len] = '\0';
+
+	// Copy the new string back to the destination buffer
+	ft_strcpy(dest, temp);
+
+	// Free the temporary buffer
+	free(temp);
+
+	return (dest);  // Success
 }
 
 // char	*remove_quotes(char *str)

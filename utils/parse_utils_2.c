@@ -12,15 +12,15 @@
 
 #include "../minishell.h"
 
-t_main	*redirection(t_main *parsed_struct, char **args, int i, int j)
+// t_main	*redirection(t_main *parsed_struct, char **args, int i, int j)
+void redirection(t_main *parsed_struct, char **args, int i, int j)
 {
 	char	*delimiter;
 	char	*heredoc;
-	int		x = 0; // DEBUG
 
 	heredoc = NULL;
 
-	if (x){
+	if (DEBUG){
 	printf("\n\nREDIRECTION\n\n");
 	print_args(args);
 	printf("args[%d]: %s\n", j, args[j]);
@@ -31,20 +31,20 @@ t_main	*redirection(t_main *parsed_struct, char **args, int i, int j)
 	if (ft_strcmp(args[j], ">>") == 0
 		&& args[j + 1])
 	{
-		if (x)
+		if (DEBUG)
 			printf("ENTROU NO >> APPEND\n");
 		parsed_struct[i].output_file = ft_strdup(args[j + 1]);
 		parsed_struct[i].extra = ft_strdup(args[j]);
 		//passing ">>" to *extra, to signal that it is a append
 		remove_args(args, j, 2);
-		return (&parsed_struct[i]);
+		// return (&parsed_struct[i]);
 		// break ;
 	}
 	// "<<" HEREDOC
 	else if (ft_strcmp(args[j], "<<") == 0
 		&& args[j + 1]) // Check for heredoc
 	{
-		if (x){
+		if (DEBUG){
 			printf ("ENTROU NO << HEREDOC\n");
 			printf("HEREDOC [J]: %d\n\n", j);}
 				
@@ -52,25 +52,26 @@ t_main	*redirection(t_main *parsed_struct, char **args, int i, int j)
 		heredoc = read_heredoc(delimiter);
 		parsed_struct[i].heredoc = heredoc;
 		remove_args (args, j, 2);
-		return (&parsed_struct[i]);
+		// return (&parsed_struct[i]);
 		// break ;
 	}
 	// "<" INPUT
 	else if (ft_strcmp(args[j], "<") == 0 && args[j + 1])
 	{
-		if (x)
+		if (DEBUG)
 			printf("\n\"<\" INPUT \n\n");
 			
 		parsed_struct[i].input_file = ft_strdup(args[j + 1]);
 		remove_args(args, j, 2);
-		return (&parsed_struct[i]);
+		// return (&parsed_struct[i]);
 		// break ;
 	}
 	// ">" OUTPUT
 	else if (ft_strcmp(args[j], ">") == 0 && args[j + 1])
 	{
-		if (x)
+		if (DEBUG)
 			printf("\n\">\" OUTPUT\n\n");
+
 		parsed_struct[i].output_file = ft_strdup(args[j + 1]);
 		remove_args(args, j, 2);
 
@@ -78,11 +79,12 @@ t_main	*redirection(t_main *parsed_struct, char **args, int i, int j)
 // print_args(args);
 // print_struct(parsed_struct, i);
 
-		return (&parsed_struct[i]);
+		// return (&parsed_struct[i]);
+// exit(0);
 		// break ;
 	}
 
-	return (&parsed_struct[i]);
+	// return (&parsed_struct[i]);
 	// NO WEIRD STUFF
 // 	else
 // 	{
@@ -100,7 +102,7 @@ void	print_args(char **args)
 	printf("\n");
 	// printf("ARGS[%d]: %s\n", k, args[k]);
 	if (!args)
-		printf("Argument %d: %s\n", k, args[k]);
+		printf("Argument NULL%d: %s\n", k, args[k]);
 	else
 	{
 		while (args[k] != NULL)
@@ -109,6 +111,7 @@ void	print_args(char **args)
 			k++;
 		}
 	}
+	printf("Argument %d(after): %s\n", k, args[k]);
 	printf("\n");
 }
 

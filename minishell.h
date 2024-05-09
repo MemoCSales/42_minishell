@@ -30,6 +30,8 @@
 # define MAX_ARGS 100
 # define MAX_ARG_LEN 1000
 
+# define DEBUG 0
+
 typedef struct s_main
 {
 	char	*cmd;
@@ -108,7 +110,6 @@ void		free_args(char **args); //due segfault when testing parsing
 t_main		*initialize_main(t_main *main_var, int num_commands);
 int			ft_strcpy(char *dst, const char *src);
 char		*ft_strncpy(char *dest, char *src, size_t n);
-void		test_parser(void);
 char		*insert_spaces(char *command);
 void		ft_erase_quotes(char *tkn);
 void		remove_args(char **args, int start_index, int num_args);
@@ -116,17 +117,22 @@ char		*read_heredoc(char *delimiter);
 int			count_cmds(char **cmds);
 char		**copy_args(char **args);
 int			count_args(char **args);
+char		*ft_strcat(char *dest, const char *src);
+char		*read_quotes(char *delimiter);
 
 // parse_utils_2
 void		print_args(char **args);
 void		print_struct(t_main *main_var, int i);
 void		check_malloc(void *ptr);
 int			check_redir(char **args, int j);
-t_main		*redirection(t_main *parsed_struct, char **args, int i, int j);
+void		redirection(t_main *parsed_struct, char **args, int i, int j);
 
 // parse_utils_3
 char		*prepared_input(char *line);
 char		**remove_start_quotes(char **args);
+
+// parse_utils_4
+int		in_quotes(char *line);
 
 #endif
 

@@ -14,6 +14,7 @@ SRC =	main.c \
 		./utils/parse_utils.c \
 		./utils/parse_utils_2.c \
 		./utils/parse_utils_3.c \
+		./utils/parse_utils_4.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
