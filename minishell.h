@@ -81,6 +81,7 @@ char		*get_cmd_path(t_main *main, char *cmd_path);
 // int			parent_process(t_main *main, t_env *env, int i);
 int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
 void		handle_file_redirection(t_main *main, int i, int heredoc_fd);
+int	exec_without_cmds(t_main *main, t_env *env, int i);
 
 
 // redirections

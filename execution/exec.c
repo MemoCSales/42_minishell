@@ -155,14 +155,12 @@ int	execute_command(t_env *env, t_main *main)
 	int		i;
 	int		pipe_created;
 	int		heredoc_fd;
-	// int		original_stdin;
 	pid_t	pid;
 
 	pipe_created = 0;
 	heredoc_fd = 0;
 	exec_args = NULL;
 	path_cmd = NULL;
-	// original_stdin = dup(STDIN_FILENO);
 	i = 0;
 	if (main[i].cmd != NULL && ft_strlen(main[i].cmd) > 0)
 	{
@@ -217,8 +215,6 @@ int	execute_command(t_env *env, t_main *main)
 					path_cmd = get_cmd_path(&main[i], path_env);
 											// Find full path of command
 				//Grandson - executes
-				// pid_t	pid;
-				// int status;
 				pid = fork();
 				if (pid == -1)
 					printf("Error while forking grandson\n");
@@ -272,51 +268,38 @@ int	execute_command(t_env *env, t_main *main)
 	}
 	else
 	{
-		
-		printf("EXECUTION WITH NO ARGUMENTS\n");
-		// pipe_created = pipe_redirection(main, i);
-		// printf("PIPE REDIRECTION: %d\n", pipe_created);
-		if (main[i].heredoc != NULL)
-		{
-			printf("HEREDOC EXEC\n");
-			// handle_heredoc(main, i);
-			heredoc_fd = handle_heredoc(main, i);
-			// printf("HEREDOC_DOC: %d\n", heredoc_fd);
-			if (heredoc_fd >= 0)
-			{
-				printf("HEREDOC_FD: %d\n", heredoc_fd);
-				// dup2(heredoc_fd, STDIN_FILENO);
-				// close(heredoc_fd);
-				// dup2(original_stdin, STDIN_FILENO);
-			}
-		}
-		printf("INPUT_FILE: %s\n", main[i].input_file);
-		printf("OUTPUT FILE: %s\n", main[i].output_file);
-		if ((main[i].input_file != NULL && main[i].output_file != NULL) || (main[i].heredoc != NULL && main[i].output_file))
-		{
-			printf("HANDLE FILE REDIRECTION\n");
-			handle_file_redirection(main, i, heredoc_fd);
-		}
-		if (heredoc_fd)
-		{
-			close(heredoc_fd);
-			// close(original_stdin);
-		}
-		if (pipe_created)
-		{
-			printf("PIPE_CREATED CLOSE\n");
-			close (main[i].fd[0]);
-			close (main[i].fd[1]);
-		}
+		env->status = exec_without_cmds(main, env, i);
 		return (env->status);
 	}
 }
 
+
+int	exec_without_cmds(t_main *main, t_env *env, int i) //Check if I need to add a status variable and change its value
+{
+	int	heredoc_fd;
+
+	printf("EXECUTION WITH NO ARGUMENTS\n");
+	// pipe_created = pipe_redirection(main, i);
+	// printf("PIPE REDIRECTION: %d\n", pipe_created);
+	if (main[i].heredoc != NULL)
+	{
+		// printf("HEREDOC EXEC\n");
+		heredoc_fd = handle_heredoc(main, i);
+	}
+	printf("INPUT_FILE: %s\n", main[i].input_file);
+	printf("OUTPUT FILE: %s\n", main[i].output_file);
+	if ((main[i].input_file != NULL && main[i].output_file != NULL) || (main[i].heredoc != NULL && main[i].output_file))
+	{
+		printf("HANDLE FILE REDIRECTION\n");
+		handle_file_redirection(main, i, heredoc_fd);
+	}
+	if (heredoc_fd)
+		close(heredoc_fd);
+	return (env->status);
+}
 void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 {
-	// char	buffer[1024];
 	char	*tmp;
-	// ssize_t	bytes;
 	int		in;
 	int		out;
 
@@ -329,7 +312,7 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 			exit(EXIT_FAILURE);
 		}
 	}
-	else if (heredoc_fd) //change this
+	else if (heredoc_fd)
 	{
 		tmp = "/tmp/minishell_heredoc";
 		in = open(tmp, O_RDONLY);
@@ -345,11 +328,6 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 		perror("Error opening file\n");
 		exit(EXIT_FAILURE);
 	}
-	// while((bytes = read(in, buffer, sizeof(buffer) - 1)) > 0)
-	// {
-	// 	buffer[bytes] = '\0';
-	// 	// write(out, buffer, bytes);
-	// }
 	close(in);
 	close(out);
 }
