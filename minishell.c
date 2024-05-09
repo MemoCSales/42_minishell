@@ -54,10 +54,10 @@ void	main_loop(t_env env_var, t_main *main_var)
 		// if (num_commands >= 1)
 		// {
 			// if (buildins(main_var->cmd) == -1)
-			print_open_fds();
-			printf("\n");
+			// print_open_fds();
+			// printf("\n");
 			env_var.status = execute_command(&env_var, main_var);
-			print_open_fds();
+			// print_open_fds();
 		// 	else
 		// 		exec_buildin(&env_var, main_var);
 		// }

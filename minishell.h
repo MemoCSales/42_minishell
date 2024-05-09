@@ -84,6 +84,10 @@ void		handle_file_redirection(t_main *main, int i, int heredoc_fd);
 int	exec_without_cmds(t_main *main, t_env *env, int i);
 
 
+/*--------------------GENERAL UTIL FUNCTIONS--------------------*/
+void	error_messages(char *type);
+
+
 // redirections
 int			check_for_redirect_output(t_main *main);
 int			check_for_redirect_input(t_main *main);

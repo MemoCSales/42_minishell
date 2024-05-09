@@ -307,27 +307,18 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 	{
 		in = open(main[i].input_file, O_RDONLY);
 		if (in < 0)
-		{
-			perror("Error opening file\n");
-			exit(EXIT_FAILURE);
-		}
+			error_messages("OPEN_FILE_REDIRECTION");
 	}
 	else if (heredoc_fd)
 	{
 		tmp = "/tmp/minishell_heredoc";
 		in = open(tmp, O_RDONLY);
 		if (in < 0)
-		{
-			perror("Error opening file\n");
-			exit(EXIT_FAILURE);
-		}
+			error_messages("OPEN_FILE_REDIRECTION");
 	}
 	out = open(main[i].output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (out < 0)
-	{
-		perror("Error opening file\n");
-		exit(EXIT_FAILURE);
-	}
+		error_messages("OPEN_FILE_REDIRECTION");
 	close(in);
 	close(out);
 }

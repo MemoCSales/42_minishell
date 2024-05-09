@@ -11,6 +11,7 @@ SRC =	main.c \
 		minishell.c \
 		./utils/init_env.c \
 		./utils/cleanup.c \
+		./utils/general_utils.c \
 		./utils/print_struct.c \
 		./utils/parse_utils.c \
 		./utils/parse_utils_2.c \
