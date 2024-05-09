@@ -37,9 +37,9 @@ void	main_loop(t_env env_var, t_main *main_var)
 	{
 		// line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
 		line = readline("\033[1;31mψΨ:\033[0m");
-		tmp = ft_strdup(line);
+		tmp = ft_strdup_minishell(line);
 		free(line);
-		line = ft_strdup(tmp);
+		line = ft_strdup_minishell(tmp);
 		
 		// if (ft_strlen(line) > 0)
 			add_history(line);
@@ -48,9 +48,9 @@ void	main_loop(t_env env_var, t_main *main_var)
 		num_commands = 0;
 		while (main_var[num_commands].cmd)
 			num_commands++;
-// print_struct(main_var, num_commands); // printing parsing result
-// printf("\n");
-// exit(0);
+		// print_struct(main_var, num_commands); // printing parsing result
+		// printf("\n");
+		// exit(0);
 		// if (num_commands >= 1)
 		// {
 			// if (buildins(main_var->cmd) == -1)
@@ -65,5 +65,6 @@ void	main_loop(t_env env_var, t_main *main_var)
 		// printf("MAIN EXIT CODE: %d\n", env_var.status);
 		// free(main_var);
 		free(line);
+		line = NULL;
 	}
 }

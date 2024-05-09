@@ -274,8 +274,8 @@ int	execute_command(t_env *env, t_main *main)
 	{
 		
 		printf("EXECUTION WITH NO ARGUMENTS\n");
-		pipe_created = pipe_redirection(main, i);
-		printf("PIPE REDIRECTION: %d\n", pipe_created);
+		// pipe_created = pipe_redirection(main, i);
+		// printf("PIPE REDIRECTION: %d\n", pipe_created);
 		if (main[i].heredoc != NULL)
 		{
 			printf("HEREDOC EXEC\n");
@@ -314,8 +314,9 @@ int	execute_command(t_env *env, t_main *main)
 
 void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 {
-	char	buffer[1024];
-	ssize_t	bytes;
+	// char	buffer[1024];
+	char	*tmp;
+	// ssize_t	bytes;
 	int		in;
 	int		out;
 
@@ -328,9 +329,10 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 			exit(EXIT_FAILURE);
 		}
 	}
-	else if (main[i].heredoc) //change this
+	else if (heredoc_fd) //change this
 	{
-		in = open(main[i].input_file, O_RDONLY);
+		tmp = "/tmp/minishell_heredoc";
+		in = open(tmp, O_RDONLY);
 		if (in < 0)
 		{
 			perror("Error opening file\n");
@@ -343,11 +345,11 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 		perror("Error opening file\n");
 		exit(EXIT_FAILURE);
 	}
-	while((bytes = read(in, buffer, sizeof(buffer) - 1)) > 0)
-	{
-		buffer[bytes] = '\0';
-		// write(out, buffer, bytes);
-	}
+	// while((bytes = read(in, buffer, sizeof(buffer) - 1)) > 0)
+	// {
+	// 	buffer[bytes] = '\0';
+	// 	// write(out, buffer, bytes);
+	// }
 	close(in);
 	close(out);
 }

@@ -69,17 +69,20 @@ int			exit_builtin(t_main *main);
 int			exec_builtin(t_env *env_vars, t_main *main);
 void		ft_strcpy_memo(char *dst, char *src);
 
-// Environment variables
+/*--------------------ENVIRONMENT VARIABLES FUNCTION----------*/
 void		init_env(t_env *env_vars, char **env);
 void		check_env(t_env *env_vars);
+char	*ft_strdup_minishell(char *s1);
 
-/*--------------------EXECUTION FUNCTION--------------------*/
+/*--------------------EXECUTION FUNCTIONS--------------------*/
 int			execute_command(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
 // int			parent_process(t_main *main, t_env *env, int i);
 int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
-void	handle_file_redirection(t_main *main, int i);
+void		handle_file_redirection(t_main *main, int i, int heredoc_fd);
+
+
 // redirections
 int			check_for_redirect_output(t_main *main);
 int			check_for_redirect_input(t_main *main);
@@ -100,7 +103,7 @@ t_main		*parse_line(char *line);
 void		cleanup_split(char **split);
 void		free_main(t_main *main_var);
 void		old_print_struct(t_main *main_var, int num_commands);
-void		free_args(char **args); //due segfault when testing parsing
+void	free_args(char **args); // due segfault when testing parsing
 
 // parse_utils
 t_main		*initialize_main(t_main *main_var, int num_commands);
