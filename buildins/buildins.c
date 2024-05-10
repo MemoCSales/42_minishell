@@ -75,8 +75,7 @@ int	exit_builtin(t_main *main)
 	}
 	else if (main->args[1] != NULL)
 	{
-		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		error_messages("BASH_MANY_ARGUMENTS");
 		return (1);
 	}
 	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '-'
@@ -87,8 +86,7 @@ int	exit_builtin(t_main *main)
 		status = ft_atoi(main->args[0]);
 	else
 	{
-		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("bash: exit: numeric argument required\n", 2);
+		error_messages("BASH_NUMERIC_ARGS");
 		return (2);
 	}
 	printf("exit\n");

@@ -63,20 +63,13 @@ int	handle_heredoc(t_main *main, int i)
 	{
 		fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
-		{
-			// printf("HEREDOC\n");
-			perror("Error: Unable to open file\n");
-			exit(EXIT_FAILURE);
-		}
+			error_messages("ERROR_OPEN_FILE");
 		// printf("INISDIE HEREDOC\n");
 		write(fd, main[i].heredoc, ft_strlen(main[i].heredoc));
 		close(fd);
 		fd = open(tmp, O_RDONLY);
 		if (fd < 0)
-		{
-			perror("Error: Unable to open file\n");
-			exit(EXIT_FAILURE);
-		}
+			error_messages("ERROR_OPEN_FILE");
 	}
 	return (fd);
 }
@@ -89,10 +82,7 @@ void	handle_output_redirection(t_main *main, int i)
 	{
 		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
-		{
-			perror("Error: Unable to open file\n");
-			exit(EXIT_FAILURE);
-		}
+			error_messages("ERROR_OPEN_FILE");
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
@@ -100,10 +90,7 @@ void	handle_output_redirection(t_main *main, int i)
 	{
 		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
-		{
-			perror("Error: Unable to open file\n");
-			exit (EXIT_FAILURE);
-		}
+			error_messages("ERROR_OPEN_FILE");
 		dup2(fd, STDOUT_FILENO);
 		close (fd);
 	}
@@ -122,7 +109,6 @@ void	handle_input_redirection(t_main *main, int i)
 			ft_putstr_fd ("zsh: no such file or directory: ", 2);
 			ft_putstr_fd (main[i].input_file, 2);
 			ft_putstr_fd ("\n", 2);
-			// close(fd);
 			exit (EXIT_FAILURE);
 		}
 		dup2 (fd, STDIN_FILENO);
@@ -166,32 +152,35 @@ int	execute_command(t_env *env, t_main *main)
 	{
 		while (main[i].cmd != NULL)
 		{
-			// printf("COMMAND BEING EXECUTED %s\n", main[i].cmd);
+			// printf("COMMAND BEING EXECUTED %s -- %d\n", main[i].cmd, i);
 			// printf("INPUT FILE %s\n", main[i].input_file);
 			// printf("OUTPUT FILE %s\n", main[i].output_file);
 			if (builtins_no_output(main->cmd) != -1)
 				return (env->status = exec_builtin(env, &main[i]));
 			main[i].pid = fork();
 			if (main[i].pid < 0)
-			{
-				perror ("Error: Unable to fork\n");
-				exit (EXIT_FAILURE);
-			}
+				error_messages("ERROR_FORK");
 			if (main[i].pid == 0) //Child process
 			{
-				// printf("Before the pipe_redirection\n");
 				pipe_created = pipe_redirection(main, i);
+				// printf("PIPES EXITS: %d\n", pipe_created);
+				// if (pipe_created)
+				// {
+				// 	// printf("CLOSING PIPES IN SON PROCESS\n");
+				// 	close(main[i].fd[1]);
+				// 	dup2(main[i].fd[0], STDIN_FILENO);
+				// }
 				// printf("PIPE REDIRECTION: %d\n", pipe_created);
 				// printf("Pipe read end: %d\n", main[i].fd[0]);
 				// printf("Pipe write end: %d\n", main[i].fd[1]);
 				if (main[i].output_file != NULL)
 				{
-					printf("OUTPUT REDIRECTION\n");
+					// printf("OUTPUT REDIRECTION\n");
 					handle_output_redirection(main, i);
 				}
 				if (main[i].heredoc != NULL && ft_strcmp(main[i].heredoc, ">>") != 0)
 				{
-					printf("HEREDOC EXEC\n");
+					// printf("HEREDOC EXEC\n");
 					// handle_heredoc(main, i);
 					heredoc_fd = handle_heredoc(main, i);
 					// printf("HEREDOC_DOC: %d\n", heredoc_fd);
@@ -220,16 +209,13 @@ int	execute_command(t_env *env, t_main *main)
 					printf("Error while forking grandson\n");
 				else if (pid == 0)
 				{
-					// printf("PIPE CREATED? %d\n", pipe_created);
-					// if (!pipe_created)
-					// {
-					// 	printf("Closing write end of pipe");
-					// 	close(main[i].fd[1]);
-					// }
-					// printf("%s\n", exec_args[2]);
+					if (pipe_created)
+					{
+						close(main[i].fd[0]);
+						dup2(main[i].fd[1],STDOUT_FILENO);
+					}
 					if (builtins_with_output(main[i].cmd) != -1)
 					{
-						// printf("builtin en grandson\n");
 						free(path_cmd);
 						env->status = exec_builtin(env, &main[i]);
 					}
@@ -241,24 +227,21 @@ int	execute_command(t_env *env, t_main *main)
 						exit(env->status);
 					}
 				}
-				// printf("PIPE CREATED? %d\n", pipe_created);
 				if (pipe_created)
 				{
 					close (main[i].fd[0]);
 					close (main[i].fd[1]);
 				}
-				if (heredoc_fd)
-					close(heredoc_fd);
+				close(heredoc_fd);
 				wait(&env->status);
 				cleanup_split(exec_args);
 				// free(path_cmd);
 				env->status = WEXITSTATUS(env->status);
 				exit (env->status); //check this line
+				//grandson finished
 			}
 			else // Parent process
 			{
-				// close(main[i].fd[0]);
-				// close(main[i].fd[1]);
 				env->status = parent_process(main, env, i, pipe_created);
 			}
 			i++;
@@ -266,15 +249,20 @@ int	execute_command(t_env *env, t_main *main)
 		}
 		return (env->status);
 	}
-	else
+	else if (main[i].cmd == NULL && (main[i].input_file || main[i].output_file || main[i].heredoc))
 	{
 		env->status = exec_without_cmds(main, env, i);
 		return (env->status);
 	}
+	else
+	{
+		env->status = 0;
+		return (env->status);
+	}
 }
 
-
-int	exec_without_cmds(t_main *main, t_env *env, int i) //Check if I need to add a status variable and change its value
+//Check if I need to add a status variable and change its value
+int	exec_without_cmds(t_main *main, t_env *env, int i)
 {
 	int	heredoc_fd;
 
@@ -297,6 +285,8 @@ int	exec_without_cmds(t_main *main, t_env *env, int i) //Check if I need to add 
 		close(heredoc_fd);
 	return (env->status);
 }
+
+
 void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 {
 	char	*tmp;
@@ -307,18 +297,18 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 	{
 		in = open(main[i].input_file, O_RDONLY);
 		if (in < 0)
-			error_messages("OPEN_FILE_REDIRECTION");
+			error_messages("ERROR_OPEN_FILE");
 	}
 	else if (heredoc_fd)
 	{
 		tmp = "/tmp/minishell_heredoc";
 		in = open(tmp, O_RDONLY);
 		if (in < 0)
-			error_messages("OPEN_FILE_REDIRECTION");
+			error_messages("ERROR_OPEN_FILE");
 	}
 	out = open(main[i].output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (out < 0)
-		error_messages("OPEN_FILE_REDIRECTION");
+		error_messages("ERROR_OPEN_FILE");
 	close(in);
 	close(out);
 }

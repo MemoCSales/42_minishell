@@ -30,16 +30,16 @@ void	print_open_fds(void)
 void	main_loop(t_env env_var, t_main *main_var)
 {
 	char	*line;
-	char	*tmp;
+	// char	*tmp;
 	int		num_commands;
 
 	while (1) //prints a prompt and retrieves from what it reads
 	{
 		// line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
 		line = readline("\033[1;31mψΨ:\033[0m");
-		tmp = ft_strdup_minishell(line);
-		free(line);
-		line = ft_strdup_minishell(tmp);
+		// tmp = ft_strdup_minishell(line);
+		// free(line);
+		// line = ft_strdup_minishell(tmp);
 		
 		// if (ft_strlen(line) > 0)
 			add_history(line);
