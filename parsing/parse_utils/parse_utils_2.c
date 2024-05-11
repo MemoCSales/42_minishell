@@ -64,9 +64,33 @@ void	check_malloc(void *ptr)
 	}
 }
 
-void	copy_increment(char *prepared, const char *line, int *i, int *j)
+void	get_var_name(char *line, int *i, char *var_name)
 {
-	prepared[*j] = line[*i];
-	(*i)++;
-	(*j)++;
+	int	j;
+
+	j = 0;
+	while (ft_isalnum(line[*i]) || line[*i] == '_')
+	{
+		var_name[j++] = line[*i];
+		(*i)++;
+	}
+	var_name[j] = '\0';
+}
+
+void	replace_var_value(char *var_name, char *prepared, int *j)
+{
+	char	*var_value;
+	int		k;
+
+	k = 0;
+	var_value = getenv(var_name);
+	if (var_value != NULL)
+	{
+		while (var_value[k] != '\0')
+		{
+			prepared[*j] = var_value[k];
+			(*j)++;
+			k++;
+		}
+	}
 }

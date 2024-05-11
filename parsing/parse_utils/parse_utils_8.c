@@ -75,3 +75,17 @@ int	is_whitespace(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
+
+int	is_escaped(char *line, int index)
+	{
+	int	count;
+
+	count = 0;
+	index--;
+	while (index >= 0 && line[index] == '\\')
+	{
+		count++;
+		index--;
+	}
+	return (count % 2 != 0);
+}

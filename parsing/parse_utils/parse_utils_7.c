@@ -53,3 +53,41 @@ void	handle_redirections(t_main *parsed_struct, char **args, int i)
 		j++;
 	}
 }
+
+void	free_and_nullify(void **ptr)
+{
+	if (*ptr)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+}
+
+void	free_parsed_struct(t_main *parsed_struct, int num_commands)
+{
+	int	i;
+
+	i = 0;
+	while ((parsed_struct) && (i < num_commands))
+	{
+		free_and_nullify((void **)&parsed_struct[i].cmd);
+		free_and_nullify((void **)&parsed_struct[i].flags);
+		free_and_nullify((void **)&parsed_struct[i].args);
+		free_and_nullify((void **)&parsed_struct[i].input_file);
+		free_and_nullify((void **)&parsed_struct[i].output_file);
+		free_and_nullify((void **)&parsed_struct[i].heredoc);
+		free_and_nullify((void **)&parsed_struct[i].extra);
+		if (parsed_struct[i].fd[0])
+		{
+			close(parsed_struct[i].fd[0]);
+			parsed_struct[i].fd[0] = 0;
+		}
+		if (parsed_struct[i].fd[1])
+		{
+			close(parsed_struct[i].fd[1]);
+			parsed_struct[i].fd[1] = 0;
+		}
+		i++;
+	}
+	free(parsed_struct);
+}

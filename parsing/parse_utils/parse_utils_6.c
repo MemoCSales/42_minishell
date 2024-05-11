@@ -12,6 +12,17 @@
 
 #include "../minishell.h"
 
+int	check_delimiter(char *delimiter)
+{
+	if (!delimiter)
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n",
+			STDERR_FILENO);
+		return (1);
+	}
+	return (0);
+}
+
 char	*read_quotes(char *delimiter)
 {
 	char	*quotes;
@@ -19,39 +30,23 @@ char	*read_quotes(char *delimiter)
 	char	*temp;
 
 	quotes = NULL;
-	if (DEBUG)
-		printf("ENTROU NO READ_QUOTES\n");
-	if (!delimiter)
-	{
-		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n",
-			STDERR_FILENO);
+	if (check_delimiter(delimiter))
 		return (NULL);
-	}
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
 		line = get_next_line(0);
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
-		{
-			free (line);
+		if (!ft_strncmp(line, delimiter, ft_strlen(delimiter)))
 			break ;
-		}
-		if (quotes == NULL)
-		{
-			quotes = ft_strdup(line);
-		}
+		temp = quotes;
+		if (quotes)
+			quotes = ft_strjoin(temp, line);
 		else
-		{
-			temp = malloc(ft_strlen(quotes) + ft_strlen(line) + 1);
-			ft_strlcpy(temp, quotes, ft_strlen(quotes) + 1);
-			ft_strlcat(temp, line, ft_strlen(quotes) + ft_strlen(line) + 1);
-			free(quotes);
-			quotes = temp;
-		}
-		free (line);
+			quotes = ft_strdup(line);
+		free(temp);
+		free(line);
 	}
-	if (DEBUG)
-		printf("SAIU DO QUOTES:%s\n", quotes);
+	free(line);
 	return (quotes);
 }
 
@@ -62,105 +57,26 @@ char	*read_heredoc(char *delimiter)
 	char	*temp;
 
 	heredoc = NULL;
-	if (!delimiter)
-	{
-		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n",
-			STDERR_FILENO);
+	if (check_delimiter(delimiter))
 		return (NULL);
-	}
 	while (1)
 	{
 		ft_putstr_fd("heredoc>", 1);
 		line = get_next_line(0);
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
-		{
-			free (line);
 			break ;
-		}
 		if (heredoc == NULL)
-		{
 			heredoc = ft_strdup(line);
-		}
 		else
 		{
-			temp = malloc(ft_strlen(heredoc) + ft_strlen(line) + 1);
-			ft_strlcpy(temp, heredoc, ft_strlen(heredoc) + 1);
-			ft_strlcat(temp, line, ft_strlen(heredoc) + ft_strlen(line) + 1);
+			temp = ft_strjoin(heredoc, line);
 			free(heredoc);
 			heredoc = temp;
 		}
-		free (line);
+		free(line);
 	}
+	free(line);
 	return (heredoc);
-}
-
-char	*insert_spaces(char *command)
-{
-	char	*changed;
-	int		i;
-	int		j;
-	int		in_string;
-
-	i = 0;
-	j = 0;
-	in_string = 0;
-	if (!command)
-	{
-		ft_putstr_fd("Error: No command specified\n", 2);
-		exit (1);
-	}
-	changed = malloc(strlen(command) * 5 + 1);
-	if (!changed)
-	{
-		ft_putstr_fd("Error: malloc failed\n", 2);
-		exit (1);
-	}
-	while (command[i] != '\0')
-	{
-		if (command[i] == '"')
-		{
-			in_string = !in_string;
-		}
-		if (!in_string && command[i] == '>'
-			&& command[i + 1] != ' ' && command[i + 1] != '>')
-		{
-			changed[j++] = ' ';
-			changed[j++] = '>';
-			changed[j++] = ' ';
-		}
-		else if (!in_string && command[i] == '<'
-			&& command[i + 1] != ' ' && command[i + 1] != '<')
-		{
-			changed[j++] = ' ';
-			changed[j++] = '<';
-			changed[j++] = ' ';
-		}
-		else if (!in_string && command[i] == '>'
-			&& command[i + 1] == '>' && command[i + 2] != ' ')
-		{
-			changed[j++] = ' ';
-			changed[j++] = '>';
-			changed[j++] = '>';
-			changed[j++] = ' ';
-			i++;
-		}
-		else if (!in_string && command[i] == '<'
-			&& command[i + 1] == '<' && command[i + 2] != ' ')
-		{
-			changed[j++] = ' ';
-			changed[j++] = '<';
-			changed[j++] = '<';
-			changed[j++] = ' ';
-			i++;
-		}
-		else
-		{
-			changed[j++] = command[i];
-		}
-		i++;
-	}
-	changed[j] = '\0';
-	return (changed);
 }
 
 t_main	*initialize_main(t_main *main_var, int num_commands)
