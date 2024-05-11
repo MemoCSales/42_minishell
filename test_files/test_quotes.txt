@@ -46,10 +46,47 @@ Faltava um j = 0 ANTES DE UM WHILE
 cat input.txt | wc
 
 APARENTEMENTE BEM, TESTAR MAIS... AS VEZES TEM Q REPETIR PARA IR...
-
 ===================================================================
 
 $?
 
 
 git diff ./utils/parse_utils_2.c
+
+
+===================================================================
+Input: echo hello""world 
+Output: helloworld
+
+Input: echo hello'world' 
+Output: helloworld
+
+Input: echo "$PWD" 
+Output: The current working directory (e.g., /home/username)
+
+Input: echo '$PWD' 
+Output: $PWD
+
+Input: echo 'aspas ->"' --> This one is creating a file
+Output: aspas ->"
+
+Input: echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" 
+Output: > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
+
+Input: echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
+Output: > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
+
+Input: echo "exit_code ->$? user ->$USER home -> $HOME"
+Output: exit_code ->0 user ->username home -> /home/username (assuming the last command was successful and the username is "username")
+
+Input: echo 'exit_code ->$? user ->$USER home -> $HOME'
+Output: exit_code ->$? user ->$USER home -> $HOME
+
+Input: echo "$"
+Output: $
+
+Input: echo $
+Output: (empty line)
+
+Input: echo $?HELLO 
+Output: 0HELLO (assuming the last command was successful)

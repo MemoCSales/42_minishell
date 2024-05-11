@@ -104,12 +104,12 @@ int cd_builtin(t_env *env_vars, char *path, t_main *main)
 	}
 	if (prev_dir != NULL)
 	{
-		printf("AQUI");
+		// printf("AQUI");
 		free(prev_dir);
 	}
 	if (curr_dir != NULL)
 	{
-		printf("AQUI");
+		// printf("AQUI");
 		free(curr_dir);
 	}
 	if (status == 0)

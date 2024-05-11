@@ -52,87 +52,110 @@ typedef struct s_env
 	int		status;
 }			t_env;
 
-// main
-void		main_loop(t_env env_var, t_main *main_var);
+//main
+void	main_loop(t_env env_var, t_main *main_var);
 
-// Functions for the buildins
-int			builtins_no_output(char *cmd);
-int			builtins_with_output(char *cmd);
-// int			cd_builtin(t_env *env_vars, char *path);
-int			cd_builtin(t_env *env_vars, char *path, t_main *main);
-int			pwd_builtin(void);
-int			env_builtin(t_env *env_vars);
-int			unset_builtin(t_env *env_vars, char *var_name);
-int			find_index(t_env *env_vars, char *var_name);
-int			export_builtin(t_env *env_vars, char *new_var);
-int			is_valid_var_name(char *var);
-int			check_duplicate(t_env *env_vars, char *new_var);
-int			echo_builtin(t_main *main, t_env *env);
-int			exit_builtin(t_main *main);
-int			exec_builtin(t_env *env_vars, t_main *main);
-void		ft_strcpy_memo(char *dst, char *src);
+//Functions for the buildins
+int		builtins_no_output(char *cmd);
+int		builtins_with_output(char *cmd);
+//int			cd_builtin(t_env *env_vars, char *path);
+int		cd_builtin(t_env *env_vars, char *path, t_main *main);
+int		pwd_builtin(void);
+int		env_builtin(t_env *env_vars);
+int		unset_builtin(t_env *env_vars, char *var_name);
+int		find_index(t_env *env_vars, char *var_name);
+int		export_builtin(t_env *env_vars, char *new_var);
+int		is_valid_var_name(char *var);
+int		check_duplicate(t_env *env_vars, char *new_var);
+int		echo_builtin(t_main *main, t_env *env);
+int		exit_builtin(t_main *main);
+int		exec_builtin(t_env *env_vars, t_main *main);
+void	ft_strcpy_memo(char *dst, char *src);
 
-// Environment variables
-void		init_env(t_env *env_vars, char **env);
-void		check_env(t_env *env_vars);
+//Environment variables
+void	init_env(t_env *env_vars, char **env);
+void	check_env(t_env *env_vars);
 
-// echo.c
+//echo.c
 char	*ft_strremove(char *string, int c);
 
-// exec.c
-int			execute_command(t_env *env, t_main *main);
-char		*get_env_path(t_env *env);
-char		*get_cmd_path(t_main *main, char *cmd_path);
-// int			parent_process(t_main *main, t_env *env, int i);
-int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
-// redirections
-int			check_for_redirect_output(t_main *main);
-int			check_for_redirect_input(t_main *main);
-void		handle_output_redirection(t_main *main, int i);
-void		handle_input_redirection(t_main *main, int i);
+//exec.c
+int		execute_command(t_env *env, t_main *main);
+char	*get_env_path(t_env *env);
+char	*get_cmd_path(t_main *main, char *cmd_path);
+//int	parent_process(t_main *main, t_env *env, int i);
+int		parent_process(t_main *main, t_env *env, int i, int pipe_created);
 
-// exec_utils.c
-char		*get_env_path(t_env *env);
-char		*get_cmd_path(t_main *main, char *cmd_path);
-// void	pipe_redirection(t_main *main, t_env *env_vars, int i);
-int			pipe_redirection(t_main *main, int i);
-char		**build_exec_args(t_main *main, char **exec_args, int i);
+//redirections
+int		check_for_redirect_output(t_main *main);
+int		check_for_redirect_input(t_main *main);
+void	handle_output_redirection(t_main *main, int i);
+void	handle_input_redirection(t_main *main, int i);
 
-// parsing
-t_main		*parse_line(char *line);
+//exec_utils.c
+char	*get_env_path(t_env *env);
+char	*get_cmd_path(t_main *main, char *cmd_path);
+//void	pipe_redirection(t_main *main, t_env *env_vars, int i);
+int		pipe_redirection(t_main *main, int i);
+char	**build_exec_args(t_main *main, char **exec_args, int i);
 
-// utils
-void		cleanup_split(char **split);
-void		free_main(t_main *main_var);
-void		free_args(char **args); //due segfault when testing parsing
+//parse
+t_main	*parse_line(char *line);
 
-// parse_utils
-t_main		*initialize_main(t_main *main_var, int num_commands);
-int			ft_strcpy(char *dst, const char *src);
-char		*ft_strncpy(char *dest, char *src, size_t n);
-char		*insert_spaces(char *command);
-void		ft_erase_quotes(char *tkn);
-void		remove_args(char **args, int start_index, int num_args);
-char		*read_heredoc(char *delimiter);
-int			count_cmds(char **cmds);
-char		**copy_args(char **args);
-int			count_args(char **args);
-char		*ft_strcat(char *dest, const char *src);
-char		*read_quotes(char *delimiter);
+//utils
+void	cleanup_split(char **split);
+void	free_main(t_main *main_var);
+void	free_args(char **args);
 
-// parse_utils_2
-void		print_args(char **args);
-void		print_struct(t_main *main_var, int i);
-void		check_malloc(void *ptr);
-int			check_redir(char **args, int j);
-void		redirection(t_main *parsed_struct, char **args, int i, int j);
+//parse_utils_1
+int		count_elements(char **array);
+char	**copy_args(char **args);
+void	remove_args(char **args, int start_index, int num_args);
+void	print_args(char **args);
+void	print_struct(t_main *main_var, int i);
 
-// parse_utils_3
-char		*prepared_input(char *line);
-char		**remove_start_quotes(char **args);
+//parse_utils_2
+int		check_redir(char **args, int j);
+void	redirection(t_main *parsed_struct, char **args, int i, int j);
+void	check_malloc(void *ptr);
+void	copy_increment(char *prepared, const char *line, int *i, int *j);
 
-// parse_utils_4
+//parse_utils_3
+void	handle_quotes(char *line, int *i, int *in_quotes);
+void	handle_variables(char *line, char *prepared, int *i, int *j);
+void	handle_others(char *line, char *prepared, int *i, int *j);
+void	handle_input(char *line, char *prepared);
+char	*prepare_line(char *line);
+
+//parse_utils_4
 int		in_quotes(char *line);
+char	*ft_strswap(char *str, char *substr, char *replacement);
+char	*ft_strnjoin(char const *s1, char const *s2, size_t n);
+void	free_parsed_struct(t_main *parsed_struct, int num_commands);
+char	*get_last_exit_status(void);
+
+//parse_utils_5
+void	clean_quotes(char **args);
+void	get_var_name(char *line, int *i, char *var_name);
+void	replace_var_value(char *var_name, char *prepared, int *j);
+int		is_escaped(char *line, int index);
+
+//parse_utils_6
+char	*read_quotes(char *delimiter);
+char	*read_heredoc(char *delimiter);
+char	*insert_spaces(char *command);
+t_main	*initialize_main(t_main *main_var, int num_commands);
+
+//parse_utils_7
+void	create_pipe(t_main *command, int i, int num_commands);
+void	handle_redirections(t_main *parsed_struct, char **args, int i);
+void	check_flags(t_main *command, char **args);
+
+//parse_utils_8
+int		ft_strcpy(char *dst, const char *src);
+char	*ft_strncpy(char *dest, char *src, size_t n);
+char	*ft_strcat(char *dest, const char *src);
+int		is_whitespace(char c);
 
 #endif
 

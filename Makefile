@@ -11,10 +11,14 @@ SRC =	main.c \
 		minishell.c \
 		./utils/init_env.c \
 		./utils/cleanup.c \
-		./utils/parse_utils.c \
-		./utils/parse_utils_2.c \
-		./utils/parse_utils_3.c \
-		./utils/parse_utils_4.c \
+		./parsing/parse_utils/parse_utils_1.c \
+		./parsing/parse_utils/parse_utils_2.c \
+		./parsing/parse_utils/parse_utils_3.c \
+		./parsing/parse_utils/parse_utils_4.c \
+		./parsing/parse_utils/parse_utils_5.c \
+		./parsing/parse_utils/parse_utils_6.c \
+		./parsing/parse_utils/parse_utils_7.c \
+		./parsing/parse_utils/parse_utils_8.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
