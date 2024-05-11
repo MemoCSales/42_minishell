@@ -30,7 +30,7 @@
 # define MAX_ARGS 100
 # define MAX_ARG_LEN 1000
 
-# define DEBUG 0
+# define DEBUG 1
 
 typedef struct s_main
 {
@@ -51,6 +51,17 @@ typedef struct s_env
 	char	**env_vars;
 	int		status;
 }			t_env;
+
+// typedef struct s_quotes
+// {
+// 	int		i; //index of the command
+// 	int		j; //index of the changed command
+// 	int		in_single_quotes;
+// 	int		in_double_quotes;
+// 	int		in_string;
+// 	char	*command; //to pass the *command[i] to check if it is a quote
+// 	char	*changed_string; //string with spaces
+// }			t_quotes;
 
 //main
 void	main_loop(t_env env_var, t_main *main_var);
@@ -107,35 +118,35 @@ void	cleanup_split(char **split);
 void	free_main(t_main *main_var);
 void	free_args(char **args);
 
-//parse_utils_1 (5)
+//parse_utils_1
 int		count_elements(char **array);
 char	**copy_args(char **args);
 void	remove_args(char **args, int start_index, int num_args);
 void	print_args(char **args);
 void	print_struct(t_main *main_var, int i);
 
-//parse_utils_2 (4)
+//parse_utils_2
 int		check_redir(char **args, int j);
 void	redirection(t_main *parsed_struct, char **args, int i, int j);
 void	check_malloc(void *ptr);
 void	get_var_name(char *line, int *i, char *var_name);
 void	replace_var_value(char *var_name, char *prepared, int *j);
 
-//parse_utils_3 (5)
+//parse_utils_3
 void	handle_quotes(char *line, int *i, int *in_quotes);
 void	handle_variables(char *line, char *prepared, int *i, int *j);
 void	handle_others(char *line, char *prepared, int *i, int *j);
 void	handle_input(char *line, char *prepared);
 char	*prepare_line(char *line);
 
-//parse_utils_4  (4)
+//parse_utils_4
 int		in_quotes(char *line);
 char	*get_last_exit_status(void);
 char	*ft_strswap(char *str, char *substr, char *replacement);
 char	*ft_strnjoin(char const *s1, char const *s2, size_t n);
 void	copy_increment(char *prepared, const char *line, int *i, int *j);
 
-//parse_utils_5 (4)
+//parse_utils_5
 void	remove_quotes(char *arg);
 void	clean_quotes(char **args);
 void	insert_spaces_in_command(char *command, char *changed, int *i, int *j);
@@ -148,19 +159,24 @@ char	*read_quotes(char *delimiter);
 char	*read_heredoc(char *delimiter);
 t_main	*initialize_main(t_main *main_var, int num_commands);
 
-//parse_utils_7 (5)
+//parse_utils_7
 void	check_flags(t_main *command, char **args);
 void	create_pipe(t_main *command, int i, int num_commands);
 void	handle_redirections(t_main *parsed_struct, char **args, int i);
 void	free_and_nullify(void **ptr);
 void	free_parsed_struct(t_main *parsed_struct, int num_commands);
 
-//parse_utils_8 (5)
+//parse_utils_8
 int		ft_strcpy(char *dst, const char *src);
 char	*ft_strncpy(char *dest, char *src, size_t n);
 char	*ft_strcat(char *dest, const char *src);
 int		is_whitespace(char c);
 int		is_escaped(char *line, int index);
+
+//parse_utils_9
+// char	*handling(char *command);
+// char	*pre_handle_quotes(char *command);
+// char	*pre_handle_escaped_quotes(char *command);
 
 #endif
 

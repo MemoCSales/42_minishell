@@ -19,6 +19,7 @@ SRC =	main.c \
 		./parsing/parse_utils/parse_utils_6.c \
 		./parsing/parse_utils/parse_utils_7.c \
 		./parsing/parse_utils/parse_utils_8.c \
+		./parsing/parse_utils/parse_utils_9.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \

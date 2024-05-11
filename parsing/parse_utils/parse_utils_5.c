@@ -62,7 +62,8 @@ void	insert_spaces_in_command(char *command, char *changed, int *i, int *j)
 		changed[(*j)++] = ' ';
 	}
 	else if (!in_string && command[*i] == command[*i + 1]
-		&& command[*i + 2] != ' ')
+		&& command[*i + 2] != ' ' && command[*i] == '>'
+		&& command[*i] == '<')
 	{
 		changed[(*j)++] = ' ';
 		changed[(*j)++] = command[*i];

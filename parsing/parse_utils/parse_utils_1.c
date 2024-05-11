@@ -87,12 +87,17 @@ void	print_args(char **args)
 			k++;
 		}
 	}
-	printf("Argument %d(after): %s\n", k, args[k]);
+	printf("Argument %d (after): %s\n", k, args[k]);
 	printf("\n");
 }
 
 void	print_struct(t_main *main_var, int i)
 {
+	if (main_var == NULL)
+	{
+		ft_putstr_fd("Error: main_var is NULL\n\n", STDERR_FILENO);
+		return ;
+	}
 	printf("\nt_main[%d].cmd: %s\n", i, main_var[i].cmd);
 	printf("t_main[%d].flags: %s\n", i, main_var[i].flags);
 	printf("t_main[%d].input_file: %s\n", i, main_var[i].input_file);

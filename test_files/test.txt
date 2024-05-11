@@ -3,13 +3,23 @@ valgrind --leak-check=full --trace-children=yes --track-fds=all --->  ❌
 
 BUILTINS:
 echo hello world                                            ---> ✅ ✅
+   hello world
 echo "hello world"                                          ---> ✅ ✅
+   hello world
 echo 'hello world'                                          ---> ✅ ✅
+   hello world
 echo hello'world'                                           ---> ✅ ✅
-echo hello""world                                           ---> ✅ ✅
+   helloworld
+echo hello""world                                           ---> ✅ ❌
+   helloworld
+
+
 echo ''                                                     ---> ✅ ✅
-echo "$PWD"                                                 ---> ❌ ❌               ISSO TB LEMBRO Q ERA ALGO Q EU TINHA ANOTADO PRA VER
+
+echo "$PWD"                                                 ---> ❌ ❌           ISSO TB LEMBRO Q ERA ALGO Q EU TINHA ANOTADO PRA VER
+/Users/demacinema/Desktop/MINIHELL/060524/42_minishell
 echo '$PWD'                                                 ---> ✅ ✅
+   $PWD
 echo "aspas ->'"                                            ---> ❌ ❌
 echo "aspas -> ' "                                          ---> ❌ ✅
 echo 'aspas ->"'                                            ---> ❌ ❌               PROVAVELMENTE O DAS ASPAS PENSAR ALGO QUE CONSIDERE AS ASPAS DE FORA E ELIMINA AS DE DENTRO

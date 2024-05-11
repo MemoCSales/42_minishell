@@ -14,11 +14,11 @@
 
 t_main	*parse_line(char *line)
 {
-	t_main	*parsed_struct;
-	char	**args;
-	char	**commands;
-	int		num_commands;
-	int		i;
+	t_main		*parsed_struct;
+	char		**args;
+	char		**commands;
+	int			num_commands;
+	int			i;
 
 	i = 0;
 	line = prepare_line(line);
@@ -40,3 +40,5 @@ t_main	*parse_line(char *line)
 	parsed_struct[num_commands].cmd = NULL;
 	return (parsed_struct);
 }
+// commands[i] = handling(commands[i]);
+// line = prepare_line(line); // here it has to check read_quotes
