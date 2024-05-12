@@ -91,32 +91,75 @@ int	export_builtin(t_env *env_vars, char *new_var)
 	return (0);
 }
 
-int	check_duplicate(t_env *env_vars, char *new_var)
+// int	check_duplicate(t_env *env_vars, char *new_var)
+// {
+// 	int		i;
+// 	int		len;
+// 	char	*name;
+
+// 	name = ft_strchr(new_var, '=');
+// 	if (name != NULL)
+// 		len = name - new_var;
+// 	else
+// 		len = ft_strlen(new_var);
+// 	i = 0;
+// 	while (env_vars->env_vars[i] != NULL)
+// 	{
+// 		if (ft_strncmp(env_vars->env_vars[i], new_var, len) == 0 
+// 			&& env_vars->env_vars[i][len] == '=')
+// 		{
+// 			free(env_vars->env_vars[i]);
+// 			env_vars->env_vars[i] = ft_strdup(new_var);
+// 			if (!env_vars->env_vars[i])
+// 			{
+// 				ft_putstr_fd("Error: Unable to duplicate string\n",
+// 					STDERR_FILENO);
+// 				return (0);
+// 			}
+// 			return (1);
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+int	get_name_length(char *new_var)
 {
-	int		i;
-	int		len;
 	char	*name;
+	int		len;
 
 	name = ft_strchr(new_var, '=');
 	if (name != NULL)
 		len = name - new_var;
 	else
 		len = ft_strlen(new_var);
+	return (len);
+}
+
+int	replace_env_var(t_env *env, char *new_var, int i)
+{
+	free(env->env_vars[i]);
+	env->env_vars[i] = ft_strdup(new_var);
+	if (!env->env_vars[i])
+	{
+		ft_putstr_fd("Error: Unable to duplicate string\n", STDERR_FILENO);
+		return (0);
+	}
+	return (1);
+}
+
+int	check_duplicate(t_env *env_vars, char *new_var)
+{
+	int	i;
+	int	len;
+
+	len = get_name_length(new_var);
 	i = 0;
 	while (env_vars->env_vars[i] != NULL)
 	{
-		if (ft_strncmp(env_vars->env_vars[i], new_var, len) == 0 \
-			&& env_vars->env_vars[i][len] == '=')
+		if (ft_strncmp(env_vars->env_vars[i], new_var, len) == 0 && env_vars->env_vars[i][len] == '=')
 		{
-			free(env_vars->env_vars[i]);
-			env_vars->env_vars[i] = ft_strdup(new_var);
-			if (!env_vars->env_vars[i])
-			{
-				ft_putstr_fd("Error: Unable to duplicate string\n",
-					STDERR_FILENO);
-				return (0);
-			}
-			return (1);
+			return (replace_env_var(env_vars, new_var, i));
 		}
 		i++;
 	}
