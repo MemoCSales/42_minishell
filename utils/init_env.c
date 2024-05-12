@@ -68,7 +68,9 @@ char	*ft_strdup_minishell(char *s1)
 	i = 0;
 	if (s1 == NULL)
 	{
-		ns = "";
+		ns = malloc(1);
+		if (ns)
+			ns[0] = '\0';
 		return (ns);
 	}
 	ns = (char *) malloc(ft_strlen(s1) + 1);

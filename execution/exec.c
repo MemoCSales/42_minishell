@@ -173,6 +173,7 @@ int	execute_command(t_env *env, t_main *main)
 				// printf("PIPE REDIRECTION: %d\n", pipe_created);
 				// printf("Pipe read end: %d\n", main[i].fd[0]);
 				// printf("Pipe write end: %d\n", main[i].fd[1]);
+				// printf("Outfile: %s\n", main[i].output_file);
 				if (main[i].output_file != NULL)
 				{
 					// printf("OUTPUT REDIRECTION\n");
@@ -266,6 +267,7 @@ int	exec_without_cmds(t_main *main, t_env *env, int i)
 {
 	int	heredoc_fd;
 
+	heredoc_fd = 0;
 	printf("EXECUTION WITH NO ARGUMENTS\n");
 	// pipe_created = pipe_redirection(main, i);
 	// printf("PIPE REDIRECTION: %d\n", pipe_created);
@@ -293,6 +295,7 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 	int		in;
 	int		out;
 
+	in = 0;
 	if (main[i].input_file)
 	{
 		in = open(main[i].input_file, O_RDONLY);

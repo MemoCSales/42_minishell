@@ -6,7 +6,7 @@ LIBFT	= $(LIBFT_DIRECTORY)libft.a
 OBJ_DIR	= obj/
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror -g
-
+# SAN 	= -fsanitize=address
 SRC =	main.c \
 		minishell.c \
 		./utils/init_env.c \
@@ -22,6 +22,7 @@ SRC =	main.c \
 		./buildins/unset.c \
 		./buildins/export.c \
 		./buildins/echo.c \
+		./buildins/exit.c \
 		./parsing/parse.c \
 		./execution/exec.c \
 		./execution/exec_utils.c \
@@ -35,7 +36,7 @@ $(LIBFT):
 		@make -C $(LIBFT_DIRECTORY)
 
 $(NAME): $(OBJ) $(LIBFT)
-			@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
+			@$(CC) $(CFLAGS) $(SAN) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 			@echo "$(RED)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
 			@echo "$(RED)│.. .   .    .     .        Welcome to MiniℍΞLL         .     .    .   . ..│$(DEFAULT)"
 			@echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"

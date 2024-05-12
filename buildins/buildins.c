@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   buildins.c                 ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   builtins.c                 ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -41,7 +41,7 @@ int	exec_builtin(t_env *env_vars, t_main *main)
 	if (ft_strcmp(main->cmd, "cd") == 0)
 		return (env_vars->status = cd_builtin(env_vars, main->args[0], main));
 	else if (ft_strcmp(main->cmd, "pwd") == 0)
-		return (env_vars->status = pwd_builtin());
+		return (env_vars->status = pwd_builtin(main));
 	else if (ft_strcmp(main->cmd, "env") == 0)
 		return (env_vars->status = env_builtin(env_vars));
 	else if (ft_strcmp(main->cmd, "unset") == 0)
@@ -52,43 +52,8 @@ int	exec_builtin(t_env *env_vars, t_main *main)
 		return (env_vars->status = echo_builtin(main, env_vars));
 	else if (ft_strcmp(main->cmd, "exit") == 0)
 	{
-		// return (env_vars->status = exit_builtin(main));
 		env_vars->status = exit_builtin(main);
-		// check_env(env_vars);
-		// printf("exit\n");
 		exit(env_vars->status);
 	}
 	return (-1);
-}
-
-int	exit_builtin(t_main *main)
-{
-	int	status;
-
-	status = 0;
-	if (main->flags != NULL)
-		status = ft_atoi(main->flags);
-	else if (!main->args[0])
-	{
-		printf("exit\n");
-		exit(status);
-	}
-	else if (main->args[1] != NULL)
-	{
-		error_messages("BASH_MANY_ARGUMENTS");
-		return (1);
-	}
-	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '-'
-		&& ft_isdigit(main->args[0][1])))
-		status = ft_atoi(main->args[0]);
-	else if (ft_isdigit(main->args[0][0]) || (main->args[0][0] == '+'
-		&& ft_isdigit(main->args[0][1])))
-		status = ft_atoi(main->args[0]);
-	else
-	{
-		error_messages("BASH_NUMERIC_ARGS");
-		return (2);
-	}
-	printf("exit\n");
-	exit(status);
 }

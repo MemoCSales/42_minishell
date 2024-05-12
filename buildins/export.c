@@ -88,7 +88,6 @@ int	export_builtin(t_env *env_vars, char *new_var)
 	new_env_vars[i + 1] = NULL;
 	free(env_vars->env_vars);
 	env_vars->env_vars = new_env_vars;
-	// env_buildin(env_vars);	//can delete later
 	return (0);
 }
 
