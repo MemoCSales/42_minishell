@@ -70,5 +70,5 @@ int	echo_builtin(t_main *main, t_env *env)
 	}
 	if (!cut_newline)
 		printf("\n");
-	return (0);// Set status to 0 if success
+	return (0);
 }

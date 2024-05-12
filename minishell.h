@@ -76,6 +76,11 @@ int			is_valid_remaining_chars(char *var);
 int			ft_isupper(int c);
 int			is_all_uppercase(char *var);
 int			is_valid_var_name(char *var);
+void		print_env_vars(t_env *env_vars);
+int			validate_new_var(t_env *env_vars, char *new_var);
+char		**allocate_new_env_vars(t_env *env_vars);
+void		copy_env_vars(t_env *env_vars, char **new_env_vars);
+int			add_new_var(char *new_var, char **new_env_vars, int i);
 
 int			builtins_no_output(char *cmd);
 int			builtins_with_output(char *cmd);

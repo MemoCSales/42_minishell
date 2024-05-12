@@ -44,7 +44,6 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	while (dir_paths[i])
 	{
 		path_cmd = ft_strjoin(dir_paths[i], "/");
-		// printf("%s\n", path_cmd);
 		prog = ft_strjoin(path_cmd, main->cmd);
 		free(path_cmd);
 		if (access(prog, F_OK | X_OK) == 0)
@@ -57,13 +56,11 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	}
 	// free(prog);
 	cleanup_split(dir_paths);
-	// printf("Despues del cleanup\n");
 	return (cmd_path); //check this later
 }
 
 int	pipe_redirection(t_main *main, int i)
 {
-	// printf("PIPE read end: %d -- write end:%d -- i: %d\n", main[i].fd[0], main[i].fd[1], i);
 	if (i != 0) // If not the first cmd, redirect input from the previous pipe
 	{
 		if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1)
