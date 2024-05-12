@@ -65,13 +65,24 @@ void		update_env(t_env *env_vars, char *prev_dir, t_main *main);
 void		cd_error_check(char *path);
 void		ft_strcpy_memo(char *dst, char *src);
 
+/*--------------------EXPORT BUILTIN-----------------------------*/
+int			export_builtin(t_env *env_vars, char *new_var);
+int			get_name_length(char *new_var);
+int			replace_env_var(t_env *env, char *new_var, int i);
+int			check_duplicate(t_env *env_vars, char *new_var);
+void		print_invalid_identifier(char *var);
+int			is_valid_first_char(char *var);
+int			is_valid_remaining_chars(char *var);
+int			ft_isupper(int c);
+int			is_all_uppercase(char *var);
+int			is_valid_var_name(char *var);
+
 int			builtins_no_output(char *cmd);
 int			builtins_with_output(char *cmd);
 int			pwd_builtin(t_main *main);
 int			env_builtin(t_env *env_vars);
 int			unset_builtin(t_env *env_vars, char *var_name);
 int			find_index(t_env *env_vars, char *var_name);
-int			export_builtin(t_env *env_vars, char *new_var);
 int			is_valid_var_name(char *var);
 int			check_duplicate(t_env *env_vars, char *new_var);
 int			echo_builtin(t_main *main, t_env *env);

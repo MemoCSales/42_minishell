@@ -33,8 +33,10 @@ int	export_builtin(t_env *env_vars, char *new_var)
 	name = ft_split(new_var, '=');
 	if (name[0] == NULL || !is_valid_var_name(name[0]))
 	{
-		ft_putstr_fd("miniℍΞLL: not a valid identifier\n", 2);
-		return (1);
+		printf("Export builtin\n");
+		// ft_putstr_fd("miniℍΞLL: not a valid identifier\n", 2);
+		env_vars->status = 1;
+		return (env_vars->status);
 	}
 	if ((name[0][ft_strlen(name[0]) - 1] == ' ')  || (name[1] && name[1][0] == ' '))
 	{
@@ -91,38 +93,6 @@ int	export_builtin(t_env *env_vars, char *new_var)
 	return (0);
 }
 
-// int	check_duplicate(t_env *env_vars, char *new_var)
-// {
-// 	int		i;
-// 	int		len;
-// 	char	*name;
-
-// 	name = ft_strchr(new_var, '=');
-// 	if (name != NULL)
-// 		len = name - new_var;
-// 	else
-// 		len = ft_strlen(new_var);
-// 	i = 0;
-// 	while (env_vars->env_vars[i] != NULL)
-// 	{
-// 		if (ft_strncmp(env_vars->env_vars[i], new_var, len) == 0 
-// 			&& env_vars->env_vars[i][len] == '=')
-// 		{
-// 			free(env_vars->env_vars[i]);
-// 			env_vars->env_vars[i] = ft_strdup(new_var);
-// 			if (!env_vars->env_vars[i])
-// 			{
-// 				ft_putstr_fd("Error: Unable to duplicate string\n",
-// 					STDERR_FILENO);
-// 				return (0);
-// 			}
-// 			return (1);
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
 int	get_name_length(char *new_var)
 {
 	char	*name;
@@ -166,35 +136,75 @@ int	check_duplicate(t_env *env_vars, char *new_var)
 	return (0);
 }
 
-int	is_valid_var_name(char *var)
+void	print_invalid_identifier(char *var)
+{
+	ft_putstr_fd("miniℍΞLL: export: ", 2);
+	ft_putstr_fd(var, 2);
+	ft_putstr_fd(": not a valid identifier", 2);
+	ft_putstr_fd("\n", 2);
+}
+
+
+int	is_valid_first_char(char *var)
+{
+	printf("dsfdsafasd");
+	if (!var || !ft_isalpha(var[0]) || ft_strchr(var, '=') || ft_isdigit(var[0]))
+	{
+		printf("Is valid first char\n");
+		print_invalid_identifier(var);
+		return (0);
+	}
+	return (1);
+}
+
+int	is_valid_remaining_chars(char *var)
 {
 	int	i;
 
-	if (!var || !ft_isalpha(var[0]) || ft_strchr(var, '='))
-	{
-		ft_putstr_fd("miniℍΞLL: export: ", 2);
-		ft_putstr_fd(var, 2);
-		ft_putstr_fd(": not a valid identifier", 2);
-		return (0);
-	}
-	if (ft_isdigit(var[0]))
-	{
-		ft_putstr_fd("miniℍΞLL: export: ", 2);
-		ft_putstr_fd(var, 2);
-		ft_putstr_fd(": not a valid identifier", 2);
-		return (0);
-	}
 	i = 1;
 	while (var[i])
 	{
 		if (!ft_isalnum(var[i]) && (var[i] != '_' || var[i] != '-'))
 		{
-			ft_putstr_fd("miniℍΞLL: export: ", 2);
-			ft_putstr_fd(var, 2);
-			ft_putstr_fd(": not a valid identifier", 2);
+			printf("Is valid remaining chars\n");
+			print_invalid_identifier(var);
 			return (0);
 		}
 		i++;
 	}
+	return (1);
+}
+
+int	ft_isupper(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	else
+		return (0);
+}
+
+int	is_all_uppercase(char *var)
+{
+	int	i;
+
+	i = 0;
+	while (var[i])
+	{
+		if (!ft_isupper(var[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	is_valid_var_name(char *var)
+{
+	printf("ISVALIR\n");
+	if (!is_valid_first_char(var))
+		return (0);
+	if (!is_valid_remaining_chars(var))
+		return (0);
+	if (!is_all_uppercase(var))
+		return (0);
 	return (1);
 }
