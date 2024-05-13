@@ -12,47 +12,40 @@
 
 #include "../minishell.h"
 
-int	export_builtin(t_env *env_vars, char *new_var)
+void	print_env_vars(t_env *env_vars)
 {
-	int		i;
-	int		j;
-	char	**new_env_vars;
-	char	*temp;
+	int	i;
+
+	i = 0;
+	while (env_vars->env_vars[i] != NULL)
+	{
+		printf("declare -x %s\n", env_vars->env_vars[i]);
+		i++;
+	}
+}
+
+int	validate_new_var(t_env *env_vars, char *new_var)
+{
 	char	**name;
 
-	if (new_var == NULL)
+	if (ft_strncmp(new_var, "=", 1) == 0)
 	{
-		i = 0;
-		while (env_vars->env_vars[i]  != NULL)
-		{
-			printf("declare -x %s\n", env_vars->env_vars[i]);
-			i++;
-		}
+		ft_putstr_fd("miniℍΞLL: export: '=': not a valid identifier\n", 2);
 		return (0);
 	}
 	name = ft_split(new_var, '=');
-	if (name[0] == NULL || !is_valid_var_name(name[0]))
-	{
-		printf("Export builtin\n");
-		// ft_putstr_fd("miniℍΞLL: not a valid identifier\n", 2);
-		env_vars->status = 1;
-		return (env_vars->status);
-	}
-	if ((name[0][ft_strlen(name[0]) - 1] == ' ')  || (name[1] && name[1][0] == ' '))
-	{
-		ft_putstr_fd("bash: export: '=': nor a valid identifier", 2);
-		free(name);
-		return (1);
-	}
-	if (!is_valid_var_name(name[0]))
-	{
-		ft_putstr_fd("\n", 2);
-		return (1);
-	}
-	if (check_duplicate(env_vars, new_var))
-	{
+	if (ft_strncmp(new_var, "=", 1) == 0 || (name[0] == NULL
+			&& !is_valid_var_name(name[0])) || !is_valid_var_name(name[0])
+		|| check_duplicate(env_vars, new_var))
 		return (0);
-	}
+	return (1);
+}
+
+char	**allocate_new_env_vars(t_env *env_vars)
+{
+	int		i;
+	char	**new_env_vars;
+
 	i = 0;
 	while (env_vars->env_vars[i] != NULL)
 		i++;
@@ -60,14 +53,27 @@ int	export_builtin(t_env *env_vars, char *new_var)
 	if (!new_env_vars)
 	{
 		ft_putstr_fd("Error: Unable to allocate memory\n", 2);
-		return (1);
+		exit(EXIT_FAILURE);
 	}
+	return (new_env_vars);
+}
+
+void	copy_env_vars(t_env *env_vars, char **new_env_vars)
+{
+	int	j;
+
 	j = 0;
-	while (j < i)
+	while (env_vars->env_vars[j] != NULL)
 	{
 		new_env_vars[j] = env_vars->env_vars[j];
 		j++;
 	}
+}
+
+int	add_new_var(char *new_var, char **new_env_vars, int i)
+{
+	char	*temp;
+
 	new_env_vars[i] = ft_strdup(new_var);
 	if (!new_env_vars[i])
 	{
@@ -83,11 +89,35 @@ int	export_builtin(t_env *env_vars, char *new_var)
 		if (!new_env_vars[i])
 		{
 			ft_putstr_fd("Error allocating memory\n", 2);
-			free(new_env_vars);
+			cleanup_split(new_env_vars);
 			return (1);
 		}
 	}
 	new_env_vars[i + 1] = NULL;
+	return (0);
+}
+
+int	export_builtin(t_env *env_vars, char *new_var)
+{
+	char	**new_env_vars;
+	int		i;
+
+	if (new_var == NULL)
+	{
+		print_env_vars(env_vars);
+		return (0);
+	}
+	if (!validate_new_var(env_vars, new_var))
+		return (1);
+	new_env_vars = allocate_new_env_vars(env_vars);
+	if (!new_env_vars)
+		return (1);
+	copy_env_vars(env_vars, new_env_vars);
+	i = 0;
+	while (new_env_vars[i] != NULL)
+		i++;
+	if (add_new_var(new_var, new_env_vars, i))
+		return (1);
 	free(env_vars->env_vars);
 	env_vars->env_vars = new_env_vars;
 	return (0);
@@ -127,7 +157,8 @@ int	check_duplicate(t_env *env_vars, char *new_var)
 	i = 0;
 	while (env_vars->env_vars[i] != NULL)
 	{
-		if (ft_strncmp(env_vars->env_vars[i], new_var, len) == 0 && env_vars->env_vars[i][len] == '=')
+		if (ft_strncmp(env_vars->env_vars[i], new_var, len) == 0
+			&& env_vars->env_vars[i][len] == '=')
 		{
 			return (replace_env_var(env_vars, new_var, i));
 		}
@@ -144,13 +175,11 @@ void	print_invalid_identifier(char *var)
 	ft_putstr_fd("\n", 2);
 }
 
-
 int	is_valid_first_char(char *var)
 {
-	printf("dsfdsafasd");
-	if (!var || !ft_isalpha(var[0]) || ft_strchr(var, '=') || ft_isdigit(var[0]))
+	if (!var || !ft_isalpha(var[0]) || ft_strchr(var, '=')
+		|| ft_isdigit(var[0]))
 	{
-		printf("Is valid first char\n");
 		print_invalid_identifier(var);
 		return (0);
 	}
@@ -166,7 +195,6 @@ int	is_valid_remaining_chars(char *var)
 	{
 		if (!ft_isalnum(var[i]) && (var[i] != '_' || var[i] != '-'))
 		{
-			printf("Is valid remaining chars\n");
 			print_invalid_identifier(var);
 			return (0);
 		}
@@ -199,7 +227,6 @@ int	is_all_uppercase(char *var)
 
 int	is_valid_var_name(char *var)
 {
-	printf("ISVALIR\n");
 	if (!is_valid_first_char(var))
 		return (0);
 	if (!is_valid_remaining_chars(var))
