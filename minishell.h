@@ -162,6 +162,7 @@ int			check_redir(char **args, int j);
 t_main		*redirection(t_main *parsed_struct, char **args, int i, int j);
 
 void		print_open_fds(void);
+int is_fd_closed(int fd);
 
 #endif
 

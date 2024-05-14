@@ -118,17 +118,17 @@ void	handle_input_redirection(t_main *main, int i)
 
 int	parent_process(t_main *main, t_env *env, int i, int pipe_created)
 {
+	if (pipe_created)
+	{
+		close(main[i].fd[0]);
+		close(main[i].fd[1]);
+	}
 	if (i != 0) //If not the 1st cmd, closes the ends of the previous pipe
 	{
 		close (main[i - 1].fd[0]);
 		close (main[i - 1].fd[1]);
 	}
 	waitpid(main[i].pid, &env->status, 0);
-	if (pipe_created)
-	{
-		close(main[i].fd[0]);
-		close(main[i].fd[1]);
-	}
 	// printf("PARENT EXIT CODE: %d\n", env->status);
 	return WEXITSTATUS(env->status);
 }
@@ -157,11 +157,15 @@ int	execute_command(t_env *env, t_main *main)
 			// printf("OUTPUT FILE %s\n", main[i].output_file);
 			if (builtins_no_output(main->cmd) != -1)
 				return (env->status = exec_builtin(env, &main[i]));
+			if (main[i + 1].cmd != NULL) {
+				// printf("Setting up pipe between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
+			}
 			main[i].pid = fork();
 			if (main[i].pid < 0)
 				error_messages("ERROR_FORK");
 			if (main[i].pid == 0) //Child process
 			{
+				// printf("Child: Im the child process with PID: %d\n", main[i].pid);
 				pipe_created = pipe_redirection(main, i);
 				// printf("PIPES EXITS: %d\n", pipe_created);
 				// if (pipe_created)
@@ -202,18 +206,19 @@ int	execute_command(t_env *env, t_main *main)
 				if (main[i].cmd[0] == '/' || ft_strncmp(main[i].cmd, "./", 2) == 0)
 					path_cmd = ft_strdup(main[i].cmd);
 				else
-					path_cmd = get_cmd_path(&main[i], path_env);
-											// Find full path of command
+					path_cmd = get_cmd_path(&main[i], path_env); // Find full path of command
 				//Grandson - executes
 				pid = fork();
 				if (pid == -1)
 					printf("Error while forking grandson\n");
 				else if (pid == 0)
 				{
+					// printf("Child of child: Im the child process with PID: %d\n", pid);
 					if (pipe_created)
 					{
 						close(main[i].fd[0]);
 						dup2(main[i].fd[1],STDOUT_FILENO);
+						close(main[i].fd[1]);
 					}
 					if (builtins_with_output(main[i].cmd) != -1)
 					{
@@ -228,21 +233,26 @@ int	execute_command(t_env *env, t_main *main)
 						exit(env->status);
 					}
 				}
-				if (pipe_created)
+				else
 				{
-					close (main[i].fd[0]);
-					close (main[i].fd[1]);
+					if (pipe_created)
+					{
+						close (main[i].fd[0]);
+						close (main[i].fd[1]);
+					}
+					// printf("ChildParent: Im the child process with PID: %d\n", pid);
+					close(heredoc_fd);
+					wait(&env->status);
+					cleanup_split(exec_args);
+					// free(path_cmd);
+					env->status = WEXITSTATUS(env->status);
+					exit (env->status); //check this line
+					//grandson finished
 				}
-				close(heredoc_fd);
-				wait(&env->status);
-				cleanup_split(exec_args);
-				// free(path_cmd);
-				env->status = WEXITSTATUS(env->status);
-				exit (env->status); //check this line
-				//grandson finished
 			}
 			else // Parent process
 			{
+				// printf("Parent: Im the parent process with PID: %d\n", main[i].pid);
 				env->status = parent_process(main, env, i, pipe_created);
 			}
 			i++;
@@ -315,3 +325,44 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 	close(in);
 	close(out);
 }
+
+
+
+/*
+Given that the pipes are created beforehand and stored in your main data structure, you need to ensure that the correct file descriptors are being used for each command in the pipeline.
+
+In the case of cat | ls, the cat command should write to the pipe (i.e., its standard output, STDOUT_FILENO, should be redirected to the write end of the pipe), and the ls command should read from the pipe (i.e., its standard input, STDIN_FILENO, should be redirected to the read end of the pipe).
+
+Here's how you might modify your child process code to do this:
+if (main[i].pid == 0) //Child process
+{
+    // If this command is writing to a pipe, redirect stdout to the write end of the pipe
+    if (main[i].fd[1] != -1) {
+        dup2(main[i].fd[1], STDOUT_FILENO);
+        close(main[i].fd[1]);
+    }
+
+    // If this command is reading from a pipe, redirect stdin to the read end of the pipe
+    if (main[i].fd[0] != -1) {
+        dup2(main[i].fd[0], STDIN_FILENO);
+        close(main[i].fd[0]);
+    }
+
+    // Rest of the code...
+}
+
+In the parent process, you should close both ends of the pipe after the child process has been forked:
+if (main[i].pid > 0) //Parent process
+{
+    if (main[i].fd[0] != -1) {
+        close(main[i].fd[0]);
+    }
+    if (main[i].fd[1] != -1) {
+        close(main[i].fd[1]);
+    }
+}
+
+This ensures that the parent process doesn't keep any unnecessary file descriptors open, which could prevent EOF from being sent when the cat command finishes.
+
+Remember to initialize main[i].fd[0] and main[i].fd[1] to -1 before the pipes are created, and set them back to -1 after they are closed. This allows you to check whether a file descriptor is in use.
+*/

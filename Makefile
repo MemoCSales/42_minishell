@@ -28,7 +28,7 @@ SRC =	main.c \
 		./execution/exec_utils.c \
 
 all: $(NAME)
-	@./minishell
+	# @./minishell
 
 OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 

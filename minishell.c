@@ -26,6 +26,32 @@ void	print_open_fds(void)
 		i++;
 	}
 }
+int is_fd_closed(int fd) {
+    int flags = fcntl(fd, F_GETFD);
+    return flags == -1; // If fcntl() returns -1, the file descriptor is closed
+}
+
+
+void close_all_pipes(t_main *main, int num_cmds)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_cmds)
+	{
+		if (main[i].fd[0] != -1)
+		{
+			close(main[i].fd[0]);
+			// main[i].fd[0] = -1;
+		}
+		if (main[i].fd[1] != -1)
+		{
+			close(main[i].fd[1]);
+			// main[i].fd[1] = -1;
+		}
+		i++;
+	}	
+}
 
 void	main_loop(t_env env_var, t_main *main_var)
 {
@@ -56,7 +82,10 @@ void	main_loop(t_env env_var, t_main *main_var)
 			// if (buildins(main_var->cmd) == -1)
 			// print_open_fds();
 			// printf("\n");
-			env_var.status = execute_command(&env_var, main_var);
+		env_var.status = execute_command(&env_var, main_var);
+		// printf("\n");
+		// close_all_pipes(main_var, num_commands);
+			// exit(0);
 			// print_open_fds();
 		// 	else
 		// 		exec_buildin(&env_var, main_var);
