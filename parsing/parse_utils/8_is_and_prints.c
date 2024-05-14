@@ -77,12 +77,7 @@ void	print_struct(t_main *main_var, int i)
 	printf("t_main[%d].fd[0]: %d\n", i, main_var[i].fd[0]);
 	printf("t_main[%d].fd[1]: %d\n\n", i, main_var[i].fd[1]);
 }
-void print_ph_strings(char ***ph_strings)
-{
-    for (int i = 0; (*ph_strings)[i] != NULL; i++) {
-        printf("ph_strings[%d]: %s\n", i, (*ph_strings)[i]);
-    }
-}
+
 // char	*handling(char *command)
 // {
 // 	char	*processed_command;

@@ -55,22 +55,22 @@ git diff ./utils/parse_utils_2.c
 
 
 ===================================================================
-Input: echo hello""world 
+Input: echo hello""world ✅
 Output: helloworld
 
-Input: echo hello'world' 
+Input: echo hello'world' ✅
 Output: helloworld
 
 Input: echo "$PWD" 
 Output: The current working directory (e.g., /home/username)
 
-Input: echo '$PWD' 
+Input: echo '$PWD' ✅
 Output: $PWD
 
 Input: echo 'aspas ->"' --> This one is creating a file
 Output: aspas ->"
 
-Input: echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" 
+Input: echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" ✅
 Output: > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
 
 Input: echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
@@ -82,7 +82,7 @@ Output: exit_code ->0 user ->username home -> /home/username (assuming the last 
 Input: echo 'exit_code ->$? user ->$USER home -> $HOME'
 Output: exit_code ->$? user ->$USER home -> $HOME
 
-Input: echo "$"
+Input: echo "$"       ✅
 Output: $
 
 Input: echo $

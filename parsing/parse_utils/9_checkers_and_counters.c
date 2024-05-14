@@ -57,3 +57,15 @@ int	count_elements(char **array)
 		num_elements++;
 	return (num_elements);
 }
+
+void	print_ph_strings(char ***ph_strings)
+{
+	int	i;
+
+	i = 0;
+	while ((*ph_strings)[i] != NULL)
+	{
+		printf("ph_strings[%d]: %s\n", i, (*ph_strings)[i]);
+		i++;
+	}
+}

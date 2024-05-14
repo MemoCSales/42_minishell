@@ -15,23 +15,36 @@
 char	*prepare_line(char *line, char ***ph_strings)
 {
 	char	*prepared;
-	// char	**ph_strings;
 
 	prepared = malloc(strlen(line) + 8192);
 	check_malloc(prepared);
-	// ph_strings = malloc(strlen(line) + 8192);
 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
 	check_malloc(ph_strings);
 	placeholder(line, ph_strings);
-printf("Modified line: %s\n", line);
 	prepared = ft_strdup(line);
-printf("Modified prepared: %s\n", prepared);
-printf("Modified ph_strings (prepare_line): \n");
-print_ph_strings(ph_strings);
-	// handle_input(line, prepared);
-	// remove_double_quotes(prepared);
 	return (prepared);
 }
+
+// char	*prepare_line(char *line, char ***ph_strings)
+// {
+// 	char	*prepared;
+// 	// char	**ph_strings;
+
+// 	prepared = malloc(strlen(line) + 8192);
+// 	check_malloc(prepared);
+// 	// ph_strings = malloc(strlen(line) + 8192);
+// 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
+// 	check_malloc(ph_strings);
+// 	placeholder(line, ph_strings);
+// printf("Modified line: %s\n", line);
+// 	prepared = ft_strdup(line);
+// printf("Modified prepared: %s\n", prepared);
+// printf("Modified ph_strings (prepare_line): \n");
+// print_ph_strings(ph_strings);
+// 	// handle_input(line, prepared);
+// 	// remove_double_quotes(prepared);
+// 	return (prepared);
+// }
 
 // handle_quotes(line, &i, &in_quotes); /// CHANGED TO FIX echo "aspas ->'"
 

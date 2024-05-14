@@ -177,7 +177,7 @@ int		is_escaped(char *line, int index); //CHECK IF CHAR IS ESCAPED
 int		is_char_in_quotes(char *line, int index); //CHECK IF CHAR IS INSIDE QUOTES
 void	print_args(char **args); //PRINT **ARGS
 void	print_struct(t_main *main_var, int i); //PRINT STRUCT t_main
-void	print_ph_strings(char ***ph_strings);
+
 // char	*handling(char *command);
 // char	*pre_handle_quotes(char *command);
 // char	*pre_handle_escaped_quotes(char *command);
@@ -188,6 +188,7 @@ void	check_malloc(void *ptr);
 void	check_flags(t_main *command, char **args); //USED IN PARSE_LINE
 int		check_delimiter(char *delimiter); //USED IN READ_QUOTES AND READ_HEREDOC
 int		count_elements(char **elements); //COUNT ELEMENTS IN **ARRAY
+void	print_ph_strings(char ***ph_strings);
 
 //10_placeholder_1.c
 char	**extract_strings(const char *line, int *numStrings);
@@ -198,12 +199,11 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len);
 
 //11_placeholder_2.c
 void	placeholder(char *line, char ***ph_strings);
-void	replace_placeholders(char **command, char ***ph_strings);
 void	replace_single_placeholder(char **command,
 			char *placeholder, char *replacement);
 void	reverse_placeholders(char **command, char ***ph_strings);
 void	reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
-
+// void	replace_placeholders(char **command, char ***ph_strings);
 
 //parse_test
 // void	append_var_value(char **prepared, int *j, char *var_value)
