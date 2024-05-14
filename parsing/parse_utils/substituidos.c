@@ -13,7 +13,6 @@
 #include "../minishell.h"
 
 // =================================================
-
 // NEW
 // void process_command(char *command, char *changed)
 // {
@@ -293,7 +292,7 @@
 
 // =================================================
 // NEW
-// void remove_quotes(char *arg) {
+// void remove_args_first_last_quotes(char *arg) {
 //     int len = ft_strlen(arg);
 //     ft_memmove(arg, arg + 1, len - 1);
 //     arg[len - 1] = '\0';
@@ -307,7 +306,7 @@
 // || (args[1][0] == '\'' && args[count - 1][ft_strlen(args[count - 1])
 // - 1] == '\'')))) {
 //             if (args[0][0] == '\"' || args[0][0] == '\'') {
-//                 remove_quotes(args[0]);
+//                 remove_args_first_last_quotes(args[0]);
 //             }
 //             if (args[count - 1][ft_strlen(args[count - 1]) - 1]
 // == '\"' || args[count - 1][ft_strlen(args[count - 1]) - 1] == '\'')

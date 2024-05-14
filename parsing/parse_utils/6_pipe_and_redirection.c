@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   parse_utils_6.c            ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   6_pipe_and_redirection.c   ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -11,17 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	check_delimiter(char *delimiter)
-{
-	if (!delimiter)
-	{
-		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n",
-			STDERR_FILENO);
-		return (1);
-	}
-	return (0);
-}
 
 char	*read_quotes(char *delimiter)
 {
@@ -79,25 +68,30 @@ char	*read_heredoc(char *delimiter)
 	return (heredoc);
 }
 
-t_main	*initialize_main(t_main *main_var, int num_commands)
+void	create_pipe(t_main *command, int i, int num_commands)
 {
-	int	i;
-
-	i = 0;
-	main_var = malloc((num_commands + 1) * sizeof(t_main));
-	check_malloc(main_var);
-	while (i < num_commands)
+	if (i < num_commands - 1)
 	{
-		main_var->cmd = NULL;
-		main_var->flags = NULL;
-		main_var->args = NULL;
-		main_var->input_file = NULL;
-		main_var->output_file = NULL;
-		main_var->heredoc = NULL;
-		main_var->extra = NULL;
-		main_var->fd[0] = 0;
-		main_var->fd[1] = 0;
-		i++;
+		if (pipe(command -> fd) == -1)
+		{
+			perror("Pipe error");
+			exit(EXIT_FAILURE);
+		}
 	}
-	return (main_var);
+}
+
+void	handle_redirections(t_main *parsed_struct, char **args, int i)
+{
+	int	j;
+
+	j = 0;
+	while (args[j] != NULL)
+	{
+		if (check_redir(args, j))
+		{
+			redirection(parsed_struct, args, i, j);
+			j--;
+		}
+		j++;
+	}
 }

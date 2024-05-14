@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   parse_utils_2.c            ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   3_redirection_and_variables.c     ψΨ MiniℍΞLL Ψψ     :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -55,12 +55,16 @@ void	redirection(t_main *parsed_struct, char **args, int i, int j)
 	remove_args(args, j, 2);
 }
 
-void	check_malloc(void *ptr)
+// && (in_quotes(line) == 2)) //line is different from the original
+void	handle_variables(char *line, char *prepared, int *i, int *j)
 {
-	if (!ptr)
+	char	var_name[1024];
+
+	if (line[*i] == '$' && (*i == 0 || line[*i - 1] != '\\'))
 	{
-		ft_putstr_fd("Error: Unable to allocate memory\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
+		(*i)++;
+		get_var_name(line, i, var_name);
+		replace_var_value(var_name, prepared, j);
 	}
 }
 

@@ -33,18 +33,13 @@ void	main_loop(t_env env_var, t_main *main_var)
 	int		num_commands;
 
 	line = NULL;
-	while (1) //prints a prompt and retrieves from what it reads
+	while (1)
 	{
 		line = readline("\033[1;31mψΨ:\033[0m");
 		if (!line)
-		{
 			printf("Error: readline\n");
-			// free(line);
-			// break ;
-		}
 		if (ft_strlen(line) > 0)
 			add_history(line);
-		// main_var = initialize_main(main_var, 0);
 		main_var = parse_line(line);
 		if (!main_var)
 		{
@@ -52,28 +47,10 @@ void	main_loop(t_env env_var, t_main *main_var)
 			free(line);
 			continue ;
 		}
-// printf ("MINISHELL");
-// print_args(main_var[0].args);
 		num_commands = 0;
 		while (main_var[num_commands].cmd)
 			num_commands++;
-// print_struct(main_var, num_commands); // printing parsing result
-// printf("\n");
-// exit(0);
-		// if (num_commands >= 1)
-		// {
-			// if (buildins(main_var->cmd) == -1)
-			// print_open_fds();
-			// printf("\n");
-			env_var.status = execute_command(&env_var, main_var);
-			// print_open_fds();
-		// 	else
-		// 		exec_buildin(&env_var, main_var);
-		// }
-		// free_main(main_var); // This does not goes here
-		// printf("MAIN EXIT CODE: %d\n", env_var.status);
-		// free(main_var);
-		// free(line);
+		env_var.status = execute_command(&env_var, main_var);
 		free_parsed_struct(main_var, num_commands);
 		free(line);
 	}

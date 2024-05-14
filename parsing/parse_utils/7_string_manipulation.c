@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   parse_utils_4.c            ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   7_string_manipulation.c    ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -12,52 +12,63 @@
 
 #include "../minishell.h"
 
-int	in_quotes(char *line)
+int	ft_strcpy(char *dst, const char *src)
 {
 	int	i;
-	int	in_single_quotes;
-	int	in_double_quotes;
 
+	if (!dst || !src)
+		return (0);
 	i = 0;
-	in_single_quotes = 0;
-	in_double_quotes = 0;
-	while (line[i] != '\0')
+	while (src[i])
 	{
-		if (line[i] == '\'')
-			in_single_quotes = !in_single_quotes;
-		else if (line[i] == '\"' && (!in_double_quotes || line[i - 1] != '\\'))
-			in_double_quotes = !in_double_quotes;
+		dst[i] = src[i];
 		i++;
 	}
-	if (in_single_quotes || in_double_quotes)
-		return (-1);
-	if (in_single_quotes)
-		return (1);
-	if (in_double_quotes)
-		return (2);
-	return (0);
+	dst[i] = '\0';
+	return (i);
 }
 
-char	*get_last_exit_status(void)
+char	*ft_strncpy(char *dest, char *src, size_t n)
 {
-	char	*status_str;
-	int		status;
-	pid_t	pid;
+	size_t	src_len;
 
-	pid = wait(&status);
-	if (pid == -1)
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	if (dest == NULL)
+		return (dest);
+	if (src == NULL)
+		return (dest);
+	src_len = ft_strlen(src);
+	if (n > src_len)
 	{
-		status_str = ft_strdup("-1");
-	}
-	else if (WIFEXITED(status))
-	{
-		status_str = ft_itoa(WEXITSTATUS(status));
+		ft_memcpy(dest, src, src_len);
+		dest[src_len] = '\0';
 	}
 	else
 	{
-		status_str = ft_strdup("Error");
+		ft_memcpy(dest, src, n);
+		dest[n] = '\0';
 	}
-	return (status_str);
+	return (dest);
+}
+
+char	*ft_strcat(char *dest, const char *src)
+{
+	size_t	dest_len;
+	size_t	src_len;
+	char	*temp;
+
+	dest_len = strlen(dest);
+	src_len = strlen(src);
+	temp = NULL;
+	temp = malloc(dest_len + src_len + 1);
+	check_malloc(temp);
+	ft_strncpy(temp, dest, dest_len);
+	ft_strncpy(temp + dest_len, (char *)src, src_len);
+	temp[dest_len + src_len] = '\0';
+	ft_strcpy(dest, temp);
+	free(temp);
+	return (dest);
 }
 
 char	*ft_strswap(char *str, char *substr, char *replacement)
@@ -115,11 +126,4 @@ char	*ft_strnjoin(char const *s1, char const *s2, size_t n)
 	}
 	new_str[i] = '\0';
 	return (new_str);
-}
-
-void	copy_increment(char *prepared, const char *line, int *i, int *j)
-{
-	prepared[*j] = line[*i];
-	(*i)++;
-	(*j)++;
 }

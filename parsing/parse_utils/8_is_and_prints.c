@@ -1,17 +1,88 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_utils_9.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   8_is_and_prints.c          ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/07 20:59:34 by demacinema       ###   ########.fr       */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+int	is_whitespace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n');
+}
+
+int	is_escaped(char *line, int index)
+	{
+	int	count;
+
+	count = 0;
+	index--;
+	while (index >= 0 && line[index] == '\\')
+	{
+		count++;
+		index--;
+	}
+	return (count % 2 != 0);
+}
+
+int	is_char_in_quotes(char *line, int index)
+{
+	char	temp;
+	int		status;
+
+	temp = line[index + 1];
+	line[index + 1] = '\0';
+	status = in_quotes(line);
+	line[index + 1] = temp;
+	return (status);
+}
+
+void	print_args(char **args)
+{
+	int	k;
+
+	k = 0;
+	if (!args)
+		printf("Argument NULL%d: %s\n", k, args[k]);
+	else
+	{
+		while (args[k] != NULL)
+		{
+			printf("t_main.args[%d]: %s\n", k, args[k]);
+			k++;
+		}
+	}
+}
+
+void	print_struct(t_main *main_var, int i)
+{
+	if (main_var == NULL)
+	{
+		ft_putstr_fd("Error: main_var is NULL\n\n", STDERR_FILENO);
+		return ;
+	}
+	printf("\nt_main[%d].cmd: %s\n", i, main_var[i].cmd);
+	printf("t_main[%d].flags: %s\n", i, main_var[i].flags);
+	print_args(main_var[i].args);
+	printf("t_main[%d].input_file: %s\n", i, main_var[i].input_file);
+	printf("t_main[%d].output_file: %s\n", i, main_var[i].output_file);
+	printf("t_main[%d].heredoc: %s\n", i, main_var[i].heredoc);
+	printf("t_main[%d].extra: %s\n", i, main_var[i].extra);
+	printf("t_main[%d].fd[0]: %d\n", i, main_var[i].fd[0]);
+	printf("t_main[%d].fd[1]: %d\n\n", i, main_var[i].fd[1]);
+}
+void print_ph_strings(char ***ph_strings)
+{
+    for (int i = 0; (*ph_strings)[i] != NULL; i++) {
+        printf("ph_strings[%d]: %s\n", i, (*ph_strings)[i]);
+    }
+}
 // char	*handling(char *command)
 // {
 // 	char	*processed_command;
@@ -79,3 +150,10 @@
 // // 	processed_command[j] = '\0';
 // // 	return (processed_command);
 // // }
+
+// void	copy_increment(char *prepared, const char *line, int *i, int *j)
+// {
+// 	prepared[*j] = line[*i];
+// 	(*i)++;
+// 	(*j)++;
+// }
