@@ -3,13 +3,32 @@ valgrind --leak-check=full --trace-children=yes --track-fds=all --->  ❌
 
 BUILTINS:
 echo hello world                                            ---> ✅ ✅
+   hello world
 echo "hello world"                                          ---> ✅ ✅
+   hello world
 echo 'hello world'                                          ---> ✅ ✅
+   hello world
 echo hello'world'                                           ---> ✅ ✅
+   helloworld
 echo hello""world                                           ---> ✅ ✅
+   helloworld
 echo ''                                                     ---> ✅ ✅
-echo "$PWD"                                                 ---> ❌ ❌               ISSO TB LEMBRO Q ERA ALGO Q EU TINHA ANOTADO PRA VER
+
+echo "$PWD"                                                 ---> ✅ ✅
+      /Users/demacinema/Desktop/MINIHELL/060524/42_minishell
+echo $HOME                                                  ---> ✅ ✅
+      /Users/demacinema
+echo $PWD                                                   ---> ✅ ✅
+      /Users/demacinema/Desktop/MINIHELL/060524/42_minishell
+echo $USER                                                  ---> ✅ ✅
+      demacinema
+echo "$USER"                                                ---> ✅ ✅
+      demacinema
+echo '$USER'                                                ---> ✅ ✅
+      $USER
 echo '$PWD'                                                 ---> ✅ ✅
+      $PWD
+
 echo "aspas ->'"                                            ---> ❌ ❌
 echo "aspas -> ' "                                          ---> ❌ ✅
 echo 'aspas ->"'                                            ---> ❌ ❌               PROVAVELMENTE O DAS ASPAS PENSAR ALGO QUE CONSIDERE AS ASPAS DE FORA E ELIMINA AS DE DENTRO
@@ -17,11 +36,13 @@ echo 'aspas -> " '                                          ---> ❌ ❌        
 echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌ ❌
 echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌ ❌
 echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌ ❌
+   exit_code ->0 user ->demacinema home -> /Users/demacinema
 echo 'exit_code ->$? user ->$USER home -> $HOME'            ---> ✅ ❌
-echo "$"                        ---> ✅ ✅
+   exit_code ->$? user ->$USER home -> $HOME
+echo "$"                        ---> ✅ ❌
 echo '$'                        ---> ✅ ✅
-echo $                          ---> ✅ ✅
-echo $?                         ---> ✅ ✅
+echo $                          ---> ✅ ❌
+echo $?                         ---> ✅ ❌
 echo $?HELLO                    ---> ❌ ❌
 pwd                             ---> ✅ ✅
 pwd oi                          ---> ✅ ✅

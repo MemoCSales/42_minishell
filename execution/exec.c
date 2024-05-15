@@ -106,7 +106,7 @@ void	handle_input_redirection(t_main *main, int i)
 		fd = open(main[i].input_file, O_RDONLY);
 		if (fd < 0)
 		{
-			ft_putstr_fd ("zsh: no such file or directory: ", 2);
+			ft_putstr_fd ("zsh: No such file or directory: ", 2);
 			ft_putstr_fd (main[i].input_file, 2);
 			ft_putstr_fd ("\n", 2);
 			exit (EXIT_FAILURE);
