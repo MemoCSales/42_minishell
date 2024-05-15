@@ -24,6 +24,7 @@ SRC =	main.c \
 		./parsing/parse_utils/10_placeholder_1.c \
 		./parsing/parse_utils/11_placeholder_2.c \
 		./parsing/parse_utils/parse_test.c \
+		./utils/general_utils.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \

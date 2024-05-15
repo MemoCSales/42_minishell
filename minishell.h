@@ -107,6 +107,25 @@ int			exit_builtin(t_main *main);
 int			ft_normal_exit(t_main *main);
 int			exec_builtin(t_env *env_vars, t_main *main);
 
+/*-----------------------PWD BUILTIN------------------------------*/
+int			pwd_builtin(t_main *main);
+
+/*-----------------------EXIT BUILTIN-----------------------------*/
+int			exit_builtin(t_main *main);
+int			ft_normal_exit(t_main *main);
+
+/*-----------------------UNSET BUILTIN-----------------------------*/
+int			unset_builtin(t_env *env_vars, char *var_name);
+int			find_index(t_env *env_vars, char *var_name);
+
+int			builtins_no_output(char *cmd);
+int			builtins_with_output(char *cmd);
+int			env_builtin(t_env *env_vars);
+int			exec_builtin(t_env *env_vars, t_main *main);
+
+/*-----------------------ECHO BUILTIN-----------------------------*/
+int			echo_builtin(t_main *main, t_env *env);
+
 /*--------------------ENVIRONMENT VARIABLES FUNCTION----------*/
 void		init_env(t_env *env_vars, char **env);
 void		check_env(t_env *env_vars);
