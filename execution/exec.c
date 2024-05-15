@@ -214,12 +214,12 @@ int	execute_command(t_env *env, t_main *main)
 				else if (pid == 0)
 				{
 					// printf("Child of child: Im the child process with PID: %d\n", pid);
-					if (pipe_created)
-					{
-						close(main[i].fd[0]);
-						dup2(main[i].fd[1],STDOUT_FILENO);
-						close(main[i].fd[1]);
-					}
+					// if (pipe_created)
+					// {
+					// 	close(main[i].fd[0]);
+					// 	dup2(main[i].fd[1],STDOUT_FILENO);
+					// 	close(main[i].fd[1]);
+					// }
 					if (builtins_with_output(main[i].cmd) != -1)
 					{
 						free(path_cmd);
@@ -233,8 +233,8 @@ int	execute_command(t_env *env, t_main *main)
 						exit(env->status);
 					}
 				}
-				else
-				{
+				// else
+				// {
 					if (pipe_created)
 					{
 						close (main[i].fd[0]);
@@ -248,7 +248,7 @@ int	execute_command(t_env *env, t_main *main)
 					env->status = WEXITSTATUS(env->status);
 					exit (env->status); //check this line
 					//grandson finished
-				}
+				// }
 			}
 			else // Parent process
 			{
@@ -272,6 +272,106 @@ int	execute_command(t_env *env, t_main *main)
 	}
 }
 
+
+
+int	execute_command2(t_env *env, t_main *main)
+{
+	char	**exec_args;
+	char	*path_env;
+	char	*path_cmd;
+	int		i;
+	int		pipe_created;
+	int		heredoc_fd;
+
+	pipe_created = 0;
+	heredoc_fd = 0;
+	exec_args = NULL;
+	path_cmd = NULL;
+	i = 0;
+	if (main[i].cmd != NULL && ft_strlen(main[i].cmd) > 0)
+	{
+		while (main[i].cmd != NULL)
+		{
+			printf("COMMAND BEING EXECUTED %s -- %d\n", main[i].cmd, i);
+			// printf("INPUT FILE %s\n", main[i].input_file);
+			// printf("OUTPUT FILE %s\n", main[i].output_file);
+			if (builtins_no_output(main->cmd) != -1)
+				return (env->status = exec_builtin(env, &main[i]));
+			if (main[i + 1].cmd != NULL) {
+				// printf("Setting up pipe between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
+			}
+			main[i].pid = fork();
+			if (main[i].pid < 0)
+				error_messages("ERROR_FORK");
+			if (main[i].pid == 0) //Child process
+			{
+				// printf("Child: Im the child process with PID: %d\n", main[i].pid);
+				pipe_created = pipe_redirection(main, i);
+				if (main[i].output_file != NULL)
+				{
+					// printf("OUTPUT REDIRECTION\n");
+					handle_output_redirection(main, i);
+				}
+				if (main[i].heredoc != NULL && ft_strcmp(main[i].heredoc, ">>") != 0)
+				{
+					// printf("HEREDOC EXEC\n");
+					// handle_heredoc(main, i);
+					heredoc_fd = handle_heredoc(main, i);
+					// printf("HEREDOC_DOC: %d\n", heredoc_fd);
+					if (heredoc_fd >= 0)
+					{
+						// printf("HEREDOC_FD: %d\n", heredoc_fd);
+						dup2(heredoc_fd, STDIN_FILENO);
+						close(heredoc_fd);
+					}
+				}
+				if (main[i].input_file != NULL)
+				{
+					// printf("INPUT REDIRECTION\n");
+					handle_input_redirection(main, i);
+				}
+				exec_args = build_exec_args(main, exec_args, i);
+				path_env = get_env_path(env); // Prepare the env variables!
+				if (main[i].cmd[0] == '/' || ft_strncmp(main[i].cmd, "./", 2) == 0)
+					path_cmd = ft_strdup(main[i].cmd);
+				else
+					path_cmd = get_cmd_path(&main[i], path_env); // Find full path of command
+				if (builtins_with_output(main[i].cmd) != -1)
+				{
+					free(path_cmd);
+					env->status = exec_builtin(env, &main[i]);
+				}
+				else if (execve(path_cmd, exec_args, env->env_vars) == -1)
+				{
+					{
+						ft_putstr_fd(main[i].cmd, 2);
+						ft_putstr_fd(": command not found\n", 2);
+						env->status = EXEC_ERROR;
+						exit(env->status);
+					}
+				}
+			}
+			else // Parent process
+			{
+				// printf("Parent: Im the parent process with PID: %d\n", main[i].pid);
+				env->status = parent_process(main, env, i, pipe_created);
+			}
+			i++;
+			// free(path_cmd);
+		}
+		return (env->status);
+	}
+	else if (main[i].cmd == NULL && (main[i].input_file || main[i].output_file || main[i].heredoc))
+	{
+		env->status = exec_without_cmds(main, env, i);
+		return (env->status);
+	}
+	else
+	{
+		env->status = 0;
+		return (env->status);
+	}
+}
 //Check if I need to add a status variable and change its value
 int	exec_without_cmds(t_main *main, t_env *env, int i)
 {

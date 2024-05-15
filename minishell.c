@@ -67,7 +67,7 @@ void	main_loop(t_env env_var, t_main *main_var)
 		// free(line);
 		// line = ft_strdup_minishell(tmp);
 		
-		// if (ft_strlen(line) > 0)
+		if (ft_strlen(line) > 0)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);
 		main_var = parse_line(line);
@@ -83,6 +83,7 @@ void	main_loop(t_env env_var, t_main *main_var)
 			// print_open_fds();
 			// printf("\n");
 		env_var.status = execute_command(&env_var, main_var);
+		// env_var.status = execute_command2(&env_var, main_var);
 		// printf("\n");
 		// close_all_pipes(main_var, num_commands);
 			// exit(0);

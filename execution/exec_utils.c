@@ -72,22 +72,22 @@ int	pipe_redirection(t_main *main, int i)
 			exit(EXIT_FAILURE);
 		}
 		close(main[i - 1].fd[0]);
-		if (main[i + 1].cmd != NULL) {
-			// printf("--Pipe set up between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
-			// printf("--Pipe read end for command %d: %d\n", i, main[i].fd[0]);
-			// printf("--Pipe write end for command %d: %d\n", i, main[i].fd[1]);
-		}
-		if (is_fd_closed(main[i].fd[0])) {
-			printf("--Read end of pipe is closed.\n");
-		} else {
-			printf("--Read end of pipe is still open.\n");
-		}
+		// if (main[i + 1].cmd != NULL) {
+		// 	// printf("--Pipe set up between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
+		// 	// printf("--Pipe read end for command %d: %d\n", i, main[i].fd[0]);
+		// 	// printf("--Pipe write end for command %d: %d\n", i, main[i].fd[1]);
+		// }
+		// if (is_fd_closed(main[i].fd[0])) {
+		// 	printf("--Read end of pipe is closed.\n");
+		// } else {
+		// 	printf("--Read end of pipe is still open.\n");
+		// }
 
-		if (is_fd_closed(main[i].fd[1])) {
-			printf("--Write end of pipe is closed.\n");
-		} else {
-			printf("--Write end of pipe is still open.\n");
-		}
+		// if (is_fd_closed(main[i].fd[1])) {
+		// 	printf("--Write end of pipe is closed.\n");
+		// } else {
+		// 	printf("--Write end of pipe is still open.\n");
+		// }
 	}
 	if (main[i + 1].cmd != NULL) // If not the last cmd (first command counts), redirect output to the next pipe
 	{
@@ -107,34 +107,34 @@ int	pipe_redirection(t_main *main, int i)
 		// 	printf("++Pipe write end for command %d: %d\n", i, main[i].fd[1]);
 		// }
 		close(main[i].fd[0]);
-		if (is_fd_closed(main[i].fd[0])) {
-			printf("++Read end of pipe is closed.\n");
-		} else {
-			printf("++Read end of pipe is still open.\n");
-		}
+		// if (is_fd_closed(main[i].fd[0])) {
+		// 	printf("++Read end of pipe is closed.\n");
+		// } else {
+		// 	printf("++Read end of pipe is still open.\n");
+		// }
 
-		if (is_fd_closed(main[i].fd[1])) {
-			printf("++Write end of pipe is closed.\n");
-		} else {
-			printf("++Write end of pipe is still open.\n");
-		}
+		// if (is_fd_closed(main[i].fd[1])) {
+		// 	printf("++Write end of pipe is closed.\n");
+		// } else {
+		// 	printf("++Write end of pipe is still open.\n");
+		// }
 		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error");
 			exit(EXIT_FAILURE);
 		}
 		close(main[i].fd[1]);
-		if (is_fd_closed(main[i].fd[0])) {
-			printf("++Read end of pipe is closed.\n");
-		} else {
-			printf("++Read end of pipe is still open.\n");
-		}
+		// if (is_fd_closed(main[i].fd[0])) {
+		// 	printf("++Read end of pipe is closed.\n");
+		// } else {
+		// 	printf("++Read end of pipe is still open.\n");
+		// }
 
-		if (is_fd_closed(main[i].fd[1])) {
-			printf("++Write end of pipe is closed.\n");
-		} else {
-			printf("++Write end of pipe is still open.\n");
-		}
+		// if (is_fd_closed(main[i].fd[1])) {
+		// 	printf("++Write end of pipe is closed.\n");
+		// } else {
+		// 	printf("++Write end of pipe is still open.\n");
+		// }
 		return (1);
 	}
 	return (0);

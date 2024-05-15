@@ -108,6 +108,7 @@ char		*ft_strdup_minishell(char *s1);
 
 /*--------------------EXECUTION FUNCTIONS-------------------------*/
 int			execute_command(t_env *env, t_main *main);
+int	execute_command2(t_env *env, t_main *main);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
 // int			parent_process(t_main *main, t_env *env, int i);
