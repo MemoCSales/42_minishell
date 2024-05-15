@@ -19,7 +19,6 @@
 # include <fcntl.h>
 # include <stdarg.h>
 
-
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif

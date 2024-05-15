@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: demacinema <demacinema@student.42.fr>      +#+  +:+       +#+        */
+/*   minishell.c                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*                                                      :+:      :+:    :+:   */
+/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
+/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2024/05/06 22:53:18 by demacinema       ###   ########.fr       */
+/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,38 +33,26 @@ void	main_loop(t_env env_var, t_main *main_var)
 	// char	*tmp;
 	int		num_commands;
 
-	while (1) //prints a prompt and retrieves from what it reads
+	line = NULL;
+	while (1)
 	{
-		// line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
 		line = readline("\033[1;31mψΨ:\033[0m");
-		// tmp = ft_strdup_minishell(line);
-		// free(line);
-		// line = ft_strdup_minishell(tmp);
-		
-		// if (ft_strlen(line) > 0)
+		if (!line)
+			printf("Error: readline\n");
+		if (ft_strlen(line) > 0)
 			add_history(line);
-		// main_var = initialize_main(main_var, 0);
 		main_var = parse_line(line);
+		if (!main_var)
+		{
+			printf("Error parsing line\n");
+			free(line);
+			continue ;
+		}
 		num_commands = 0;
 		while (main_var[num_commands].cmd)
 			num_commands++;
-		// print_struct(main_var, num_commands); // printing parsing result
-		// printf("\n");
-		// exit(0);
-		// if (num_commands >= 1)
-		// {
-			// if (buildins(main_var->cmd) == -1)
-			// print_open_fds();
-			// printf("\n");
-			env_var.status = execute_command(&env_var, main_var);
-			// print_open_fds();
-		// 	else
-		// 		exec_buildin(&env_var, main_var);
-		// }
-		// free_main(main_var); // This does not goes here
-		// printf("MAIN EXIT CODE: %d\n", env_var.status);
-		// free(main_var);
+		env_var.status = execute_command(&env_var, main_var);
+		free_parsed_struct(main_var, num_commands);
 		free(line);
-		line = NULL;
 	}
 }
