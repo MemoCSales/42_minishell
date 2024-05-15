@@ -56,8 +56,8 @@ void close_all_pipes(t_main *main, int num_cmds)
 void	main_loop(t_env env_var, t_main *main_var)
 {
 	char	*line;
-	// char	*tmp;
-	int		num_commands;
+	// int		flag;
+	// int		num_commands;
 
 	while (1) //prints a prompt and retrieves from what it reads
 	{
@@ -71,9 +71,23 @@ void	main_loop(t_env env_var, t_main *main_var)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);
 		main_var = parse_line(line);
-		num_commands = 0;
-		while (main_var[num_commands].cmd)
-			num_commands++;
+		// num_commands = 0;
+		// flag = 0;
+		// while (main_var[num_commands].cmd)
+		// {
+		// 	if (builtins_no_output(main_var->cmd) != -1 || builtins_with_output(main_var->cmd) != -1)
+		// 	{
+		// 		printf("Command %s is a built-in command. \n", main_var[num_commands].cmd);
+		// 		flag = 1;
+		// 		// break;
+		// 	}
+		// 	else
+		// 	{
+		// 		printf("Command %s is not a built-in command.\n", main_var[num_commands].cmd);
+		// 		flag = 0;
+		// 	}
+		// 	num_commands++;
+		// }
 		// print_struct(main_var, num_commands); // printing parsing result
 		// printf("\n");
 		// exit(0);
@@ -82,8 +96,16 @@ void	main_loop(t_env env_var, t_main *main_var)
 			// if (buildins(main_var->cmd) == -1)
 			// print_open_fds();
 			// printf("\n");
-		env_var.status = execute_command(&env_var, main_var);
-		// env_var.status = execute_command2(&env_var, main_var);
+		// if (flag)
+		// {
+		// 	printf("execution\n");
+			env_var.status = execute_command(&env_var, main_var);
+		// }
+		// else
+		// {
+		// 	printf("execution2\n");
+		// 	env_var.status = execute_command2(&env_var, main_var);
+		// }
 		// printf("\n");
 		// close_all_pipes(main_var, num_commands);
 			// exit(0);

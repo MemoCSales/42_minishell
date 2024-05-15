@@ -72,11 +72,11 @@ int	pipe_redirection(t_main *main, int i)
 			exit(EXIT_FAILURE);
 		}
 		close(main[i - 1].fd[0]);
-		// if (main[i + 1].cmd != NULL) {
-		// 	// printf("--Pipe set up between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
-		// 	// printf("--Pipe read end for command %d: %d\n", i, main[i].fd[0]);
-		// 	// printf("--Pipe write end for command %d: %d\n", i, main[i].fd[1]);
-		// }
+		if (main[i + 1].cmd != NULL) {
+			// printf("--Pipe set up between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
+			// printf("--Pipe read end for command %d: %d\n", i, main[i].fd[0]);
+			// printf("--Pipe write end for command %d: %d\n", i, main[i].fd[1]);
+		}
 		// if (is_fd_closed(main[i].fd[0])) {
 		// 	printf("--Read end of pipe is closed.\n");
 		// } else {
@@ -94,13 +94,7 @@ int	pipe_redirection(t_main *main, int i)
 		// printf("ENTERING HERE\n");
 		// printf("COMMAND: %s\n", main[i].cmd);
 		// printf("COMMAND %s -- ARGS: %s\n", main[i].cmd, main[i].args[0]);
-		// if (ft_strcmp(main[i].cmd, "cat") == 0 && main[i].args[0] == NULL)
-		// {
-		// 	printf("FDSFASFDAS\n");
-		// 	close(main[i].fd[1]);
-		// 	// print_open_fds();
-		// 	return (1);
-		// }
+
 		// if (main[i + 1].cmd != NULL) {
 		// 	printf("++Pipe set up between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
 		// 	printf("++Pipe read end for command %d: %d\n", i, main[i].fd[0]);
@@ -118,6 +112,7 @@ int	pipe_redirection(t_main *main, int i)
 		// } else {
 		// 	printf("++Write end of pipe is still open.\n");
 		// }
+		
 		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error");

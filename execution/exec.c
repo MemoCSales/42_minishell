@@ -183,51 +183,6 @@ int	execute_command(t_env *env, t_main *main)
 				error_messages("ERROR_FORK");
 			if (main[i].pid == 0) //Child process
 			{
-				// printf("Child: Im the child process with PID: %d\n", main[i].pid);
-				// pipe_created = pipe_redirection(main, i);
-				if (i != 0 && main[i - 1].fd[0] != -1)
-				{
-					printf("inside piipe\n");
-					if (main[i - 1].fd[1] != -1)
-					{
-						ft_putstr_fd("Closing previos FD\n", STDIN_FILENO);
-						close(main[i - 1].fd[1]);
-
-					}
-					if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1)
-					{
-						perror("dup2 error");
-						exit(EXIT_FAILURE);
-					}
-					close(main[i - 1].fd[0]);
-					main[i - 1].fd[0] = -1;
-				}
-				if (main[i + 1].cmd != NULL && main[i].fd[1] != -1)
-				{
-					printf("inside piipe 2\n");
-					close(main[i].fd[0]);
-					if (dup2(main[i].fd[1], STDOUT_FILENO) == -1)
-					{
-						perror("dup2 error");
-						exit(EXIT_FAILURE);
-					}
-					close(main[i].fd[1]);
-					main[i - 1].fd[1] = -1;
-					pipe_created = 1;
-				}
-					if (pipe_created)
-						ft_putstr_fd("pipecreated\n", STDIN_FILENO);
-				printf("PIPES EXITS son: %d\n", pipe_created);
-				// if (pipe_created)
-				// {
-				// 	// printf("CLOSING PIPES IN SON PROCESS\n");
-				// 	close(main[i].fd[1]);
-				// 	dup2(main[i].fd[0], STDIN_FILENO);
-				// }
-				// printf("PIPE REDIRECTION: %d\n", pipe_created);
-				// printf("Pipe read end: %d\n", main[i].fd[0]);
-				// printf("Pipe write end: %d\n", main[i].fd[1]);
-				// printf("Outfile: %s\n", main[i].output_file);
 				if (main[i].output_file != NULL)
 				{
 					// printf("OUTPUT REDIRECTION\n");
@@ -261,6 +216,7 @@ int	execute_command(t_env *env, t_main *main)
 				// if (main[i + 1].cmd != NULL) {
 				// 	printf("Setting up pipe between command %d (%s) and command %d (%s)\n", i, main[i].cmd, i + 1, main[i + 1].cmd);
 				// }
+				pipe_created = pipe_redirection(main, i);
 				pid = fork();
 				if (pid == -1)
 					printf("Error while forking grandson\n");
@@ -288,17 +244,19 @@ int	execute_command(t_env *env, t_main *main)
 				}
 				// else
 				// {
-					if (pipe_created)
-					{
-						ft_putstr_fd("close file descriptors\n", STDIN_FILENO);
-						close (main[i].fd[0]);
-						main[i].fd[0] = -1;
-						close (main[i].fd[1]);
-						main[i].fd[1] = -1;
-					}
+					// print_open_fds();
+					// if (pipe_created)
+					// {
+					// 	ft_putstr_fd("close file descriptors\n", STDIN_FILENO);
+					// 	close (main[i].fd[0]);
+					// 	main[i].fd[0] = -1;
+					// 	close (main[i].fd[1]);
+					// 	main[i].fd[1] = -1;
+					// }
 					// printf("ChildParent: Im the child process with PID: %d\n", pid);
 					close(heredoc_fd);
 					wait(&env->status);
+					// waitpid(pid, &env->status, 0);
 					cleanup_split(exec_args);
 					// free(path_cmd);
 					env->status = WEXITSTATUS(env->status);
@@ -327,8 +285,6 @@ int	execute_command(t_env *env, t_main *main)
 		return (env->status);
 	}
 }
-
-
 
 int	execute_command2(t_env *env, t_main *main)
 {
@@ -407,15 +363,27 @@ int	execute_command2(t_env *env, t_main *main)
 					}
 				}
 			}
+			
 			else // Parent process
 			{
+				// if (pipe_created)
+				// {
+				// 	close(main[i].fd[0]);
+				// 	close(main[i].fd[1]);
+				// }
+				// if (i != 0) //If not the 1st cmd, closes the ends of the previous pipe
+				// {
+				// 	close (main[i - 1].fd[0]);
+				// 	close (main[i - 1].fd[1]);
+				// }
 				// printf("Parent: Im the parent process with PID: %d\n", main[i].pid);
 				env->status = parent_process(main, env, i, pipe_created);
 			}
-			printf("Adding one to the counter\n");
-			i++;
+			// printf("Adding one to the counter\n");
+			// i++;
 			// free(path_cmd);
 		}
+		// while ((main[i].pid = waitpid(-1, &env->status, 0)) > 0);
 		return (env->status);
 	}
 	else if (main[i].cmd == NULL && (main[i].input_file || main[i].output_file || main[i].heredoc))

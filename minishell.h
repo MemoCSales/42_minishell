@@ -42,6 +42,7 @@ typedef struct s_main
 	char	*current_dir;
 	int		fd[2];
 	pid_t	pid;
+	pid_t	grandson_pid;
 }			t_main;
 
 typedef struct s_env
