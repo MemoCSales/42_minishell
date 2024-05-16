@@ -71,14 +71,14 @@ char	*check_closed_quotes(char *line)
 	}
 	if (single_quote_count % 2 != 0)
 	{
-		// printf("minishell: unclosed single quote\n");
-		line = NULL;
+		printf("minishell: unclosed single quote\n");
+		line = ft_strdup("\'");
 		// line = ft_strjoin(line, read_quotes("\'", line));
 	}
 	else if (double_quote_count % 2 != 0)
 	{
-		// printf("minishell: unclosed double quote\n");
-		line = NULL;
+		printf("minishell: unclosed double quote\n");
+		line = ft_strdup("\"");
 		// line = ft_strjoin(line, read_quotes("\"", line));
 	}
 // printf("line: %s\n", line);
@@ -155,18 +155,22 @@ void	handle_redirections(t_main *parsed_struct, char **args, int i)
 //     {
 //         ft_putstr_fd("> ", 1);
 //         line = get_next_line(0);
-//         temp = ft_strjoin(line, "\n"); // Join the newline character with line
+//         temp = ft_strjoin(line, "\n");
+// Join the newline character with line
 //         free(line); // Free the old line
-//         line = temp; // Update line to the new string with the newline character
+//         line = temp;
+// Update line to the new string with the newline character
 //         if (quotes)
 //         {
 //             temp = quotes; // Store the old quotes
-//             quotes = ft_strjoin(temp, line); // Join the updated line with quotes
+//             quotes = ft_strjoin(temp, line);
+// Join the updated line with quotes
 //             free(temp); // Free the old quotes
 //         }
 //         else
 //             quotes = ft_strdup(line);
-//         if (!line || !quotes || !ft_strncmp(line, delimiter, ft_strlen(delimiter)))
+//         if (!line || !quotes
+// || !ft_strncmp(line, delimiter, ft_strlen(delimiter)))
 //         {
 //             free(line); // Free line only once, after it's no longer needed
 //             break ;

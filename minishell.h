@@ -63,7 +63,7 @@ typedef struct s_env
 }			t_env;
 
 //main
-void	main_loop(t_env env_var, t_main *main_var);
+void		main_loop(t_env env_var, t_main *main_var);
 
 // Functions for the buildins
 /*--------------------CD BUILTIN-----------------------------*/
@@ -150,108 +150,110 @@ void		handle_output_redirection(t_main *main, int i);
 void		handle_input_redirection(t_main *main, int i);
 
 //exec_utils.c
-char	*get_env_path(t_env *env);
-char	*get_cmd_path(t_main *main, char *cmd_path);
+char		*get_env_path(t_env *env);
+char		*get_cmd_path(t_main *main, char *cmd_path);
 //void	pipe_redirection(t_main *main, t_env *env_vars, int i);
-int		pipe_redirection(t_main *main, int i);
-char	**build_exec_args(t_main *main, char **exec_args, int i);
+int			pipe_redirection(t_main *main, int i);
+char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 //utils/cleanup.c
-void	cleanup_split(char **split);
-void	free_main(t_main *main_var);
-void	free_args(char **args);
-void	free_and_nullify(void **ptr);//ACESSORIA DA FREE_PARSED_STRUCT (NORMINETTE)
-void	free_parsed_struct(t_main *parsed_struct, int num_commands);//MUDAR FREE_MAIN E TROCAR?
+void		cleanup_split(char **split);
+void		free_main(t_main *main_var);
+void		free_args(char **args);
+void		free_and_nullify(void **ptr);//ACESSORIA DA FREE_PARSED_STRUCT (NORMINETTE)
+void		free_parsed_struct(t_main *parsed_struct, int num_commands);//MUDAR FREE_MAIN E TROCAR?
 
 //utils/cleanup_2.c
-void	free_args_2(char ***args);
+void		free_args_2(char ***args);
 
 //parse
-t_main	*parse_line(char *line);
-t_main	*initialize_main(t_main *main_var, int num_commands);
+t_main		*parse_line(char *line);
+t_main		*initialize_main(t_main *main_var, int num_commands);
 
 //parse_utils
 //1_args.c
-char	**copy_args(char **args);//COPY **ARGS
-void	remove_args(char **args, int start_index, int num_args);//SHIFT LEFT **ARGS
-void	remove_args_first_last_quotes(char *arg);//REMOVE FIRST AND LAST QUOTES FROM ARGS
+char		**copy_args(char **args);//COPY **ARGS
+void		remove_args(char **args, int start_index, int num_args);//SHIFT LEFT **ARGS
+void		remove_args_first_last_quotes(char *arg);//REMOVE FIRST AND LAST QUOTES FROM ARGS
+int			ft_strequ(char const *s1, char const *s2);//COMPARE STRINGS
 
 //2_input_handling.c
-char	*prepare_line(char *line, char ***ph_strings); //MALLOC *prepared, CALL handle_input 
-void	handle_input(char *line, char *prepared); //CALL handle_quotes, handle_variables, handle_others 
-void	handle_others(char *line, char *prepared, int *i, int *j); //JUST COPY, NO REDIR OR VAR
-char	*get_last_exit_status(void);
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+char		*prepare_line(char *line, char ***ph_strings); //MALLOC *prepared, CALL handle_input 
+void		handle_input(char *line, char *prepared); //CALL handle_quotes, handle_variables, handle_others 
+void		handle_others(char *line, char *prepared, int *i, int *j); //JUST COPY, NO REDIR OR VAR
+char		*get_last_exit_status(void);
+void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 //3_redirection_and_variables.c
-int		check_redir(char **args, int j); //CHECK IF ARGS[J] IS A REDIRECTION
-void	redirection(t_main *parsed_struct, char **args, int i, int j); //PARSE REDIRECTIONS
-void	handle_variables(char *line, char *prepared, int *i, int *j); //$ - HANDLE ENV VARIABLES 
-void	get_var_name(char *line, int *i, char *var_name); //GET ENV VARIABLE NAME
-void	replace_var_value(char *var_name, char *prepared, int *j); //REPLACE ENV VARIABLE VALUE
+int			check_redir(char **args, int j); //CHECK IF ARGS[J] IS A REDIRECTION
+void		redirection(t_main *parsed_struct, char **args, int i, int j); //PARSE REDIRECTIONS
+void		handle_variables(char *line, char *prepared, int *i, int *j); //$ - HANDLE ENV VARIABLES 
+void		get_var_name(char *line, int *i, char *var_name); //GET ENV VARIABLE NAME
+void		replace_var_value(char *var_name, char *prepared, int *j); //REPLACE ENV VARIABLE VALUE
 
 //4_quotes.c
-void	handle_quotes(char *line, int *i, int *in_quotes);
-int		in_quotes(char *line);//CHECK IF HAS UNESCAPED QUOTES, OR INSIDE SINGLE OR DOUBLE QUOTES
-void	clean_quotes(char **args); //REMOVE QUOTES FROM FIRST AND LAST ARGS
-void	erase_quotes(char *command); //REMOVE UNESCAPED QUOTES FROM *command
-void	remove_double_quotes(char *str); //REMOVE DOUBLE QUOTES FROM STR
+void		handle_quotes(char *line, int *i, int *in_quotes);
+int			in_quotes(char *line);//CHECK IF HAS UNESCAPED QUOTES, OR INSIDE SINGLE OR DOUBLE QUOTES
+void		clean_quotes(char **args); //REMOVE QUOTES FROM FIRST AND LAST ARGS
+void		erase_quotes(char *command); //REMOVE UNESCAPED QUOTES FROM *command
+void		remove_double_quotes(char *str); //REMOVE DOUBLE QUOTES FROM STR
 
 //5_command_processing.c
-char	*process_command_string(char *command); //INSERT SPACES IN REDIRS, AND REMOVE UNESCAPED QUOTES IN COMMANDS
-void	insert_spaces_in_command(char *command, char *changed, int *i, int *j); //INSERT SPACES IN COMMANDS (REDIRECTIONS)
-char	**ft_split_args(const char *s, char c); //SPLIT ARGS BY CHAR C
-void	process_string(const char *s, char c, t_process_string_params *params);
-
+char		*process_command_string(char *command); //INSERT SPACES IN REDIRS, AND REMOVE UNESCAPED QUOTES IN COMMANDS
+void		insert_spaces_in_command(char *command, char *changed, int *i, int *j); //INSERT SPACES IN COMMANDS (REDIRECTIONS)
+int			word_count_mini(const char *str, char chr); //COUNT WORDS IN STRING
+void		process_string(const char *s, char c, t_process_string_params *params);
+char		**ft_split_args(const char *s, char c); //SPLIT ARGS BY CHAR C
 // char	*insert_spaces(char *command);
 // void	process_command(char *command, char *changed); //CALL insert_spaces_in_command TO ALL COMMANDS
 
 //6_pipe_and_redirection.c
-void	create_pipe(t_main *command, int i, int num_commands); //CREATE PIPE
-void	handle_redirections(t_main *parsed_struct, char **args, int i); //CHECK AND HANDLE REDIRECTIONS
-char	*read_quotes(char *delimiter, char *line); //KEEPS INPUT UNTIL CLOSED QUOTES
-char	*read_heredoc(char *delimiter); //KEEPS INPUT UNTIL CLOSED HEREDOC
-char	*check_closed_quotes(char *line); //CHECK IF QUOTES ARE CLOSED
+char		*read_quotes(char *delimiter, char *line); //KEEPS INPUT UNTIL CLOSED QUOTES
+char		*check_closed_quotes(char *line); //CHECK IF QUOTES ARE CLOSED
+char		*read_heredoc(char *delimiter); //KEEPS INPUT UNTIL CLOSED HEREDOC
+void		create_pipe(t_main *command, int i, int num_commands); //CREATE PIPE
+void		handle_redirections(t_main *parsed_struct, char **args, int i); //CHECK AND HANDLE REDIRECTIONS
 
 //7_string_manipulation.c
-int		ft_strcpy(char *dst, const char *src); //COPY SRC TO DST
-char	*ft_strncpy(char *dest, char *src, size_t n); //COPY N BYTES FROM SRC TO DST
-char	*ft_strcat(char *dest, const char *src); //CONCATENATE SRC TO DEST
-char	*ft_strswap(char *str, char *substr, char *replacement); //SWAP SUBSTR BY REPLACEMENT IN STR
-char	*ft_strnjoin(char const *s1, char const *s2, size_t n); //JOIN N BYTES OF S2 TO S1
+int			ft_strcpy(char *dst, const char *src); //COPY SRC TO DST
+char		*ft_strncpy(char *dest, char *src, size_t n); //COPY N BYTES FROM SRC TO DST
+char		*ft_strcat(char *dest, const char *src); //CONCATENATE SRC TO DEST
+char		*ft_strswap(char *str, char *substr, char *replacement); //SWAP SUBSTR BY REPLACEMENT IN STR
+char		*ft_strnjoin(char const *s1, char const *s2, size_t n); //JOIN N BYTES OF S2 TO S1
 
 //8_is_and_prints.c
-int		is_whitespace(char c); //CHECK IF CHAR IS WHITESPACE
-int		is_escaped(char *line, int index); //CHECK IF CHAR IS ESCAPED
-int		is_char_in_quotes(char *line, int index); //CHECK IF CHAR IS INSIDE QUOTES
-void	print_args(char **args); //PRINT **ARGS
-void	print_struct(t_main *main_var, int i); //PRINT STRUCT t_main
-
+int			is_whitespace(char c); //CHECK IF CHAR IS WHITESPACE
+int			is_escaped(char *line, int index); //CHECK IF CHAR IS ESCAPED
+int			is_char_in_quotes(char *line, int index); //CHECK IF CHAR IS INSIDE QUOTES
+void		print_args(char **args); //PRINT **ARGS
+void		print_struct(t_main *main_var, int i); //PRINT STRUCT t_main
 // char	*handling(char *command);
 // char	*pre_handle_quotes(char *command);
 // char	*pre_handle_escaped_quotes(char *command);
 // void	copy_increment(char *prepared, const char *line, int *i, int *j);
 
 //9_checkers_and_counters.c
-void	check_malloc(void *ptr);
-void	check_flags(t_main *command, char **args); //USED IN PARSE_LINE
-int		check_delimiter(char *delimiter); //USED IN READ_QUOTES AND READ_HEREDOC
-int		count_elements(char **elements); //COUNT ELEMENTS IN **ARRAY
-void	print_ph_strings(char ***ph_strings);
+void		check_malloc(void *ptr);
+void		check_flags(t_main *command, char **args); //USED IN PARSE_LINE
+int			check_delimiter(char *delimiter); //USED IN READ_QUOTES AND READ_HEREDOC
+int			count_elements(char **elements); //COUNT ELEMENTS IN **ARRAY
+void		print_ph_strings(char ***ph_strings);
 
 //10_placeholder_1.c
-char	**extract_strings(const char *line, int *numStrings);
-char	*generate_placeholder(int occurrence);
-void	replace_with_placeholder(char *line);
-int		count_occurrences(const char *str, char c);
-char	*ft_strsub(char const *s, unsigned int start, size_t len);
+char		**extract_strings(const char *line, int *numStrings);
+char		*generate_placeholder(int occurrence);
+void		replace_with_placeholder(char *line);
+int			count_occurrences(const char *str, char c);
+char		*ft_strsub(char const *s, unsigned int start, size_t len);
 
 //11_placeholder_2.c
-void	placeholder(char *line, char ***ph_strings);
-void	replace_single_placeholder(char **command,
+void		placeholder(char *line, char ***ph_strings);
+void		replace_single_placeholder(char **command, \
 			char *placeholder, char *replacement);
-void	reverse_placeholders(char **command, char ***ph_strings);
-void	reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
+void		replace_placeholder_sub(char **str, char *placeholder, \
+			char *replacement);
+void		reverse_placeholders(char **command, char ***ph_strings);
+void		reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
 // void	replace_placeholders(char **command, char ***ph_strings);
 
 //parse_test
