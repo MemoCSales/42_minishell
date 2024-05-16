@@ -71,13 +71,13 @@ char	*check_closed_quotes(char *line)
 	}
 	if (single_quote_count % 2 != 0)
 	{
-		printf("minishell: unclosed single quote\n");
+		// printf("minishell: unclosed single quote\n");
 		line = ft_strdup("\'");
 		// line = ft_strjoin(line, read_quotes("\'", line));
 	}
 	else if (double_quote_count % 2 != 0)
 	{
-		printf("minishell: unclosed double quote\n");
+		// printf("minishell: unclosed double quote\n");
 		line = ft_strdup("\"");
 		// line = ft_strjoin(line, read_quotes("\"", line));
 	}

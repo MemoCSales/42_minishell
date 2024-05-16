@@ -1,3 +1,5 @@
+MAKEFLAGS += --no-print-directory
+
 NAME	= minishell
 
 LIBFT_DIRECTORY  = ./libft/
