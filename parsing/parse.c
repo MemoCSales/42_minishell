@@ -39,6 +39,15 @@ t_main	*parse_line(char *line)
 		i++;
 	}
 	parsed_struct[count_elements(commands)].cmd = NULL;
+
+//PRINT STRUCTS
+	// i = 0;
+	// while (i < count_elements(commands))
+	// {
+	// 	print_struct(parsed_struct, i);
+	// 	i++;
+	// }
+
 	return (parsed_struct);
 }
 

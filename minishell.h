@@ -161,8 +161,9 @@ void	process_string(const char *s, char c, t_process_string_params *params);
 //6_pipe_and_redirection.c
 void	create_pipe(t_main *command, int i, int num_commands); //CREATE PIPE
 void	handle_redirections(t_main *parsed_struct, char **args, int i); //CHECK AND HANDLE REDIRECTIONS
-char	*read_quotes(char *delimiter); //KEEPS INPUT UNTIL CLOSED QUOTES
+char	*read_quotes(char *delimiter, char *line); //KEEPS INPUT UNTIL CLOSED QUOTES
 char	*read_heredoc(char *delimiter); //KEEPS INPUT UNTIL CLOSED HEREDOC
+char	*check_closed_quotes(char *line); //CHECK IF QUOTES ARE CLOSED
 
 //7_string_manipulation.c
 int		ft_strcpy(char *dst, const char *src); //COPY SRC TO DST

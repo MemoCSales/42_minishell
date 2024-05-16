@@ -18,6 +18,13 @@ char	*prepare_line(char *line, char ***ph_strings)
 
 	prepared = malloc(strlen(line) + 8192);
 	check_malloc(prepared);
+	prepared = check_closed_quotes(line);
+	if (prepared == NULL)
+	{
+		printf("Error: Unclosed quotes\n");
+		free(prepared);
+		return (NULL);
+	}
 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
 	check_malloc(ph_strings);
 	placeholder(line, ph_strings);

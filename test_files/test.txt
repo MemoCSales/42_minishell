@@ -29,17 +29,17 @@ echo '$USER'                                                ---> ✅ ✅
 echo '$PWD'                                                 ---> ✅ ✅
       $PWD
 
-echo "aspas ->'"                                            ---> ❌ ❌
+echo "aspas ->'"                                            ---> ❌ ✅
 echo "aspas -> ' "                                          ---> ❌ ✅
 echo 'aspas ->"'                                            ---> ❌ ❌               PROVAVELMENTE O DAS ASPAS PENSAR ALGO QUE CONSIDERE AS ASPAS DE FORA E ELIMINA AS DE DENTRO
 echo 'aspas -> " '                                          ---> ❌ ❌               DEIXA ISSO QUE EU DOU UMA OLHADA E TE FALO.
-echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌ ❌
+echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌ ✅
 echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌ ❌
 echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌ ❌
    exit_code ->0 user ->demacinema home -> /Users/demacinema
 echo 'exit_code ->$? user ->$USER home -> $HOME'            ---> ✅ ❌
    exit_code ->$? user ->$USER home -> $HOME
-echo "$"                        ---> ✅ ❌
+echo "$"                        ---> ✅ ✅
 echo '$'                        ---> ✅ ✅
 echo $                          ---> ✅ ❌
 echo $?                         ---> ✅ ❌
@@ -77,8 +77,8 @@ exit 42 world                   ---> ✅ ✅
 
 
 REDIRECTION:
-cat input.txt | grep "pattern" > output.txt                     ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
-cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ❌ //zsh: segmentation fault  ./minishell ✅ //WORKING
+cat input.txt | grep "pattern" > output.txt                     ---> ✅ ✅  //APARENTEMENTE SIM, CONFIRMAR
+cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ✅ //zsh: segmentation fault  ./minishell ✅ //WORKING
 < ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
 
 APPEND:	
