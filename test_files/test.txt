@@ -31,21 +31,21 @@ echo '$PWD'                                                 ---> ✅ ✅
 
 echo "aspas ->'"                                            ---> ❌ ✅
 echo "aspas -> ' "                                          ---> ❌ ✅
-echo 'aspas ->"'                                            ---> ❌ ❌               PROVAVELMENTE O DAS ASPAS PENSAR ALGO QUE CONSIDERE AS ASPAS DE FORA E ELIMINA AS DE DENTRO
-echo 'aspas -> " '                                          ---> ❌ ❌               DEIXA ISSO QUE EU DOU UMA OLHADA E TE FALO.
+echo 'aspas ->"'                                            ---> ❌ ✅               PROVAVELMENTE O DAS ASPAS PENSAR ALGO QUE CONSIDERE AS ASPAS DE FORA E ELIMINA AS DE DENTRO
+echo 'aspas -> " '                                          ---> ❌ ✅               DEIXA ISSO QUE EU DOU UMA OLHADA E TE FALO.
 echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌ ✅
-echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌ ❌
+echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌ ✅
 echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌ ❌
    exit_code ->0 user ->demacinema home -> /Users/demacinema
-echo 'exit_code ->$? user ->$USER home -> $HOME'            ---> ✅ ❌
+echo 'exit_code ->$? user ->$USER home -> $HOME'            ---> ✅ ✅
    exit_code ->$? user ->$USER home -> $HOME
 echo "$"                        ---> ✅ ✅
 echo '$'                        ---> ✅ ✅
-echo $                          ---> ✅ ❌
-echo $?                         ---> ✅ ❌
+echo $                          ---> ✅ ✅
+echo $?                         ---> ✅ ✅
 echo $?HELLO                    ---> ❌ ❌
-pwd                             ---> ✅ ✅
-pwd oi                          ---> ✅ ✅
+pwd                             ---> ✅ ❌
+pwd oi                          ---> ✅ ❌
 export hello                    ---> ✅  ?
 export HELLO=123                ---> ✅  ?
 export A-                       ---> ✅ ✅
@@ -61,31 +61,132 @@ unset HELLO1 HELLO2             ---> ✅  ?
 unset HOME                      ---> ✅  ?
 unset PATH                      ---> ✅  ?
 unset SHELL                     ---> ✅  ?
-cd $PWD                         ---> ❌ ❌ //cd: No such file or directory: $PWD
+cd $PWD                         ---> ❌ ❌ //cd: No such file or directory: $PWD ---.cmd: cd, .args[0]: $PWD
 cd $PWD hi                      ---> ❌ ❌ ✅ //Tem que testar no bash: bash: cd: too many arguments
 cd 123123                       ---> ❌  ? ✅ //bash: cd: 123123: No such file or directory --> exit code: 1
-exit 123                        ---> ✅  ✅ //SAI, MAS NAO IMPRIME "exit" // SOLVED
-exit 298                        ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not need to close the terminal
+exit 123                        ---> ✅  ❌ //SAI, MAS seg fault
+exit 298                        ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not need to close the terminal???
 exit +100                       ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" // SOLVED
 exit "+100"                     ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not need to close the terminal
 exit +"100"                     ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" // SOLVED
 exit -100                       ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not neet to close the terminal
 exit "-100"                     ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" -- TRATA O -100 COMO FLAG // SOLVED
 exit -"100"                     ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" -- TRATA O -100 COMO FLAG // SOLVED
-exit hello                      ---> ✅ ✅ //TEXTO DIFERENTE // SOLVED AND PRINTS EXIT
+exit hello                      ---> ✅ ❌ //TEXTO DIFERENTE // does not prints exit ---.cmd: exit, .args[0]: hello
 exit 42 world                   ---> ✅ ✅
 
 
 REDIRECTION:
 cat input.txt | grep "pattern" > output.txt                     ---> ✅ ✅  //APARENTEMENTE SIM, CONFIRMAR
-cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ✅ //zsh: segmentation fault  ./minishell ✅ //WORKING
-< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
+cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ❌ // diferent wc - bash: 1, ours 3.
+
+< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ❌
+ours: 
+ANTES DE CERRAR 0
+ANTES y DESPUES DE CERRAR 1
+ANTES y DESPUES DE CERRAR 1
+bash:
+      4 red
+      3 blue
+      2 green
+
+
 
 APPEND:	
 date >> file.txt																---> ✅ // working
 ls -la >> file.txt																---> ✅ // working
+
 < ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt		---> ✅ ❌
-cat ./test_files/input.txt | grep "pattern" >> outputtest.txt						---> ✅ ❌
+
+ψΨ:< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt
+Modified line: < ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt
+Strings between quotes:
+
+t_main[0].cmd: <
+t_main[0].flags: (null)
+t_main[0].input_file: ./test_files/colors.txt
+t_main[0].output_file: (null)
+t_main[0].heredoc: (null)
+t_main[0].extra: (null)
+t_main[0].fd[0]: 3
+t_main[0].fd[1]: 4
+
+
+t_main[1].cmd: uniq
+t_main[1].flags: -c
+t_main[1].input_file: (null)
+t_main[1].output_file: (null)
+t_main[1].heredoc: (null)
+t_main[1].extra: (null)
+t_main[1].fd[0]: 5
+t_main[1].fd[1]: 6
+
+
+t_main[2].cmd: sort
+t_main[2].flags: -r
+t_main[2].input_file: (null)
+t_main[2].output_file: (null)
+t_main[2].heredoc: (null)
+t_main[2].extra: (null)
+t_main[2].fd[0]: 7
+t_main[2].fd[1]: 8
+
+
+t_main[3].cmd: head
+t_main[3].flags: -3
+t_main[3].input_file: (null)
+t_main[3].output_file: outputcolor.txt
+t_main[3].heredoc: (null)
+t_main[3].extra: >>
+t_main[3].fd[0]: 0
+t_main[3].fd[1]: 0
+
+<: command not found
+
+
+
+cat ./test_files/input.txt | grep "pattern" >> outputtest.txt						---> ✅ ✅
+
+
+
+
+>>>>> PAREI DE TESTAR AQUI >>>>>>>>>>
+HEREDOC - ❌ (NEED TO FIX SO THE SPACES GOES IN DOUBLE << TOO, AS IT WORKS WITH SPACES (cat << EOF))
+ψΨ:cat <<EOF
+Modified line: cat <<EOF
+Strings between quotes:
+
+t_main[0].cmd: cat
+t_main[0].flags: (null)
+t_main.args[0]: EOF
+t_main[0].input_file: <
+t_main[0].output_file: (null)
+t_main[0].heredoc: (null)
+t_main[0].extra: (null)
+t_main[0].fd[0]: 0
+t_main[0].fd[1]: 0
+
+zsh: No such file or directory: <
+
+ψΨ:grep "line"grep "line" <<EOF
+Modified line: grep Ψ(1) <<EOF
+Strings between quotes:
+1: line
+
+t_main[0].cmd: grep
+t_main[0].flags: (null)
+t_main.args[0]: line
+t_main.args[1]: EOF
+t_main[0].input_file: <
+t_main[0].output_file: (null)
+t_main[0].heredoc: (null)
+t_main[0].extra: (null)
+t_main[0].fd[0]: 0
+t_main[0].fd[1]: 0
+
+zsh: No such file or directory: <
+
+
 
 HEREDOC:
 cat <<EOF							---> ✅
@@ -118,7 +219,7 @@ heredoc>EOF
 
 PIPES:
 env | sort | grep -v SHLVL | grep -v ^_ ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
-cat ./test_files/infile_big | grep oi   ---> ❌ ❌
+cat ./test_files/infile_big | grep oi   ---> ❌ ❌ GETS STUCK IN cat
 cat minishell.h | grep ");"$            ---> ✅ ✅
 export GHOST=123 | env | grep GHOST     ---> ❌  ?
 pwd | wc -l                             ---> ✅ ✅
@@ -196,15 +297,15 @@ heredoc>hi
 heredoc>stop2
 
 
-ψΨ:echo "this  | this is is is"
+ψΨ:echo "this  | this is is is"              ✅
 free(): double free detected in tcache 2
 
-cat <"infile"                             --> ❌
+cat <"infile"                             --> ✅
 zsh: no such file or directory: "infile"
 
-ψΨ:echo "hola'hihi'fdsfa"                 --> ❌
+ψΨ:echo "hola'hihi'fdsfa"                 --> ✅
 holahihifdsfa
 SHOULD be: hola'hihi'fdfs
 
-ψΨ:echo "cat lol.c | cat > lol.c"         --> ❌
+ψΨ:echo "cat lol.c | cat > lol.c"         --> ✅
 This should return a string

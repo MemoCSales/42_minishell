@@ -12,35 +12,35 @@
 
 #include "../minishell.h"
 
-void	placeholder(char *line, char ***ph_strings)
-{
-	int	num_strings;
-
-	*ph_strings = extract_strings(line, &num_strings);
-	if (*ph_strings)
-		replace_with_placeholder(line);
-}
-
-// WITH PRINTS
 // void	placeholder(char *line, char ***ph_strings)
 // {
-// 	int	i;
 // 	int	num_strings;
 
 // 	*ph_strings = extract_strings(line, &num_strings);
 // 	if (*ph_strings)
-// 	{
 // 		replace_with_placeholder(line);
-// 		printf("Modified line: %s\n", line);
-// 		printf("Strings between quotes:\n");
-// 		i = 0;
-// 		while (i < num_strings)
-// 		{
-// 			printf("%d: %s\n", i + 1, (*ph_strings)[i]);
-// 			i++;
-// 		}
-// 	}
 // }
+
+// WITH PRINTS
+void	placeholder(char *line, char ***ph_strings)
+{
+	int	i;
+	int	num_strings;
+
+	*ph_strings = extract_strings(line, &num_strings);
+	if (*ph_strings)
+	{
+		replace_with_placeholder(line);
+		printf("Modified line: %s\n", line);
+		printf("Strings between quotes:\n");
+		i = 0;
+		while (i < num_strings)
+		{
+			printf("%d: %s\n", i + 1, (*ph_strings)[i]);
+			i++;
+		}
+	}
+}
 
 void	replace_single_placeholder(char **command,
 			char *placeholder, char *replacement)

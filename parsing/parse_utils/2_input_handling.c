@@ -19,12 +19,11 @@ char	*prepare_line(char *line, char ***ph_strings)
 	prepared = malloc(strlen(line) + 8192);
 	check_malloc(prepared);
 	prepared = check_closed_quotes(line);
-// printf("Prepared: %s\n", prepared);
 	if ((ft_strequ(prepared, "\'") || ft_strequ(prepared, "\"")))
 	{
 		printf("Error: Unclosed quotes\n");
 		free(prepared);
-		prepared = ft_strdup("\0");  // Create a new empty string
+		prepared = ft_strdup("\0");
 		check_malloc(prepared);
 		return (prepared);
 	}

@@ -243,8 +243,11 @@ void		print_ph_strings(char ***ph_strings);
 char		**extract_strings(const char *line, int *numStrings);
 char		*generate_placeholder(int occurrence);
 void		replace_with_placeholder(char *line);
-int			count_occurrences(const char *str, char c);
+// int			count_occurrences(const char *str, char c);
+int			count_occurrences(const char *str, char c, char d);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
+void 		process_string_extract(const char **start, char **strings, int *occurrence);
+const char	*find_start(const char *start);
 
 //11_placeholder_2.c
 void		placeholder(char *line, char ***ph_strings);

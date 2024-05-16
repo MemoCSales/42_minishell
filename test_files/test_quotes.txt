@@ -61,32 +61,47 @@ Output: helloworld
 Input: echo hello'world' ✅
 Output: helloworld
 
-Input: echo "$PWD" 
+Input: echo "$PWD"   ❌
 Output: The current working directory (e.g., /home/username)
 
 Input: echo '$PWD' ✅
 Output: $PWD
 
-Input: echo 'aspas ->"' --> This one is creating a file
+Input: echo 'aspas ->"' --> This one is creating a file   ✅
 Output: aspas ->"
 
 Input: echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<" ✅
 Output: > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
 
-Input: echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
+Input: echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'  ✅
 Output: > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
 
-Input: echo "exit_code ->$? user ->$USER home -> $HOME"
+Input: echo "exit_code ->$? user ->$USER home -> $HOME" ❌
 Output: exit_code ->0 user ->username home -> /home/username (assuming the last command was successful and the username is "username")
 
-Input: echo 'exit_code ->$? user ->$USER home -> $HOME'
+Input: echo 'exit_code ->$? user ->$USER home -> $HOME' ✅
 Output: exit_code ->$? user ->$USER home -> $HOME
 
 Input: echo "$"       ✅
 Output: $
 
-Input: echo $
+Input: echo $          ✅   
 Output: (empty line)
 
-Input: echo $?HELLO 
+Input: echo $?HELLO    ❌
 Output: 0HELLO (assuming the last command was successful)
+
+t_main[0].cmd: echo
+t_main[0].flags: (null)
+t_main.args[0]: $?HELLO
+t_main[0].input_file: (null)
+t_main[0].output_file: (null)
+t_main[0].heredoc: (null)
+t_main[0].extra: (null)
+t_main[0].fd[0]: 0
+t_main[0].fd[1]: 0
+
+$?HELLO
+
+
+>>> NORMINETTING 10_PLACEHOLDER

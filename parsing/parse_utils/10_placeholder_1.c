@@ -19,19 +19,28 @@ char	**extract_strings(const char *line, int *numStrings)
 	int			length;
 	const char	*start;
 	const char	*end;
+	const char	*start_double;
+	const char	*start_single;
 
-	*numStrings = count_occurrences(line, '"') / 2;
+	*numStrings = count_occurrences(line, '"', '\'') / 2;
 	strings = (char **)malloc((*numStrings + 1) * sizeof(char *));
 	check_malloc(strings);
 	occurrence = 0;
 	start = line;
 	end = line;
-	while (*start)
+	while (*start && occurrence < *numStrings)
 	{
-		start = ft_strchr(start, '"');
-		if (!start)
+		start_double = ft_strchr(start, '"');
+		start_single = ft_strchr(start, '\'');
+		if (!start_double && !start_single)
 			break ;
-		end = ft_strchr(start + 1, '"');
+		if (!start_single || (start_double && start_double < start_single))
+			start = start_double;
+		else
+			start = start_single;
+		end = ft_strchr(start + 1, *start);
+		if (!end)
+			break ;
 		length = end - start - 1;
 		strings[occurrence] = ft_strsub(start + 1, 0, length);
 		occurrence++;
@@ -66,15 +75,15 @@ void	replace_with_placeholder(char *line)
 	occurrence = 0;
 	st = line;
 	end = line;
-	ph = NULL;
 	while (*st)
 	{
-		while (*st && *st != '"' && (st <= line || *(st - 1) != '\\'))
+		while (*st && !(*st == '"' || *st == '\'')
+			&& (st <= line || *(st - 1) != '\\'))
 			st++;
 		if (!*st)
 			break ;
 		end = st + 1;
-		while (*end && *end != '"')
+		while (*end && *end != *st)
 			end++;
 		ph = generate_placeholder(occurrence);
 		memmove(st + ft_strlen(ph), end + 1, ft_strlen(end + 1) + 1);
@@ -85,20 +94,20 @@ void	replace_with_placeholder(char *line)
 	}
 }
 
-int	count_occurrences(const char *str, char c)
+int	count_occurrences(const char *str, char c, char d)
 {
 	int	count;
 
 	count = 0;
 	while (*str)
 	{
-		if (*str == c)
+		if (*str == c || *str == d)
 			count++;
 		str++;
 	}
 	if (count % 2 != 0)
 	{
-		printf("Warning: Unclosed double quotes.\n");
+		printf("Warning: Unclosed quotes.\n");
 	}
 	return (count);
 }
@@ -122,3 +131,21 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	substring[i] = '\0';
 	return (substring);
 }
+
+// int	count_occurrences(const char *str, char c)
+// {
+// 	int	count;
+
+// 	count = 0;
+// 	while (*str)
+// 	{
+// 		if (*str == c)
+// 			count++;
+// 		str++;
+// 	}
+// 	if (count % 2 != 0)
+// 	{
+// 		printf("Warning: Unclosed double quotes.\n");
+// 	}
+// 	return (count);
+// }
