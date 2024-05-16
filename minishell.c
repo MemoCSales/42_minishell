@@ -22,7 +22,10 @@ void	print_open_fds(void)
 	while (i < open_max)
 	{
 		if (fcntl(i, F_GETFD) != -1 || errno != EBADF)
+		{
+			// ft_putnbr_fd(i, STDIN_FILENO);
 			printf("File descriptor %d is open\n", i);
+		}
 		i++;
 	}
 }
@@ -63,10 +66,6 @@ void	main_loop(t_env env_var, t_main *main_var)
 	{
 		// line = readline("\001" LIGHT_RED "\002" "ψΨ:" "\001" DEFAULT "\002");
 		line = readline("\033[1;31mψΨ:\033[0m");
-		// tmp = ft_strdup_minishell(line);
-		// free(line);
-		// line = ft_strdup_minishell(tmp);
-		
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		// main_var = initialize_main(main_var, 0);

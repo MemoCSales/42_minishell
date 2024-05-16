@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdio.h> //to test parsing functions
 # include <stdlib.h>
@@ -50,6 +51,18 @@ typedef struct s_env
 	char	**env_vars;
 	int		status;
 }			t_env;
+
+typedef struct s_exec
+{
+	t_main	*main;
+	t_env	*env;
+	int		i;
+	char	**exec_args;
+	char	*path_env;
+	char	*path_cmd;
+	int		heredoc_fd;
+	int		pipe_created;
+}			t_exec_context;
 
 // main
 void		main_loop(t_env env_var, t_main *main_var);
@@ -108,22 +121,30 @@ void		check_env(t_env *env_vars);
 char		*ft_strdup_minishell(char *s1);
 
 /*--------------------EXECUTION FUNCTIONS-------------------------*/
-int			execute_command(t_env *env, t_main *main);
-int	execute_command2(t_env *env, t_main *main);
+// int			execute_command(t_env *env, t_main *main);
+// int			execute_command2(t_env *env, t_main *main);
+// int			parent_process(t_main *main, t_env *env, int i);
+// int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
+// int			exec_without_cmds(t_main *main, t_env *env, int i);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-// int			parent_process(t_main *main, t_env *env, int i);
-int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
 void		handle_file_redirection(t_main *main, int i, int heredoc_fd);
-int			exec_without_cmds(t_main *main, t_env *env, int i);
 
+void		print_exec_args(char **exec_args);
+int			handle_heredoc(t_main *main, int i);
+void		handle_output_redirection(t_main *main, int i);
+void		handle_input_redirection(t_main *main, int i);
+int			parent_process(t_exec_context *context);
+void		handle_child_process(t_exec_context *context);
+void		handle_grandson_process(t_exec_context *context);
+int			execute_command(t_env *env, t_main *main);
+int			exec_without_cmds(t_exec_context *context);
+void	initialize_context(t_exec_context *context);
 
 /*--------------------GENERAL UTIL FUNCTIONS---------------------*/
 void		error_messages(char *type);
 
 // redirections
-int			check_for_redirect_output(t_main *main);
-int			check_for_redirect_input(t_main *main);
 void		handle_output_redirection(t_main *main, int i);
 void		handle_input_redirection(t_main *main, int i);
 
@@ -164,7 +185,7 @@ int			check_redir(char **args, int j);
 t_main		*redirection(t_main *parsed_struct, char **args, int i, int j);
 
 void		print_open_fds(void);
-int is_fd_closed(int fd);
+int			is_fd_closed(int fd);
 
 #endif
 
