@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   unset.c                    ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   general_utils.c            ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -12,45 +12,28 @@
 
 #include "../minishell.h"
 
-int	unset_builtin(t_env *env_vars, char *var_name)
+void	error_messages(char *type)
 {
-	int	index;
-	int	i;
-
-	index = -1;
-	if (var_name == NULL)
-		return (0);
-	index = find_index(env_vars, var_name);
-	if (index != -1)
+	if (ft_strcmp(type, "ERROR_OPEN_FILE") == 0)
 	{
-		free(env_vars->env_vars[index]);
-		i = index;
-		while (env_vars->env_vars[i] != NULL)
-		{
-			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
-			i++;
-		}
+		perror("Error opening file\n");
+		exit(EXIT_FAILURE);
 	}
-	return (0);
-}
-
-int	find_index(t_env *env_vars, char *var_name)
-{
-	int	i;
-	int	index;
-
-	i = 0;
-	index = -1;
-	while (env_vars->env_vars[i] != NULL)
+	else if (ft_strcmp(type, "ERROR_FORK") == 0)
 	{
-		if (ft_strncmp(env_vars->env_vars[i], var_name,
-				ft_strlen(var_name)) == 0
-			&& env_vars->env_vars[i][ft_strlen(var_name)] == '=')
-		{
-			index = i;
-			break ;
-		}
-		i++;
+		perror ("Error: Unable to fork\n");
+		exit (EXIT_FAILURE);
 	}
-	return (index);
+	else if (ft_strcmp(type, "BASH_MANY_ARGUMENTS") == 0)
+	{
+		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		return ;
+	}
+	else if (ft_strcmp(type, "BASH_NUMERIC_ARGS\n") == 0)
+	{
+		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("bash: exit: numeric argument required\n", 2);
+		return ;
+	}
 }

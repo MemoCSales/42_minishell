@@ -44,7 +44,6 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	while (dir_paths[i])
 	{
 		path_cmd = ft_strjoin(dir_paths[i], "/");
-		// printf("%s\n", path_cmd);
 		prog = ft_strjoin(path_cmd, main->cmd);
 		free(path_cmd);
 		if (access(prog, F_OK | X_OK) == 0)
@@ -57,7 +56,6 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	}
 	// free(prog);
 	cleanup_split(dir_paths);
-	// printf("Despues del cleanup\n");
 	return (cmd_path); //check this later
 }
 
@@ -76,12 +74,23 @@ int	pipe_redirection(t_main *main, int i)
 	if (main[i + 1].cmd != NULL) // If not the last cmd,
 					//redirect output to the next pipe
 	{
+		// printf("COMMAND: %s\n", main[i].cmd);
+		// printf("COMMAND %s -- ARGS: %s\n", main[i].cmd, main[i].args[0]);
+		// if (ft_strcmp(main[i].cmd, "cat") == 0 && main[i].args[0] == NULL)
+		// {
+		// 	printf("FDSFASFDAS\n");
+		// 	close(main[i].fd[1]);
+		// 	// print_open_fds();
+		// 	return (1);
+		// }
 		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error");
 			exit(EXIT_FAILURE);
 		}
+		printf("ANTES DE CERRAR 0\n");
 		close(main[i].fd[0]);
+		printf("ANTES y DESPUES DE CERRAR 1\n");
 		close(main[i].fd[1]);
 		return (1);
 	}

@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   unset.c                    ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   exit.c                     ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -12,45 +12,42 @@
 
 #include "../minishell.h"
 
-int	unset_builtin(t_env *env_vars, char *var_name)
+int	exit_builtin(t_main *main)
 {
-	int	index;
-	int	i;
+	int		status;
+	char	first_char;
 
-	index = -1;
-	if (var_name == NULL)
-		return (0);
-	index = find_index(env_vars, var_name);
-	if (index != -1)
+	status = 0;
+	if (main->flags != NULL)
+		status = ft_atoi(main->flags);
+	else if (!main->args[0] || main->args[1] != NULL)
 	{
-		free(env_vars->env_vars[index]);
-		i = index;
-		while (env_vars->env_vars[i] != NULL)
+		status = ft_normal_exit(main);
+		exit(status);
+	}
+	else
+	{
+		first_char = main->args[0][0];
+		if (ft_isdigit(first_char) || first_char == '-' || first_char == '+')
+			status = ft_atoi(main->args[0]);
+		else
 		{
-			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
-			i++;
+			error_messages("BASH_NUMERIC_ARGS");
+			return (2);
 		}
 	}
-	return (0);
+	printf("exit\n");
+	exit(status);
 }
 
-int	find_index(t_env *env_vars, char *var_name)
+int	ft_normal_exit(t_main *main)
 {
-	int	i;
-	int	index;
-
-	i = 0;
-	index = -1;
-	while (env_vars->env_vars[i] != NULL)
+	if (!main->args[0])
+		printf("exit\n");
+	else
 	{
-		if (ft_strncmp(env_vars->env_vars[i], var_name,
-				ft_strlen(var_name)) == 0
-			&& env_vars->env_vars[i][ft_strlen(var_name)] == '=')
-		{
-			index = i;
-			break ;
-		}
-		i++;
+		error_messages("BASH_MANY_ARGUMENTS");
+		return (1);
 	}
-	return (index);
+	return (0);
 }

@@ -59,3 +59,28 @@ void	check_env(t_env *env_vars)
 	else
 		printf("Error initializaing environment variables\n");
 }
+
+char	*ft_strdup_minishell(char *s1)
+{
+	char	*ns;
+	size_t	i;
+
+	i = 0;
+	if (s1 == NULL)
+	{
+		ns = malloc(1);
+		if (ns)
+			ns[0] = '\0';
+		return (ns);
+	}
+	ns = (char *) malloc(ft_strlen(s1) + 1);
+	if (!(ns))
+		return (NULL);
+	while (s1[i])
+	{
+		ns[i] = s1[i];
+		i++;
+	}
+	ns[i] = '\0';
+	return (ns);
+}

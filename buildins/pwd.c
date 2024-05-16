@@ -12,18 +12,16 @@
 
 #include "../minishell.h"
 
-int	pwd_builtin(void)
+int	pwd_builtin(t_main *main)
 {
-	char	cwd[MAX_CMD_LEN];
-
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	if (main->current_dir != NULL)
 	{
-		printf("%s\n", cwd);
+		printf("%s\n", main->current_dir);
 		return (0);
 	}
 	else
 	{
-		ft_putstr_fd("pwd: error retrieving current directory", STDERR_FILENO);
+		ft_putstr_fd("pwd: error retrieving current directory\n", STDERR_FILENO);
 		return (1);
 	}
 }
