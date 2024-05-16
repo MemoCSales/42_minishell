@@ -30,7 +30,6 @@ void	print_open_fds(void)
 void	main_loop(t_env env_var, t_main *main_var)
 {
 	char	*line;
-	// char	*tmp;
 	int		num_commands;
 
 	line = NULL;

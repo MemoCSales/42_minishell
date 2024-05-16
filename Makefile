@@ -46,10 +46,12 @@ $(LIBFT):
 		@make -C $(LIBFT_DIRECTORY)
 
 $(NAME): $(OBJ) $(LIBFT)
+			@echo "\n"
+			@echo -ne "\033[2A\033[2K"
 			@$(CC) $(CFLAGS) $(SAN) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
-			@echo "$(RED)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
-			@echo "$(RED)│.. .   .    .     .        Welcome to MiniℍΞLL         .     .    .   . ..│$(DEFAULT)"
-			@echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
+			@echo "$(LIGHT_RED)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
+			@echo "$(LIGHT_RED)│.. .   .    .     .        Welcome to MiniℍΞLL         .     .    .   . ..│$(DEFAULT)"
+			@echo "$(LIGHT_RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
 			@# @echo "$(RED)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
 			@# @echo "$(RED)│                       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠩⠭⠙⠀⠀⠀⠀                       │"
 			@# @echo "$(RED)│                       ⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣷⣮⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣦⠀⠀⠀                       │"
@@ -75,9 +77,14 @@ $(NAME): $(OBJ) $(LIBFT)
 			@# @echo "$(RED)│                         <=--Ψψ  $(LIGHT_RED)miniℍΞLL  $(RED)ψΨ--=>                         │"
 			@# @echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
 
-$(OBJ_DIR)%.o: %.c
+$(OBJ_DIR)%.o: %.c $(LIBFT) message
 			@mkdir -p $(@D)
 			@$(CC) $(CFLAGS) -I$(LIBFT_DIRECTORY) -c $< -o $@
+			@printf "$(RED)ψΨ"
+
+message:
+	@printf "$(RED)        $(DEFAULT)"
+
 # CHANGED clean AND fclean SO THE make re DOES NOT DELETE THE LIBFT (FASTER RECOMPILATION)
 clean:
 		@rm -rf $(OBJ_DIR)

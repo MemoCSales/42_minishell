@@ -38,17 +38,17 @@ OBJ = $(SRC:.c=.o)
 BONUS_OBJ = $(BONUS_SRC:.c=.o)
 
 message:
-	@echo "$(LIGHT_BLUE)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
-	@printf "$(LIGHT_BLUE)│Creating LIBFT...."
+	@echo "$(RED)┌──────────────────────────────────────────────────────────────────────────┐$(DEFAULT)"
+	@printf "$(RED)│Creating LIBFT...."
 
 %.o: %.c message
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@printf "$(LIGHT_BLUE)."
+	@printf "$(RED)."
 
 $(NAME): $(OBJ) ./libft.h
 	$(AR) $(ARFLAGS) $(NAME) $(OBJ)
-	@echo "$(LIGHT_BLUE)..Libft OK!│$(DEFAULT)"
-	@echo "$(LIGHT_BLUE)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
+	@echo "$(RED)..Libft OK!│$(DEFAULT)"
+	@echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
 	@sleep 0.5
 
 bonus: $(BONUS_OBJ) ./libft.h
