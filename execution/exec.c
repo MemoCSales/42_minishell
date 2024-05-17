@@ -268,7 +268,7 @@ int	exec_without_cmds(t_main *main, t_env *env, int i)
 	int	heredoc_fd;
 
 	heredoc_fd = 0;
-	printf("EXECUTION WITH NO ARGUMENTS\n");
+	// printf("EXECUTION WITH NO ARGUMENTS\n");
 	// pipe_created = pipe_redirection(main, i);
 	// printf("PIPE REDIRECTION: %d\n", pipe_created);
 	if (main[i].heredoc != NULL)
@@ -276,11 +276,11 @@ int	exec_without_cmds(t_main *main, t_env *env, int i)
 		// printf("HEREDOC EXEC\n");
 		heredoc_fd = handle_heredoc(main, i);
 	}
-	printf("INPUT_FILE: %s\n", main[i].input_file);
-	printf("OUTPUT FILE: %s\n", main[i].output_file);
+	// printf("INPUT_FILE: %s\n", main[i].input_file);
+	// printf("OUTPUT FILE: %s\n", main[i].output_file);
 	if ((main[i].input_file != NULL && main[i].output_file != NULL) || (main[i].heredoc != NULL && main[i].output_file))
 	{
-		printf("HANDLE FILE REDIRECTION\n");
+		// printf("HANDLE FILE REDIRECTION\n");
 		handle_file_redirection(main, i, heredoc_fd);
 	}
 	if (heredoc_fd)

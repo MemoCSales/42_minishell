@@ -23,6 +23,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include <unistd.h>
 
 # define MAX_CMD_LEN 1024
@@ -142,6 +143,12 @@ int			exec_without_cmds(t_main *main, t_env *env, int i);
 
 /*--------------------GENERAL UTIL FUNCTIONS--------------------*/
 void		error_messages(char *type);
+void		print_open_fds(void);
+
+/*--------------------SIGNALS FUNCTIONS--------------------*/
+void 	siginit_handler();
+void 	sigquit_handler();
+void	setup_signals();
 
 // redirections
 int			check_for_redirect_output(t_main *main);

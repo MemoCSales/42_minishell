@@ -22,7 +22,7 @@ int	main(int argc, char **argv, char **env)
 	main_var = NULL;
 	init_env(&env_var, env);
 	main_loop(env_var, main_var);
-	check_env(&env_var);
+	// check_env(&env_var);
 	return (0);
 }
 

@@ -36,6 +36,7 @@ SRC =	main.c \
 		./parsing/parse.c \
 		./execution/exec.c \
 		./execution/exec_utils.c \
+		./signals/signals.c
 
 all: $(NAME)
 	@./minishell

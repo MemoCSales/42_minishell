@@ -37,3 +37,18 @@ void	error_messages(char *type)
 		return ;
 	}
 }
+
+void	print_open_fds(void)
+{
+	long	open_max;
+	int		i;
+
+	open_max = sysconf(_SC_OPEN_MAX);
+	i = 0;
+	while (i < open_max)
+	{
+		if (fcntl(i, F_GETFD) != -1 || errno != EBADF)
+			printf("File descriptor %d is open\n", i);
+		i++;
+	}
+}
