@@ -54,45 +54,36 @@ char	*read_quotes(char *delimiter, char *line)
 
 char	*check_closed_quotes(char *line)
 {
-    int		single_quote_count;
-    int		double_quote_count;
-    char	*ptr;
-    int     in_single_quotes;
-    int     in_double_quotes;
+	int		single_quote_count;
+	int		double_quote_count;
+	char	*ptr;
+	int		in_single_quotes;
+	int		in_double_quotes;
 
-    single_quote_count = 0;
-    double_quote_count = 0;
-    in_single_quotes = 0;
-    in_double_quotes = 0;
-    ptr = line;
-    while (*ptr != '\0')
-    {
-        if (*ptr == '\'' && !in_double_quotes)
-        {
-            single_quote_count++;
-            in_single_quotes = single_quote_count % 2;
-        }
-        if (*ptr == '\"' && !in_single_quotes)
-        {
-            double_quote_count++;
-            in_double_quotes = double_quote_count % 2;
-        }
-        ptr++;
-    }
-    if (in_single_quotes)
-    {
-        // printf("minishell: unclosed single quote\n");
-        line = ft_strdup("\'");
-        // line = ft_strjoin(line, read_quotes("\'", line));
-    }
-    else if (in_double_quotes)
-    {
-        // printf("minishell: unclosed double quote\n");
-        line = ft_strdup("\"");
-        // line = ft_strjoin(line, read_quotes("\"", line));
-    }
-// printf("line: %s\n", line);
-    return (line);
+	single_quote_count = 0;
+	double_quote_count = 0;
+	in_single_quotes = 0;
+	in_double_quotes = 0;
+	ptr = line;
+	while (*ptr != '\0')
+	{
+		if (*ptr == '\'' && !in_double_quotes)
+		{
+			// single_quote_count++;
+			in_single_quotes = ++single_quote_count % 2;
+		}
+		if (*ptr == '\"' && !in_single_quotes)
+		{
+			// double_quote_count++;
+			in_double_quotes = ++double_quote_count % 2;
+		}
+		ptr++;
+	}
+	if (in_single_quotes)
+		line = ft_strdup("\'");
+	else if (in_double_quotes)
+		line = ft_strdup("\"");
+	return (line);
 }
 
 char	*read_heredoc(char *delimiter)

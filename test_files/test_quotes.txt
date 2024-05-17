@@ -104,4 +104,6 @@ t_main[0].fd[1]: 0
 $?HELLO
 
 
->>> NORMINETTING 10_PLACEHOLDER
+'a' b c "d" \ | asfdte 'a' fasfs "asfd'" ❌ UNESCAPED
+
+>>>NORMINETTING 10_PLACEHOLDER

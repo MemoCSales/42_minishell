@@ -31,21 +31,21 @@ t_main	*parse_line(char *line)
 	{
 		commands[i] = process_command_string(commands[i]);
 		args = ft_split(commands[i], ' ');
-		parsed_struct[i].cmd = args[0];
 		handle_redirections(parsed_struct, args, i);
 		check_flags(&parsed_struct[i], args);
 		create_pipe(&parsed_struct[i], i, count_elements(commands));
+		parsed_struct[i].cmd = args[0];
 		reverse_placeholders_in_struct(&parsed_struct[i], &ph_strings);
 		i++;
 	}
 	parsed_struct[count_elements(commands)].cmd = NULL;
 // PRINT STRUCTS
-	i = 0;
-	while (i < count_elements(commands))
-	{
-		print_struct(parsed_struct, i);
-		i++;
-	}
+	// i = 0;
+	// while (i < count_elements(commands))
+	// {
+	// 	print_struct(parsed_struct, i);
+	// 	i++;
+	// }
 	return (parsed_struct);
 }
 
