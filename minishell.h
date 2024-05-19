@@ -93,7 +93,7 @@ void		cd_error_check(char *path);
 void		ft_strcpy_memo(char *dst, char *src);
 
 /*--------------------EXPORT BUILTIN-----------------------------*/
-int			export_builtin(t_env *env_vars, char *new_var);
+int			export_builtin(t_env *env_vars, t_main *main, char *new_var);
 int			get_name_length(char *new_var);
 int			replace_env_var(t_env *env, char *new_var, int i);
 int			check_duplicate(t_env *env_vars, char *new_var);
@@ -137,7 +137,6 @@ char		*ft_strdup_minishell(char *s1);
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
 void		handle_file_redirection(t_main *main, int i, int heredoc_fd);
-
 void		print_exec_args(char **exec_args);
 int			handle_heredoc(t_main *main, int i);
 void		handle_output_redirection(t_main *main, int i);
@@ -146,14 +145,16 @@ int			parent_process(t_exec_context *context);
 void		handle_child_process(t_exec_context *context);
 void		handle_grandson_process(t_exec_context *context);
 int			execute_command(t_env *env, t_main *main);
+int			execute_with_commands(t_exec_context *context);
 int			exec_without_cmds(t_exec_context *context);
+int 		execute_without_commands(t_exec_context *context);
 void		initialize_context(t_exec_context *context);
 
 /*--------------------GENERAL UTIL FUNCTIONS---------------------*/
 void		error_messages(char *type);
 void		print_open_fds(void);
 
-/*--------------------SIGNALS FUNCTIONS--------------------*/
+/*--------------------SIGNALS FUNCTIONS--------------------------*/
 void 	siginit_handler();
 void 	sigquit_handler();
 void	setup_signals();

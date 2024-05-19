@@ -97,7 +97,7 @@ int	add_new_var(char *new_var, char **new_env_vars, int i)
 	return (0);
 }
 
-int	export_builtin(t_env *env_vars, char *new_var)
+int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 {
 	char	**new_env_vars;
 	int		i;
@@ -107,6 +107,8 @@ int	export_builtin(t_env *env_vars, char *new_var)
 		print_env_vars(env_vars);
 		return (0);
 	}
+	if (main->args[1] != NULL)
+		return (0);
 	if (!validate_new_var(env_vars, new_var))
 		return (1);
 	new_env_vars = allocate_new_env_vars(env_vars);
