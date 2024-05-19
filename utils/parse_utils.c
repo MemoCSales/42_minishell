@@ -271,8 +271,8 @@ t_main	*initialize_main(t_main *main_var, int num_commands)
 		main_var->heredoc = NULL;
 		main_var->extra = NULL;
 		main_var->current_dir = getcwd(NULL, 0);
-		main_var->fd[0] = 0;
-		main_var->fd[1] = 0;
+		main_var->fd[0] = -1;
+		main_var->fd[1] = -1;
 		// main_var->pid = 0;
 		i++;
 	}

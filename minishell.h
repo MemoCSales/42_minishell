@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
@@ -46,6 +47,7 @@ typedef struct s_main
 	char	*current_dir;
 	int		fd[2];
 	pid_t	pid;
+	pid_t	grandson_pid;
 }			t_main;
 
 typedef struct s_process_string_params
@@ -63,11 +65,23 @@ typedef struct s_env
 	int		status;
 }			t_env;
 
+typedef struct s_exec
+{
+	t_main	*main;
+	t_env	*env;
+	int		i;
+	char	**exec_args;
+	char	*path_env;
+	char	*path_cmd;
+	int		heredoc_fd;
+	int		pipe_created;
+}			t_exec_context;
+
 //main
-void	main_loop(t_env env_var, t_main *main_var);
+void		main_loop(t_env env_var, t_main *main_var);
 
 // Functions for the buildins
-/*--------------------CD BUILTIN-----------------------------*/
+/*------------------------CD BUILTIN-----------------------------*/
 int			cd_builtin(t_env *env_vars, char *path, t_main *main);
 char		*create_new_var(char *var_name, char *new_value);
 void		find_and_replace_var(t_env *env, char *var_name, char *new_var);
@@ -97,15 +111,7 @@ int			add_new_var(char *new_var, char **new_env_vars, int i);
 
 int			builtins_no_output(char *cmd);
 int			builtins_with_output(char *cmd);
-int			pwd_builtin(t_main *main);
 int			env_builtin(t_env *env_vars);
-int			unset_builtin(t_env *env_vars, char *var_name);
-int			find_index(t_env *env_vars, char *var_name);
-int			is_valid_var_name(char *var);
-int			check_duplicate(t_env *env_vars, char *new_var);
-int			echo_builtin(t_main *main, t_env *env);
-int			exit_builtin(t_main *main);
-int			ft_normal_exit(t_main *main);
 int			exec_builtin(t_env *env_vars, t_main *main);
 
 /*-----------------------PWD BUILTIN------------------------------*/
@@ -119,29 +125,31 @@ int			ft_normal_exit(t_main *main);
 int			unset_builtin(t_env *env_vars, char *var_name);
 int			find_index(t_env *env_vars, char *var_name);
 
-int			builtins_no_output(char *cmd);
-int			builtins_with_output(char *cmd);
-int			env_builtin(t_env *env_vars);
-int			exec_builtin(t_env *env_vars, t_main *main);
-
 /*-----------------------ECHO BUILTIN-----------------------------*/
 int			echo_builtin(t_main *main, t_env *env);
 
-/*--------------------ENVIRONMENT VARIABLES FUNCTION----------*/
+/*--------------------ENVIRONMENT VARIABLES FUNCTION--------------*/
 void		init_env(t_env *env_vars, char **env);
 void		check_env(t_env *env_vars);
 char		*ft_strdup_minishell(char *s1);
 
-/*--------------------EXECUTION FUNCTIONS--------------------*/
-int			execute_command(t_env *env, t_main *main);
+/*--------------------EXECUTION FUNCTIONS-------------------------*/
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-// int			parent_process(t_main *main, t_env *env, int i);
-int			parent_process(t_main *main, t_env *env, int i, int pipe_created);
 void		handle_file_redirection(t_main *main, int i, int heredoc_fd);
-int			exec_without_cmds(t_main *main, t_env *env, int i);
 
-/*--------------------GENERAL UTIL FUNCTIONS--------------------*/
+void		print_exec_args(char **exec_args);
+int			handle_heredoc(t_main *main, int i);
+void		handle_output_redirection(t_main *main, int i);
+void		handle_input_redirection(t_main *main, int i);
+int			parent_process(t_exec_context *context);
+void		handle_child_process(t_exec_context *context);
+void		handle_grandson_process(t_exec_context *context);
+int			execute_command(t_env *env, t_main *main);
+int			exec_without_cmds(t_exec_context *context);
+void		initialize_context(t_exec_context *context);
+
+/*--------------------GENERAL UTIL FUNCTIONS---------------------*/
 void		error_messages(char *type);
 void		print_open_fds(void);
 
@@ -151,8 +159,6 @@ void 	sigquit_handler();
 void	setup_signals();
 
 // redirections
-int			check_for_redirect_output(t_main *main);
-int			check_for_redirect_input(t_main *main);
 void		handle_output_redirection(t_main *main, int i);
 void		handle_input_redirection(t_main *main, int i);
 
