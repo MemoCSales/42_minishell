@@ -30,18 +30,33 @@ int	is_escaped(char *line, int index)
 	}
 	return (count % 2 != 0);
 }
-
 int	is_char_in_quotes(char *line, int index)
 {
-	char	temp;
-	int		status;
+    int		status;
+    char    *substring;
 
-	temp = line[index + 1];
-	line[index + 1] = '\0';
-	status = in_quotes(line);
-	line[index + 1] = temp;
-	return (status);
+    substring = malloc((index + 2) * sizeof(char));
+    strncpy(substring, line, index + 1);
+    substring[index + 1] = '\0';
+// printf("substring up to index + 1: %s\n", substring); // Debug print
+    status = in_quotes(substring);
+// printf("status: %d\n", status); // Debug print
+    free(substring);
+    return (status);
 }
+// int	is_char_in_quotes(char *line, int index)
+// {
+//     char	temp;
+//     int		status;
+
+//     temp = line[index + 1];
+//     line[index + 1] = '\0';
+//     printf("line up to index + 1: %s\n", line); // Debug print
+//     status = in_quotes(line);
+//     printf("status: %d\n", status); // Debug print
+//     line[index + 1] = temp;
+//     return (status);
+// }
 
 void	print_args(char **args)
 {

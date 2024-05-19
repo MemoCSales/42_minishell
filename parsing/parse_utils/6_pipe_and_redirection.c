@@ -79,10 +79,12 @@ char	*check_closed_quotes(char *line)
 		}
 		ptr++;
 	}
+// printf("1..check_closed_quotes-line: %s\n", line);
 	if (in_single_quotes)
 		line = ft_strdup("\'");
 	else if (in_double_quotes)
 		line = ft_strdup("\"");
+// printf("1..check_closed_quotes-line: %s\n", line);
 	return (line);
 }
 

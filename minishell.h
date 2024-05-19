@@ -187,9 +187,8 @@ void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 //3_redirection_and_variables.c
 int			check_redir(char **args, int j); //CHECK IF ARGS[J] IS A REDIRECTION
 void		redirection(t_main *parsed_struct, char **args, int i, int j); //PARSE REDIRECTIONS
-void		handle_variables(char *line, char *prepared, int *i, int *j); //$ - HANDLE ENV VARIABLES 
 void		get_var_name(char *line, int *i, char *var_name); //GET ENV VARIABLE NAME
-void		replace_var_value(char *var_name, char *prepared, int *j); //REPLACE ENV VARIABLE VALUE
+char		*replace_var_value(char *var_name, char *prepared, int *j); //REPLACE ENV VARIABLE VALUE
 
 //4_quotes.c
 void		handle_quotes(char *line, int *i, int *in_quotes);
@@ -220,6 +219,7 @@ char		*ft_strncpy(char *dest, char *src, size_t n); //COPY N BYTES FROM SRC TO D
 char		*ft_strcat(char *dest, const char *src); //CONCATENATE SRC TO DEST
 char		*ft_strswap(char *str, char *substr, char *replacement); //SWAP SUBSTR BY REPLACEMENT IN STR
 char		*ft_strnjoin(char const *s1, char const *s2, size_t n); //JOIN N BYTES OF S2 TO S1
+char		*ft_strndup(const char *s, size_t n);
 
 //8_is_and_prints.c
 int			is_whitespace(char c); //CHECK IF CHAR IS WHITESPACE
@@ -241,7 +241,8 @@ void		print_ph_strings(char ***ph_strings);
 
 //10_placeholder_1.c
 char		**extract_strings(const char *line, int *numStrings);
-char		*generate_placeholder(int occurrence);
+char		*generate_placeholder(int occurrence, char quote_type);
+// char		*generate_placeholder(int occurrence);
 void		replace_with_placeholder(char *line);
 // int			count_occurrences(const char *str, char c);
 int			count_occurrences(const char *str, char c, char d);
@@ -257,6 +258,7 @@ void		replace_placeholder_sub(char **str, char *placeholder, \
 			char *replacement);
 void		reverse_placeholders(char **command, char ***ph_strings);
 void		reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
+void		handle_variables_ph(char *line, char **prepared, int *i, int *j); //HANDLE ENV VARIABLES
 // void	replace_placeholders(char **command, char ***ph_strings);
 
 //parse_test

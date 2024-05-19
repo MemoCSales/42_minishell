@@ -49,50 +49,97 @@ char	**extract_strings(const char *line, int *numStrings)
 	strings[occurrence] = NULL;
 	return (strings);
 }
-
-char	*generate_placeholder(int occurrence)
+char	*generate_placeholder(int occurrence, char quote_type)
 {
-	char	*occurrence_str;
-	char	*placeholder;
+    char	*occurrence_str;
+    char	*placeholder;
+    char    *symbol;
 
-	occurrence_str = ft_itoa(occurrence + 1);
-	placeholder = malloc(strlen("Ψ()") + strlen(occurrence_str) + 1);
-	strcpy(placeholder, "Ψ(");
-	strcat(placeholder, occurrence_str);
-	strcat(placeholder, ")");
-	free(occurrence_str);
-	return (placeholder);
+    if (quote_type == '\'') {
+        symbol = "ψ";
+    } else {
+        symbol = "Ψ";
+    }
+
+    occurrence_str = ft_itoa(occurrence + 1);
+    placeholder = malloc(strlen(symbol) + strlen("()") + strlen(occurrence_str) + 1);
+    strcpy(placeholder, symbol);
+    strcat(placeholder, "(");
+    strcat(placeholder, occurrence_str);
+    strcat(placeholder, ")");
+    free(occurrence_str);
+    return (placeholder);
 }
+// char	*generate_placeholder(int occurrence)
+// {
+// 	char	*occurrence_str;
+// 	char	*placeholder;
 
-// Function to replace strings between double quotes with placeholders
+// 	occurrence_str = ft_itoa(occurrence + 1);
+// 	placeholder = malloc(strlen("Ψ()") + strlen(occurrence_str) + 1);
+// 	strcpy(placeholder, "Ψ(");
+// 	strcat(placeholder, occurrence_str);
+// 	strcat(placeholder, ")");
+// 	free(occurrence_str);
+// 	return (placeholder);
+// }
 void	replace_with_placeholder(char *line)
 {
-	int		occurrence;
-	char	*st;
-	char	*end;
-	char	*ph;
+    int		occurrence;
+    char	*st;
+    char	*end;
+    char	*ph;
 
-	occurrence = 0;
-	st = line;
-	end = line;
-	while (*st)
-	{
-		while (*st && !(*st == '"' || *st == '\'')
-			&& (st <= line || *(st - 1) != '\\'))
-			st++;
-		if (!*st)
-			break ;
-		end = st + 1;
-		while (*end && *end != *st)
-			end++;
-		ph = generate_placeholder(occurrence);
-		memmove(st + ft_strlen(ph), end + 1, ft_strlen(end + 1) + 1);
-		memcpy(st, ph, strlen(ph));
-		st += ft_strlen(ph);
-		occurrence++;
-		free(ph);
-	}
+    occurrence = 0;
+    st = line;
+    end = line;
+    while (*st)
+    {
+        while (*st && !(*st == '"' || *st == '\'')
+            && (st <= line || *(st - 1) != '\\'))
+            st++;
+        if (!*st)
+            break ;
+        end = st + 1;
+        while (*end && *end != *st)
+            end++;
+        ph = generate_placeholder(occurrence, *st);
+        memmove(st + ft_strlen(ph), end + 1, ft_strlen(end + 1) + 1);
+        memcpy(st, ph, strlen(ph));
+        st += ft_strlen(ph);
+        occurrence++;
+        free(ph);
+    }
 }
+// // Function to replace strings between double quotes with placeholders
+// void	replace_with_placeholder(char *line)
+// {
+// 	int		occurrence;
+// 	char	*st;
+// 	char	*end;
+// 	char	*ph;
+
+// 	occurrence = 0;
+// 	st = line;
+// 	end = line;
+// 	while (*st)
+// 	{
+// 		while (*st && !(*st == '"' || *st == '\'')
+// 			&& (st <= line || *(st - 1) != '\\'))
+// 			st++;
+// 		if (!*st)
+// 			break ;
+// 		end = st + 1;
+// 		while (*end && *end != *st)
+// 			end++;
+// 		ph = generate_placeholder(occurrence);
+// 		memmove(st + ft_strlen(ph), end + 1, ft_strlen(end + 1) + 1);
+// 		memcpy(st, ph, strlen(ph));
+// 		st += ft_strlen(ph);
+// 		occurrence++;
+// 		free(ph);
+// 	}
+// }
 
 int	count_occurrences(const char *str, char c, char d)
 {

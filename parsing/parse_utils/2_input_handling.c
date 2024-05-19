@@ -12,6 +12,86 @@
 
 #include "../minishell.h"
 
+char	*handle_variables(char *line)
+{
+	char	*result;
+	char	*env_var_start;
+	char	*env_var_end;
+	int		i;
+	int		j;
+	int		quotes;
+
+	i = 0;
+	j = 0;
+	env_var_start = NULL;
+	env_var_end = NULL;
+
+
+	quotes = 0;
+	quotes = ft_strchr(line, '$') - line;
+// printf("\nZ.index: %d\n", quotes);
+	if (quotes >= 0)
+		quotes = is_char_in_quotes(line, quotes);
+	else
+		quotes = 0;
+// printf("\nY.index: %d\n", quotes);
+
+	result = malloc(strlen(line) * 200);
+	while (line[i] != '\0')
+	{ //SO TROCA A ENV VAR SE:
+		if ((line[i] == '$' && (i == 0 || line[i - 1] != '\\'))
+			&& (quotes == 2) && (line[i + 1] != ' ')
+			&& (line[i + 1] != '\'' && line[i + 1] != '\"'))
+		{
+// printf("B.line[i]: %c, line[i - 1]: %c, line[i + 1]: %c\n", line[i], line[i - 1], line[i + 1]);
+            env_var_start = &line[i + 1];
+			env_var_end = env_var_start;
+
+			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
+				env_var_end++;
+			
+			// env_var_end = ft_strchr(env_var_start, ' ');
+
+            // if (env_var_end == NULL)
+			// {
+            //     env_var_end = strchr(env_var_start, '\0');
+            // }
+			// if (env_var_end < env_var_start)
+			// {
+			// 	// Handle error, e.g. by skipping this variable
+			// 	i++;
+			// 	continue;
+			// }
+
+
+
+            char env_var_name[env_var_end - env_var_start + 1];
+            ft_strncpy(env_var_name, env_var_start, env_var_end - env_var_start);
+            env_var_name[env_var_end - env_var_start] = '\0';
+// printf("env_var_name: %s\n", env_var_name);
+// printf("env_var_value: %s\n", getenv(env_var_name));
+            char *env_var_value = getenv(env_var_name);
+// printf("env_var_value2: %s\n", env_var_value);
+            if (env_var_value != NULL)
+			{
+                strcpy(&result[j], env_var_value);
+                j += strlen(env_var_value);
+            }
+
+            i = env_var_end - line;
+// printf("i: %d\n", i);
+        }
+		else
+		{
+            result[j++] = line[i++];
+        }
+    }
+
+    result[j] = '\0';
+// printf("result: %s\n", result);
+    return result;
+}
+
 char	*prepare_line(char *line, char ***ph_strings)
 {
 	char	*prepared;
@@ -21,38 +101,47 @@ char	*prepare_line(char *line, char ***ph_strings)
 	prepared = check_closed_quotes(line);
 	if ((ft_strequ(prepared, "\'") || ft_strequ(prepared, "\"")))
 	{
-		printf("Error: Unclosed quotes\n");
+		printf("Error: Unclosed quotes (%c)\n", prepared[0]);
 		free(prepared);
 		prepared = ft_strdup("\0");
+		// prepared = ft_strdup("A");
+// printf("PPPPPPprepared:%s\n", prepared);
 		check_malloc(prepared);
 		return (prepared);
 	}
+
+	prepared = handle_variables(line);
+// printf("prepared222: %s\n", prepared);
+
 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
 	check_malloc(ph_strings);
-	placeholder(line, ph_strings);
-	prepared = ft_strdup(line);
+	// placeholder(line, ph_strings);
+	placeholder(prepared, ph_strings);
+// printf("5.PREPARED: %s LINE: %s\n", prepared, line);
+	// prepared = ft_strdup(line);
 	return (prepared);
+	// return (line);
 }
 
-void	handle_input(char *line, char *prepared)
-	{
-	int	i;
-	int	j;
-	int	in_quotes;
+// void	handle_input(char *line, char *prepared)
+// 	{
+// 	int	i;
+// 	int	j;
+// 	int	in_quotes;
 
-	i = 0;
-	j = 0;
-	in_quotes = 0;
-	while (line[i] != '\0')
-	{
-		if (in_quotes != '\'')
-		{
-			handle_variables(line, prepared, &i, &j);
-		}
-		handle_others(line, prepared, &i, &j);
-	}
-	prepared[j] = '\0';
-}
+// 	i = 0;
+// 	j = 0;
+// 	in_quotes = 0;
+// 	while (line[i] != '\0')
+// 	{
+// 		if (in_quotes != '\'')
+// 		{
+// 			handle_variables(line, prepared, &i, &j);
+// 		}
+// 		handle_others(line, prepared, &i, &j);
+// 	}
+// 	prepared[j] = '\0';
+// }
 
 void	handle_others(char *line, char *prepared, int *i, int *j)
 {

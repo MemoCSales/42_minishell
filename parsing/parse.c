@@ -24,6 +24,11 @@ t_main	*parse_line(char *line)
 	i = 0;
 	ph_strings = NULL;
 	line = prepare_line(line, &ph_strings);
+// printf("OKKKKKKK\n");
+// printf("1.Line: %s\n", line);
+	if (line[0] == '\0')
+		return (NULL);
+// printf("1.ph_strings[0]: %s\n", ph_strings[0]);
 	commands = ft_split(line, '|');
 	parsed_struct = NULL;
 	parsed_struct = initialize_main(parsed_struct, count_elements(commands));

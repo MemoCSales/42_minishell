@@ -61,7 +61,7 @@ Output: helloworld
 Input: echo hello'world' ✅
 Output: helloworld
 
-Input: echo "$PWD"   ❌
+Input: echo "$PWD"   ✅
 Output: The current working directory (e.g., /home/username)
 
 Input: echo '$PWD' ✅
