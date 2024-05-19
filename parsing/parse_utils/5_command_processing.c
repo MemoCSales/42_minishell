@@ -43,7 +43,24 @@ void	insert_spaces_in_command(char *command, char *changed, int *i, int *j)
 	in_string = 0;
 	if (command[*i] == '"')
 		in_string = !in_string;
-	if (!in_string && (command[*i] == '>' || command[*i] == '<')
+
+	if (!in_string && command[*i] == '<' && command[*i + 1] == '<')
+	{
+		changed[(*j)++] = ' ';
+		changed[(*j)++] = command[*i];
+		changed[(*j)++] = command[*i];
+		(*i)++;
+		changed[(*j)++] = ' ';
+	}
+	else if (!in_string && command[*i] == '>' && command[*i + 1] == '>')
+	{
+		changed[(*j)++] = ' ';
+		changed[(*j)++] = command[*i];
+		changed[(*j)++] = command[*i];
+		(*i)++;
+		changed[(*j)++] = ' ';
+	}
+	else if (!in_string && (command[*i] == '>' || command[*i] == '<')
 		&& command[*i + 1] != ' ' && command[*i + 1] != command[*i])
 	{
 		changed[(*j)++] = ' ';

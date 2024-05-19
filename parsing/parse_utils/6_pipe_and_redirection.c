@@ -12,31 +12,80 @@
 
 #include "../minishell.h"
 
-char	*read_quotes(char *delimiter)
+char	*read_quotes(char *delimiter, char *line)
 {
 	char	*quotes;
-	char	*line;
+	char	*new_line;
 	char	*temp;
-
+// printf("*line: %s\n", line);
 	quotes = NULL;
 	if (check_delimiter(delimiter))
 		return (NULL);
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
-		line = get_next_line(0);
-		if (!ft_strncmp(line, delimiter, ft_strlen(delimiter)))
-			break ;
+		new_line = get_next_line(0);
+// printf("new_line: %s\n", new_line);
+		temp = ft_strdup(line);
+// printf("tempstrdup: %s\n", temp);
+		temp = ft_strjoin(new_line, "\n");
+// printf("tempstrjoin: %s\n", temp);
 		temp = quotes;
+// printf("tempquotes: %s\n", temp);
 		if (quotes)
-			quotes = ft_strjoin(temp, line);
+		{
+			quotes = ft_strjoin(temp, new_line);
+// printf("quotesif: %s\n", quotes);
+		}
 		else
-			quotes = ft_strdup(line);
+		{
+			quotes = ft_strdup(new_line);
+// printf("quoteselse: %s\n", quotes);
+		}
 		free(temp);
-		free(line);
+		free(new_line);
+		if (!new_line || !quotes
+			|| !ft_strncmp(new_line, delimiter, ft_strlen(delimiter)))
+			break ;
 	}
-	free(line);
+// printf("quotesfinal: %s\n", quotes);
 	return (quotes);
+}
+
+char	*check_closed_quotes(char *line)
+{
+	int		single_quote_count;
+	int		double_quote_count;
+	char	*ptr;
+	int		in_single_quotes;
+	int		in_double_quotes;
+
+	single_quote_count = 0;
+	double_quote_count = 0;
+	in_single_quotes = 0;
+	in_double_quotes = 0;
+	ptr = line;
+	while (*ptr != '\0')
+	{
+		if (*ptr == '\'' && !in_double_quotes)
+		{
+			// single_quote_count++;
+			in_single_quotes = ++single_quote_count % 2;
+		}
+		if (*ptr == '\"' && !in_single_quotes)
+		{
+			// double_quote_count++;
+			in_double_quotes = ++double_quote_count % 2;
+		}
+		ptr++;
+	}
+// printf("1..check_closed_quotes-line: %s\n", line);
+	if (in_single_quotes)
+		line = ft_strdup("\'");
+	else if (in_double_quotes)
+		line = ft_strdup("\"");
+// printf("1..check_closed_quotes-line: %s\n", line);
+	return (line);
 }
 
 char	*read_heredoc(char *delimiter)
@@ -95,3 +144,41 @@ void	handle_redirections(t_main *parsed_struct, char **args, int i)
 		j++;
 	}
 }
+
+// char	*read_quotes(char *delimiter)
+// {
+//     char	*quotes;
+//     char	*line;
+//     char	*temp;
+
+//     quotes = NULL;
+//     if (check_delimiter(delimiter))
+//         return (NULL);
+//     while (1)
+//     {
+//         ft_putstr_fd("> ", 1);
+//         line = get_next_line(0);
+//         temp = ft_strjoin(line, "\n");
+// Join the newline character with line
+//         free(line); // Free the old line
+//         line = temp;
+// Update line to the new string with the newline character
+//         if (quotes)
+//         {
+//             temp = quotes; // Store the old quotes
+//             quotes = ft_strjoin(temp, line);
+// Join the updated line with quotes
+//             free(temp); // Free the old quotes
+//         }
+//         else
+//             quotes = ft_strdup(line);
+//         if (!line || !quotes
+// || !ft_strncmp(line, delimiter, ft_strlen(delimiter)))
+//         {
+//             free(line); // Free line only once, after it's no longer needed
+//             break ;
+//         }
+//     }
+// printf("quotes: %s\n", quotes);
+//     return (quotes);
+// }

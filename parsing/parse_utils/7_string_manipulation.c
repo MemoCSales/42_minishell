@@ -127,3 +127,21 @@ char	*ft_strnjoin(char const *s1, char const *s2, size_t n)
 	new_str[i] = '\0';
 	return (new_str);
 }
+char	*ft_strndup(const char *s, size_t n)
+{
+	char	*dup;
+	size_t	len;
+
+	dup = NULL;
+	len = strlen(s);
+
+	if (n < len)
+		len = n;
+	dup = (char *)malloc(len + 1);
+	if (dup)
+	{
+		memcpy(dup, s, len);
+		dup[len] = '\0';
+	}
+	return (dup);
+}

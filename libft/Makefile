@@ -1,3 +1,5 @@
+MAKEFLAGS += --no-print-directory
+
 NAME = libft.a
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror

@@ -42,56 +42,189 @@ void	placeholder(char *line, char ***ph_strings)
 // 	}
 // }
 
-void	replace_single_placeholder(char **command,
-			char *placeholder, char *replacement)
-{
-	char	*new_command;
+// void	replace_single_placeholder(char **command,
+// 			char *placeholder, char *replacement)
+// {
+// 	char	*new_command;
 
-	new_command = ft_strswap(*command, placeholder, replacement);
-	free(*command);
-	*command = new_command;
+// 	new_command = ft_strswap(*command, placeholder, replacement);
+// 	free(*command);
+// 	*command = new_command;
+// }
+
+void replace_placeholder_sub(char **str, char *placeholder, char *replacement)
+{
+    char *pos;
+    char *new_str;
+
+    if (*str != NULL && placeholder != NULL)
+    {
+        pos = strstr(*str, placeholder);
+        if (pos != NULL)
+        {
+            new_str = malloc(strlen(*str) - strlen(placeholder) + strlen(replacement) + 1);
+            if (new_str == NULL) // Check if malloc failed
+            {
+                fprintf(stderr, "Failed to allocate memory\n");
+                return;
+            }
+            memcpy(new_str, *str, pos - *str); // Copy the part before the placeholder
+            new_str[pos - *str] = '\0'; // Null terminate the new string
+            strcpy(new_str + (pos - *str), replacement); // Copy the replacement string
+            strcpy(new_str + (pos - *str) + strlen(replacement), pos + strlen(placeholder)); // Copy the part after the placeholder
+            free(*str);
+            *str = new_str;
+        }
+    }
 }
 
-void	replace_placeholder_sub(char **str,
-	char *placeholder, char *replacement)
-{
-	char	*pos;
-	char	*new_str;
+// void	replace_placeholder_sub(char **str,
+// 	char *placeholder, char *replacement)
+// {
+// 	char	*pos;
+// 	char	*new_str;
 
-	if (*str != NULL && placeholder != NULL)
+// 	if (*str != NULL && placeholder != NULL)
+// 	{
+// 		pos = strstr(*str, placeholder);
+// 		if (pos != NULL)
+// 		{
+// 			new_str = malloc(strlen(*str)
+// 					- strlen(placeholder) + strlen(replacement) + 1);
+// 			check_malloc(new_str);
+// 			strncpy(new_str, *str, pos - *str);
+// 			new_str[pos - *str] = '\0';
+// 			strcat(new_str, replacement);
+// 			strcat(new_str, pos + strlen(placeholder));
+// 			free(*str);
+// 			*str = new_str;
+// 		}
+// 	}
+// }
+
+// void reverse_placeholders(char **str, char ***ph_strings)
+// {
+//     char *placeholder;
+//     char *replacement;
+
+//     int i = 0;
+//     while ((*ph_strings)[i] != NULL)
+//     {
+//         placeholder = ft_strjoin("Ψ(", ft_itoa(i + 1));
+//         placeholder = ft_strjoin(placeholder, ")");
+//         replacement = (*ph_strings)[i];
+//         replace_placeholder_sub(str, placeholder, replacement);
+
+//         char *symbol = malloc(3);
+//         strncpy(symbol, placeholder, 2);
+//         symbol[2] = '\0';
+
+//         if (ft_strcmp(symbol, "Ψ") == 0) {
+//             int j = 0;
+//             while (*str != NULL && (*str)[j] != '\0')
+//             {
+//                 handle_variables(*str, str, &j, &j);
+//                 j++;
+//             }
+//         }
+
+//         free(symbol);
+//         free(placeholder);
+//         printf ("str: %s\n", *str);
+//         i++;
+//     }
+// }
+
+void	reverse_placeholders(char **str, char ***ph_strings)
+{
+    char	*placeholder;
+    char	*replacement;
+    int		i;
+    size_t	len;
+// printf("REVERSE_PLACEHOLDERS\n");
+    if (!str || !*str || !ph_strings || !*ph_strings)
+        return;
+
+    i = 0;
+    len = ft_strlen(*str);
+// printf("str: %s\n", *str);
+
+    if (ft_strnstr(*str, "Ψ", len) != NULL)
 	{
-		pos = strstr(*str, placeholder);
-		if (pos != NULL)
+        // printf("Placeholder %d: DOUBLE\n", i);
+
+// printf("i: %d\n", i);
+// printf("ph_strings[i]: %s\n", (*ph_strings)[i]); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+		// while ((*ph_strings)[i] != NULL)
+		while (i < 10)
 		{
-			new_str = malloc(strlen(*str)
-					- strlen(placeholder) + strlen(replacement) + 1);
-			strncpy(new_str, *str, pos - *str);
-			new_str[pos - *str] = '\0';
-			strcat(new_str, replacement);
-			strcat(new_str, pos + strlen(placeholder));
-			free(*str);
-			*str = new_str;
+			placeholder = ft_strjoin("Ψ(", ft_itoa(i + 1));
+			if (!placeholder)
+				return;
+			placeholder = ft_strjoin(placeholder, ")");
+			if (!placeholder)
+				return;
+// printf("PLACEHOLDER: %s\n", placeholder);
+			replacement = (*ph_strings)[i];
+			if (!replacement)
+				return;
+// printf("REPLACEMENT: %s\n", replacement);
+			replace_placeholder_sub(str, placeholder, replacement);
+			free(placeholder);
+			i++;
+		}
+
+		int j = 0;
+		while (*str != NULL && (*str)[j] != '\0')
+		{
+			handle_variables_ph(*str, str, &j, &j);
+			j++;
+		}
+// printf("STR: %s\n", *str);
+
+
+
+
+	}
+    else if (ft_strnstr(*str, "ψ", len) != NULL)
+	{
+        // printf("Placeholder %d: SINGLE\n", i);
+		while ((*ph_strings)[i] != NULL)
+		{
+			placeholder = ft_strjoin("ψ(", ft_itoa(i + 1));
+			if (!placeholder)
+				return;
+			placeholder = ft_strjoin(placeholder, ")");
+			if (!placeholder)
+				return;
+			replacement = (*ph_strings)[i];
+			if (!replacement)
+				return;
+			replace_placeholder_sub(str, placeholder, replacement);
+			free(placeholder);
+			i++;
 		}
 	}
 }
 
-void	reverse_placeholders(char **str, char ***ph_strings)
-{
-	char	*placeholder;
-	char	*replacement;
-	int		i;
+// void	reverse_placeholders(char **str, char ***ph_strings)
+// {
+// 	char	*placeholder;
+// 	char	*replacement;
+// 	int		i;
 
-	i = 0;
-	while ((*ph_strings)[i] != NULL)
-	{
-		placeholder = ft_strjoin("Ψ(", ft_itoa(i + 1));
-		placeholder = ft_strjoin(placeholder, ")");
-		replacement = (*ph_strings)[i];
-		replace_placeholder_sub(str, placeholder, replacement);
-		free(placeholder);
-		i++;
-	}
-}
+// 	i = 0;
+// 	while ((*ph_strings)[i] != NULL)
+// 	{
+// 		placeholder = ft_strjoin("Ψ(", ft_itoa(i + 1));
+// 		placeholder = ft_strjoin(placeholder, ")");
+// 		replacement = (*ph_strings)[i];
+// 		replace_placeholder_sub(str, placeholder, replacement);
+// 		free(placeholder);
+// 		i++;
+// 	}
+// }
 
 void	reverse_placeholders_in_struct(t_main *command, char ***ph_strings)
 {
