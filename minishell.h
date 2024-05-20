@@ -166,8 +166,9 @@ void		handle_input_redirection(t_main *main, int i);
 //exec_utils.c
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-//void	pipe_redirection(t_main *main, t_env *env_vars, int i);
-int			pipe_redirection(t_main *main, int i);
+//void		pipe_redirection(t_main *main, t_env *env_vars, int i);
+// int			pipe_redirection(t_main *main, int i);
+int			pipe_redirection(t_main *main, int i, t_exec_context *context);
 char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 //utils/cleanup.c

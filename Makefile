@@ -114,7 +114,9 @@ norminette:
 		norminette $(SRC) minishell.h $(LIBFT_DIRECTORY)
 
 va:
-		valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=all ./minishell
+		# valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=all ./minishell
+		# valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
+		valgrind --trace-children=yes --track-fds=all ./minishell
 		
 
 .PHONY: all clean fclean re
