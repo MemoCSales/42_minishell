@@ -32,6 +32,8 @@
 
 # define DEBUG 1
 
+extern int g_status;
+
 typedef struct s_main
 {
 	char	*cmd;

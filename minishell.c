@@ -51,6 +51,7 @@ void	main_loop(t_env env_var, t_main *main_var)
 		while (main_var[num_commands].cmd)
 			num_commands++;
 		env_var.status = execute_command(&env_var, main_var);
+		g_status = env_var.status;//ADDED FOR PARSING
 		free_parsed_struct(main_var, num_commands);
 		free(line);
 	}

@@ -45,17 +45,19 @@ int	in_quotes(char *line)
         if (line[i] != ' ')
             last_non_space = i;
         backslashes = 0;
-        while (last_non_space > 0 && line[last_non_space - 1] == '\\') {
+        while (last_non_space > 0 && line[last_non_space - 1] == '\\')
+		{
             backslashes++;
             last_non_space--;
         }
-        if (line[i] == '\'' && (last_non_space == -1 || (last_non_space > 0 && backslashes % 2 == 0)))
+        if (line[i] == '\'' && (last_non_space == -1 || (last_non_space >= 0 && backslashes % 2 == 0)))//INSERTED AN EQUAL
             in_single_quotes = !in_single_quotes;
-        else if (line[i] == '\"' && (last_non_space == -1 || (last_non_space > 0 && backslashes % 2 == 0)))
+        else if (line[i] == '\"' && (last_non_space == -1 || (last_non_space >= 0 && backslashes % 2 == 0)))//INSERTED AN EQUAL 
             in_double_quotes = !in_double_quotes;
 // printf("char: %c, in_single_quotes: %d, in_double_quotes: %d\n", line[i], in_single_quotes, in_double_quotes); // Debug print
         i++;
     }
+// printf("QUOTES?SIN-DOB:%d %d", in_single_quotes, in_double_quotes);
     if (in_single_quotes)
         return (1);
     else if (in_double_quotes)
@@ -172,21 +174,73 @@ void	erase_quotes(char *command)
 	}
 }
 
-void	remove_double_quotes(char *str)
-{
-	int		i;
-	int		j;
+// void	remove_double_quotes(char *str)
+// {
+// 	int		i;
+// 	int		j;
 
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] != '\"')
-		{
-			str[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	str[j] = '\0';
+// 	i = 0;
+// 	j = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] != '\"')
+// 		{
+// 			str[j] = str[i];
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	str[j] = '\0';
+// }
+
+// void remove_double_quotes(char *str)
+// {
+//     int i = 0;
+//     int j = 0;
+//     while (str[i])
+//     {
+//         if (str[i] == '\\' && str[i+1] == '\"') // if current and next character are \"
+//         {
+//             str[j] = '\"'; // replace with "
+//             i++; // skip next character
+//         }
+//         else
+//         {
+//             str[j] = str[i];
+//         }
+//         i++;
+//         j++;
+//     }
+//     str[j] = '\0';
+// }
+
+void remove_double_quotes(char *str)
+{
+    int i = 0;
+    int j = 0;
+    int inQuotes = 0;
+    while (str[i])
+    {
+        if (str[i] == '\"') // if current character is "
+        {
+            if (inQuotes == 0 && str[i+1] != ' ') // if it's an outer quote and next character is not a space
+            {
+                i++; // skip this character
+                continue;
+            }
+            inQuotes = !inQuotes; // toggle inQuotes
+        }
+        else if (str[i] == '\\' && str[i+1] == '\"') // if current and next character are \"
+        {
+            str[j] = '\"'; // replace with "
+            i++; // skip next character
+        }
+        else
+        {
+            str[j] = str[i];
+        }
+        i++;
+        j++;
+    }
+    str[j] = '\0';
 }

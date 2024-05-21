@@ -15,6 +15,7 @@
 void	exit_code(t_env *env)
 {
 	printf("%d\n", env->status);
+	g_status = env->status;//ADDED FOR PARSING
 }
 
 char	*ft_strremove(char *string, int c)

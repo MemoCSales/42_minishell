@@ -11,12 +11,69 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+int g_status;
+
+char *change_unquoted_dollar_signs(char *str)
+{
+    char *result = malloc(strlen(str) * 2); // Allocate memory for the result string
+    int i = 0, j = 0;
+    int in_double_quotes = 0;
+    int in_single_quotes = 0;
+    while (str[i] != '\0') {
+        if (str[i] == '"') {
+            in_double_quotes = !in_double_quotes; // Toggle the in_double_quotes flag
+        }
+        if (str[i] == '\'') {
+            in_single_quotes = !in_single_quotes; // Toggle the in_single_quotes flag
+        }
+        if (!in_double_quotes && !in_single_quotes && str[i] == '$') {
+            int start = i;
+            while (str[i] != ' ' && str[i] != '\0') {
+                i++;
+            }
+            int len = i - start;
+            strncpy(&result[j], "\"", 1);
+            strncpy(&result[j + 1], &str[start], len);
+            strncpy(&result[j + len + 1], "\"", 1);
+            j += len + 2;
+        } else {
+            result[j++] = str[i++];
+        }
+    }
+    result[j] = '\0'; // Null-terminate the result string
+    return result;
+}
+
+
+void	clean_string(char *str)
+{
+	int	i;
+	int	j;
+	int	length;
+
+	i = 0;
+	j = 0;
+	length = strlen(str);
+	while (i < length)
+	{
+		if (str[i] == '\\'
+			&& (str[i + 1] == '"' || str[i + 1] == '$'))
+		{
+			i++;
+		}
+		str[j] = str[i];
+		j++;
+		i++;
+	}
+	str[j] = '\0';
+}
 
 char	*handle_variables(char *line)
 {
 	char	*result;
 	char	*env_var_start;
 	char	*env_var_end;
+	char	*status;
 	int		i;
 	int		j;
 	int		quotes;
@@ -25,71 +82,101 @@ char	*handle_variables(char *line)
 	j = 0;
 	env_var_start = NULL;
 	env_var_end = NULL;
+	status = NULL;
+	result = malloc(strlen(line) * 200);
 
+	line = change_unquoted_dollar_signs(line); //PUTS DOUBLE QUOTES TO CHANGE IF NO QUOTES
+// printf("MODIFIED LINE: %s\n", line);
 
 	quotes = 0;
-	quotes = ft_strchr(line, '$') - line;
-// printf("\nZ.index: %d\n", quotes);
-	if (quotes >= 0)
-		quotes = is_char_in_quotes(line, quotes);
-	else
-		quotes = 0;
-// printf("\nY.index: %d\n", quotes);
 
-	result = malloc(strlen(line) * 200);
-	while (line[i] != '\0')
-	{ //SO TROCA A ENV VAR SE:
-		if ((line[i] == '$' && (i == 0 || line[i - 1] != '\\'))
-			&& (quotes == 2) && (line[i + 1] != ' ')
-			&& (line[i + 1] != '\'' && line[i + 1] != '\"'))
+	if (ft_strchr(line, '$'))//TEM DOLAR?
+	{
+// printf ("$\n");
+		quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
+		if (quotes == 0)//FORA DE ASPAS?
 		{
-// printf("B.line[i]: %c, line[i - 1]: %c, line[i + 1]: %c\n", line[i], line[i - 1], line[i + 1]);
-            env_var_start = &line[i + 1];
+// printf ("$ OUTSIDE QUOTES\n");
+			env_var_start = &line[ft_strchr(line, '$') - line];
 			env_var_end = env_var_start;
-
+			env_var_end++;
+// printf("env_var_start:%c, env_var_end:%c\n", *env_var_start, *env_var_end);
 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 				env_var_end++;
-			
-			// env_var_end = ft_strchr(env_var_start, ' ');
+// printf("env_var_start:%c, env_var_end:%c\n", *(env_var_start), *(env_var_end - 1));
+			char env_var_name[env_var_end - (env_var_start + 1)];
+			ft_strncpy(env_var_name, env_var_start + 1, ((env_var_end) - (env_var_start)));
+			env_var_name[env_var_end - env_var_start] = '\0';
+// printf("env_var_name: %s\n", env_var_name);
+			char *env_var_value = getenv(env_var_name);
+// printf("env_var_value: %s\n", env_var_value);
+			if (env_var_value != NULL)
+			{
+				strcpy(&result[j], env_var_value);
+				j += strlen(env_var_value);
+			}
+			i = env_var_end - line;
+		}
+	}
+// printf("RESULT FORA QUOTES:%s\n", result);
 
-            // if (env_var_end == NULL)
-			// {
-            //     env_var_end = strchr(env_var_start, '\0');
-            // }
-			// if (env_var_end < env_var_start)
-			// {
-			// 	// Handle error, e.g. by skipping this variable
-			// 	i++;
-			// 	continue;
-			// }
+	i = 0;
+	quotes = ft_strchr(line, '$') - line;
+	if (quotes >= 0)
+		quotes = is_char_in_quotes(line, quotes);
 
-
-
-            char env_var_name[env_var_end - env_var_start + 1];
-            ft_strncpy(env_var_name, env_var_start, env_var_end - env_var_start);
-            env_var_name[env_var_end - env_var_start] = '\0';
+	while (line[i] != '\0')
+	{
+		if ((line[i] == '$' && (i == 0 || line[i - 1] != '\\'))
+			&& (quotes == 2) && (line[i + 1] != ' ') && (line [i + 1] != '?')
+			&& (line[i + 1] != '\'' && line[i + 1] != '\"'))
+		{
+// printf("\"$\"");
+			env_var_start = &line[i + 1];
+			env_var_end = env_var_start;
+			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
+				env_var_end++;
+			char env_var_name[env_var_end - env_var_start + 1];
+			ft_strncpy(env_var_name, env_var_start, (env_var_end - env_var_start));
+			env_var_name[env_var_end - env_var_start] = '\0';
 // printf("env_var_name: %s\n", env_var_name);
 // printf("env_var_value: %s\n", getenv(env_var_name));
-            char *env_var_value = getenv(env_var_name);
+			char *env_var_value = getenv(env_var_name);
 // printf("env_var_value2: %s\n", env_var_value);
-            if (env_var_value != NULL)
+			if (env_var_value != NULL)
 			{
-                strcpy(&result[j], env_var_value);
-                j += strlen(env_var_value);
-            }
-
-            i = env_var_end - line;
+				strcpy(&result[j], env_var_value);
+				j += strlen(env_var_value);
+			}
+			i = env_var_end - line;
 // printf("i: %d\n", i);
-        }
+		}
+		else if (line[i] == '$' && line[i + 1] == '?' && quotes != 1 && line[i - 1] != '\\')//&& (quotes == 2)
+		{
+			status = ft_itoa(g_status);
+// printf("status: %s\n", status);
+			ft_strcpy(&result[j], status);
+			j += ft_strlen(status);
+			i += 2;
+// printf("RESULT:%s\n", result);
+		}
 		else
 		{
-            result[j++] = line[i++];
-        }
-    }
-
-    result[j] = '\0';
-// printf("result: %s\n", result);
-    return result;
+			if (line[i] == '\\' && line[i + 1] == '$')
+			{
+				result[j++] = '$';
+				i += 2;
+			}
+			else
+			{
+				result[j++] = line[i++];
+			}
+		}
+	}
+// printf("RESULT:%s\n", result);
+	result[j] = '\0';
+// printf("result:%s\n", result);
+	return (result);
 }
 
 char	*prepare_line(char *line, char ***ph_strings)
@@ -111,8 +198,10 @@ char	*prepare_line(char *line, char ***ph_strings)
 	}
 
 	prepared = handle_variables(line);
-// printf("prepared222: %s\n", prepared);
-
+// printf("prepared_handlevairables: %s\n", prepared);
+	// clean_string(prepared);
+	// remove_double_quotes(prepared);
+// printf("prepared_cleanstrings: %s\n", prepared);
 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
 	check_malloc(ph_strings);
 	// placeholder(line, ph_strings);
@@ -218,3 +307,120 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // }
 
 // handle_quotes(line, &i, &in_quotes); /// CHANGED TO FIX echo "aspas ->'"
+
+
+// char *modify_string(char *line) 
+// {
+//     char *modified_line;
+//     char *found_char;
+
+//     modified_line = line;
+
+//     // Check for backslash and call handle_backslash if found
+//     found_char = strchr(modified_line, '\\');
+//     if (found_char != NULL) 
+//     {
+//         modified_line = handle_backslash(modified_line);
+//     }
+
+//     // Check for dollar sign and call handle_dollar_sign if found
+//     found_char = strchr(modified_line, '$');
+//     if (found_char != NULL) 
+//     {
+//         modified_line = handle_dollar_sign(modified_line);
+//     }
+
+//     return (modified_line);
+// }
+
+// char	*handle_variables(char *line)
+// {
+// 	char	*result;
+// 	char	*env_var_start;
+// 	char	*env_var_end;
+// 	// char	*env_var_name;
+// 	// char	*env_var_value;
+// 	char	*status;
+// 	int		i;
+// 	int		j;
+// 	int		quotes;
+
+// 	i = 0;
+// 	j = 0;
+// 	env_var_start = NULL;
+// 	env_var_end = NULL;
+// 	status = NULL;
+// 	result = malloc(strlen(line) * 200);
+// 	quotes = 0;
+// 	if (ft_strchr(line, '$'))
+// 	{
+// 		quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
+// 		if (quotes == 0)
+// 		{
+// 			env_var_start = &line[ft_strchr(line, '$') - line];
+// 			env_var_end = env_var_start;
+// 			env_var_end++;
+// 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
+// 				env_var_end++;
+// 			env_var_name[env_var_end - (env_var_start + 1)];
+// 			ft_strncpy(env_var_name, env_var_start + 1,
+// 				((env_var_end) - (env_var_start)));
+// 			env_var_name[env_var_end - env_var_start] = '\0';
+// 			env_var_value = getenv(env_var_name);
+// 			if (env_var_value != NULL)
+// 			{
+// 				strcpy(&result[j], env_var_value);
+// 				j += strlen(env_var_value);
+// 			}
+// 			i = env_var_end - line;
+// 		}
+// 	}
+// 	i = 0;
+// 	quotes = ft_strchr(line, '$') - line;
+// 	if (quotes >= 0)
+// 		quotes = is_char_in_quotes(line, quotes);
+// 	while (line[i] != '\0')
+// 	{
+// 		if ((line[i] == '$' && (i == 0 || line[i - 1] != '\\'))
+// 			&& (quotes == 2) && (line[i + 1] != ' ') && (line [i + 1] != '?')
+// 			&& (line[i + 1] != '\'' && line[i + 1] != '\"'))
+// 		{
+// 			env_var_start = &line[i + 1];
+// 			env_var_end = env_var_start;
+// 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
+// 				env_var_end++;
+// 			char env_var_name[env_var_end - env_var_start + 1];
+// 			ft_strncpy(env_var_name, env_var_start,(env_var_end - env_var_start));
+// 			env_var_name[env_var_end - env_var_start] = '\0';
+// 			char *env_var_value = getenv(env_var_name);
+// 			if (env_var_value != NULL)
+// 			{
+// 				strcpy(&result[j], env_var_value);
+// 				j += strlen(env_var_value);
+// 			}
+// 			i = env_var_end - line;
+// 		}//&& (quotes == 2)
+// 		else if (line[i] == '$' && line[i + 1] == '?'
+// 			&& quotes != 1 && line[i - 1] != '\\')
+// 		{
+// 			status = ft_itoa(g_status);
+// 			ft_strcpy(&result[j], status);
+// 			j += ft_strlen(status);
+// 			i += 2;
+// 		}
+// 		else
+// 		{
+// 			if (line[i] == '\\' && line[i + 1] == '$')
+// 			{
+// 				result[j++] = '$';
+// 				i += 2;
+// 			}
+// 			else
+// 			{
+// 				result[j++] = line[i++];
+// 			}
+// 		}
+// 	}
+// 	result[j] = '\0';
+// 	return (result);
+// }
