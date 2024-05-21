@@ -61,7 +61,10 @@ void	main_loop(t_env env_var, t_main *main_var)
 			add_history(line);
 			main_var = parse_command(line);
 			if (main_var)
+			{
 				env_var.status = execute_commands(&env_var, main_var);
+				g_status = env_var.status;
+			}
 		}
 		free(line);
 		line = NULL;

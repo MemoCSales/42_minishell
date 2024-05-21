@@ -19,24 +19,30 @@ char *change_unquoted_dollar_signs(char *str)
     int i = 0, j = 0;
     int in_double_quotes = 0;
     int in_single_quotes = 0;
-    while (str[i] != '\0') {
-        if (str[i] == '"') {
+    while (str[i] != '\0')
+	{
+        if (str[i] == '"')
+		{
             in_double_quotes = !in_double_quotes; // Toggle the in_double_quotes flag
         }
-        if (str[i] == '\'') {
+        if (str[i] == '\'')
+		{
             in_single_quotes = !in_single_quotes; // Toggle the in_single_quotes flag
         }
         if (!in_double_quotes && !in_single_quotes && str[i] == '$') {
             int start = i;
-            while (str[i] != ' ' && str[i] != '\0') {
+            while (str[i] != ' ' && str[i] != '\0')
+			{
                 i++;
             }
             int len = i - start;
-            strncpy(&result[j], "\"", 1);
-            strncpy(&result[j + 1], &str[start], len);
-            strncpy(&result[j + len + 1], "\"", 1);
+            ft_strncpy(&result[j], "\"", 1);
+            ft_strncpy(&result[j + 1], &str[start], len);
+            ft_strncpy(&result[j + len + 1], "\"", 1);
             j += len + 2;
-        } else {
+        }
+		else
+		{
             result[j++] = str[i++];
         }
     }
