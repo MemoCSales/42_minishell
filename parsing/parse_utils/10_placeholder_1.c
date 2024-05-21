@@ -12,63 +12,125 @@
 
 #include "../minishell.h"
 
-char	**extract_strings(const char *line, int *numStrings)
+char *remove_backslashes(const char *str)
 {
-	char		**strings;
-	int			occurrence;
-	int			length;
-	const char	*start;
-	const char	*end;
-	const char	*start_double;
-	const char	*start_single;
+    char *new_str;
+    char *p;
+    const char *q;
 
-	*numStrings = count_occurrences(line, '"', '\'') / 2;
-	strings = (char **)malloc((*numStrings + 1) * sizeof(char *));
-	check_malloc(strings);
-	occurrence = 0;
-	start = line;
-	end = line;
-	while (*start && occurrence < *numStrings)
-	{
-		start_double = ft_strchr(start, '"');
-		start_single = ft_strchr(start, '\'');
-		if (!start_double && !start_single)
-			break ;
-		if (!start_single || (start_double && start_double < start_single))
-			start = start_double;
-		else
-			start = start_single;
-		end = ft_strchr(start + 1, *start);
-		if (!end)
-			break ;
-		length = end - start - 1;
-		strings[occurrence] = ft_strsub(start + 1, 0, length);
-		occurrence++;
-		start = end + 1;
-	}
-	strings[occurrence] = NULL;
-	return (strings);
-}
-char	*generate_placeholder(int occurrence, char quote_type)
-{
-    char	*occurrence_str;
-    char	*placeholder;
-    char    *symbol;
-
-    if (quote_type == '\'') {
-        symbol = "ψ";
-    } else {
-        symbol = "Ψ";
+    new_str = malloc(strlen(str) + 1);
+    if (!new_str)
+        return NULL;
+    p = new_str;
+    q = str;
+    while (*q)
+    {
+        if (*q == '\\' && (*(q + 1) == '\\' || *(q + 1) == '\'' || *(q + 1) == '"' || *(q + 1) == '$' || *(q + 1) == '?' || *(q + 1) == '|'))
+            q++;
+        *p++ = *q++;
     }
+    *p = '\0';
+    return new_str;
+}
 
-    occurrence_str = ft_itoa(occurrence + 1);
-    placeholder = malloc(strlen(symbol) + strlen("()") + strlen(occurrence_str) + 1);
-    strcpy(placeholder, symbol);
-    strcat(placeholder, "(");
-    strcat(placeholder, occurrence_str);
-    strcat(placeholder, ")");
-    free(occurrence_str);
-    return (placeholder);
+char **extract_strings(const char *line, int *numStrings)
+{
+    char **strings;
+    int occurrence;
+    int length;
+    const char *start;
+    const char *end;
+    char *processed_string;
+
+    *numStrings = count_occurrences(line, '"', '\'') / 2;
+    strings = (char **)malloc((*numStrings + 1) * sizeof(char *));
+    check_malloc(strings);
+    occurrence = 0;
+    start = line;
+    end = line;
+    while (*start && occurrence < *numStrings)
+    {
+        start = ft_strchr(start, *start);
+        while (*start && !(*start == '"' || *start == '\'') && (start <= line || *(start - 1) != '\\'))
+            start++;
+        if (!start)
+            break;
+        end = start + 1;
+        while (*end && (*end != *start || (end > start + 1 && *(end - 1) == '\\' && *(end - 2) != '\\')))
+            end++;
+        if (!end)
+            break;
+        length = end - start - 1;
+        strings[occurrence] = ft_strsub(start + 1, 0, length);
+        processed_string = remove_backslashes(strings[occurrence]);
+        free(strings[occurrence]);
+        strings[occurrence] = processed_string;
+        occurrence++;
+        start = end + 1;
+    }
+    strings[occurrence] = NULL;
+    return (strings);
+}
+// char **extract_strings(const char *line, int *numStrings)
+// {
+// 	char **strings;
+// 	int occurrence;
+// 	int length;
+// 	const char *start;
+// 	const char *end;
+// 	const char *start_double;
+// 	const char *start_single;
+
+// 	*numStrings = count_occurrences(line, '"', '\'') / 2;
+// 	strings = (char **)malloc((*numStrings + 1) * sizeof(char *));
+// 	check_malloc(strings);
+// 	occurrence = 0;
+// 	start = line;
+// 	end = line;
+// 	while (*start && occurrence < *numStrings)
+// 	{
+// 		start_double = ft_strchr(start, '"');
+// 		start_single = ft_strchr(start, '\'');
+// 		if (!start_double && !start_single)
+// 			break;
+// 		if (!start_single || (start_double && start_double < start_single))
+// 			start = start_double;
+// 		else
+// 			start = start_single;
+// 		end = ft_strchr(start + 1, *start);
+// 		if (!end)
+// 			break;
+// 		length = end - start - 1;
+// 		strings[occurrence] = ft_strsub(start + 1, 0, length);
+// 		occurrence++;
+// 		start = end + 1;
+// 	}
+// 	strings[occurrence] = NULL;
+// 	return (strings);
+// }
+char *generate_placeholder(int occurrence, char quote_type)
+{
+	char *occurrence_str;
+	char *placeholder;
+	char *symbol;
+
+	if (quote_type == '\'')
+	{
+		symbol = "ψ";
+	}
+	else
+	{
+		symbol = "Ψ";
+	}
+
+	occurrence_str = ft_itoa(occurrence + 1);
+	placeholder = malloc(strlen(symbol) + strlen("()") + strlen(occurrence_str) + 1);
+	strcpy(placeholder, symbol);
+	strcat(placeholder, "(");
+	strcat(placeholder, occurrence_str);
+	strcat(placeholder, ")");
+	free(occurrence_str);
+	return (placeholder);
 }
 // char	*generate_placeholder(int occurrence)
 // {
@@ -83,25 +145,25 @@ char	*generate_placeholder(int occurrence, char quote_type)
 // 	free(occurrence_str);
 // 	return (placeholder);
 // }
-void	replace_with_placeholder(char *line)
+
+void replace_with_placeholder(char *line)
 {
-    int		occurrence;
-    char	*st;
-    char	*end;
-    char	*ph;
+    int occurrence;
+    char *st;
+    char *end;
+    char *ph;
 
     occurrence = 0;
     st = line;
     end = line;
     while (*st)
     {
-        while (*st && !(*st == '"' || *st == '\'')
-            && (st <= line || *(st - 1) != '\\'))
+        while (*st && !(*st == '"' || *st == '\'') && (st <= line || *(st - 1) != '\\'))
             st++;
         if (!*st)
-            break ;
+            break;
         end = st + 1;
-        while (*end && *end != *st)
+        while (*end && (*end != *st || (end > st + 1 && *(end - 1) == '\\' && *(end - 2) != '\\'))) // Ignore escaped quotes
             end++;
         ph = generate_placeholder(occurrence, *st);
         memmove(st + ft_strlen(ph), end + 1, ft_strlen(end + 1) + 1);
@@ -111,6 +173,33 @@ void	replace_with_placeholder(char *line)
         free(ph);
     }
 }
+// void replace_with_placeholder(char *line)
+// {
+// 	int occurrence;
+// 	char *st;
+// 	char *end;
+// 	char *ph;
+
+// 	occurrence = 0;
+// 	st = line;
+// 	end = line;
+// 	while (*st)
+// 	{
+// 		while (*st && !(*st == '"' || *st == '\'') && (st <= line || *(st - 1) != '\\'))
+// 			st++;
+// 		if (!*st)
+// 			break;
+// 		end = st + 1;
+// 		while (*end && *end != *st)
+// 			end++;
+// 		ph = generate_placeholder(occurrence, *st);
+// 		memmove(st + ft_strlen(ph), end + 1, ft_strlen(end + 1) + 1);
+// 		memcpy(st, ph, strlen(ph));
+// 		st += ft_strlen(ph);
+// 		occurrence++;
+// 		free(ph);
+// 	}
+// }
 // // Function to replace strings between double quotes with placeholders
 // void	replace_with_placeholder(char *line)
 // {
@@ -141,9 +230,9 @@ void	replace_with_placeholder(char *line)
 // 	}
 // }
 
-int	count_occurrences(const char *str, char c, char d)
+int count_occurrences(const char *str, char c, char d)
 {
-	int	count;
+	int count;
 
 	count = 0;
 	while (*str)
@@ -152,17 +241,17 @@ int	count_occurrences(const char *str, char c, char d)
 			count++;
 		str++;
 	}
-	if (count % 2 != 0)
-	{
-		printf("Warning: Unclosed quotes.\n");
-	}
+	// if (count % 2 != 0)
+	// {
+	// 	printf("Warning: Unclosed quotes.\n");
+	// }
 	return (count);
 }
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+char *ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	char	*substring;
-	size_t	i;
+	char *substring;
+	size_t i;
 
 	if (!s)
 		return (NULL);

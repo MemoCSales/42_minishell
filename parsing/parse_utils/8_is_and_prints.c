@@ -36,7 +36,7 @@ int	is_char_in_quotes(char *line, int index)
     char    *substring;
 
     substring = malloc((index + 2) * sizeof(char));
-    strncpy(substring, line, index + 1);
+    ft_strncpy(substring, line, index + 1);
     substring[index + 1] = '\0';
 // printf("substring up to index + 1: %s\n", substring); // Debug print
     status = in_quotes(substring);

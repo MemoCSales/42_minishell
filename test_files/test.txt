@@ -35,17 +35,24 @@ echo 'aspas ->"'                                            ---> ❌ ✅        
 echo 'aspas -> " '                                          ---> ❌ ✅               DEIXA ISSO QUE EU DOU UMA OLHADA E TE FALO.
 echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌ ✅
 echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌ ✅
-echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌ ❌
+echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌ ✅
    exit_code ->0 user ->demacinema home -> /Users/demacinema
 echo 'exit_code ->$? user ->$USER home -> $HOME'            ---> ✅ ✅
    exit_code ->$? user ->$USER home -> $HOME
 echo "$"                        ---> ✅ ✅
+$
 echo '$'                        ---> ✅ ✅
+$
 echo $                          ---> ✅ ✅
+$
 echo $?                         ---> ✅ ✅
-echo $?HELLO                    ---> ❌ ❌
+0
+echo $?HELLO                    ---> ❌ ✅
+0HELLO
 pwd                             ---> ✅ ❌
+/Users/demacinema/Desktop/MINIHELL/170524/42_minishell
 pwd oi                          ---> ✅ ❌
+/Users/demacinema/Desktop/MINIHELL/170524/42_minishell
 export hello                    ---> ✅  ?
 export HELLO=123                ---> ✅  ?
 export A-                       ---> ✅ ✅
@@ -61,7 +68,7 @@ unset HELLO1 HELLO2             ---> ✅  ?
 unset HOME                      ---> ✅  ?
 unset PATH                      ---> ✅  ?
 unset SHELL                     ---> ✅  ?
-cd $PWD                         ---> ❌ ❌ //cd: No such file or directory: $PWD ---.cmd: cd, .args[0]: $PWD
+cd $PWD                         ---> ❌ ✅//cd: No such file or directory: $PWD ---.cmd: cd, .args[0]: $PWD
 cd $PWD hi                      ---> ❌ ❌ ✅ //Tem que testar no bash: bash: cd: too many arguments
 cd 123123                       ---> ❌  ? ✅ //bash: cd: 123123: No such file or directory --> exit code: 1
 exit 123                        ---> ✅  ❌ //SAI, MAS seg fault
