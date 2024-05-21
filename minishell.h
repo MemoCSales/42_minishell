@@ -46,6 +46,7 @@ typedef struct s_main
 	char	*extra;
 	char	*current_dir;
 	int		fd[2];
+	int		num_cmds;
 	pid_t	pid;
 	pid_t	grandson_pid;
 }			t_main;

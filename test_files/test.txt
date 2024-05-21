@@ -79,6 +79,7 @@ exit 42 world                   ---> ✅ ✅
 REDIRECTION:
 cat input.txt | grep "pattern" > output.txt                     ---> ✅ ✅  //APARENTEMENTE SIM, CONFIRMAR
 cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ❌ // diferent wc - bash: 1, ours 3.
+cat main.c | grep "while" | wc -l
 
 < ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ❌
 ours: 

@@ -70,8 +70,8 @@ int	pipe_redirection(t_main *main, int i, t_exec_context *context)
 			perror("dup2 error");
 			exit(EXIT_FAILURE);
 		}
-		if (main[i - 1].fd[0] != -1)
-			close(main[i - 1].fd[0]);
+		// if (main[i - 1].fd[0] != -1)
+		// 	close(main[i - 1].fd[0]);
 	}
 	if (main[i + 1].cmd != NULL) // If not the last cmd (first command counts), redirect output to the next pipe
 	{
@@ -80,14 +80,11 @@ int	pipe_redirection(t_main *main, int i, t_exec_context *context)
 		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error");
-			exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE); 
 		}
-		if (main[i].fd[1] != -1)
-			close(main[i].fd[1]);
+		// if (main[i].fd[1] != -1)
+		// 	close(main[i].fd[1]);
 		context->pipe_created = 1;
-		ft_putstr_fd("pipe_created:", 0);
-		ft_putnbr_fd(context->pipe_created, 0);
-		ft_putstr_fd("\n", 0);
 		return (context->pipe_created);
 	}
 	context->pipe_created = 0;

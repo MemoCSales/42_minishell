@@ -87,41 +87,38 @@ void	handle_input_redirection(t_main *main, int i)
 
 int	parent_process(t_exec_context *context)
 {
-	if (context->i != 0)
+	int	i;
+
+	// i = 0;
+	// while (context->main[i].cmd != NULL)
+	// {
+	// 		close(context->main[i].fd[0]);
+	// 		close(context->main[i].fd[1]);
+	// 	i++;
+	// }
+	i = 0;
+	while (context->main[i].cmd != NULL)
 	{
-		printf("If i != 0\n");
-		if (context->main[context->i - 1].fd[0] != -1)
-		{
-			printf("Closing read end of current pipe: fd[%d][0]\n", context->i - 1);
-			close(context->main[context->i - 1].fd[0]);
-		}
-		if (context->main[context->i - 1].fd[1] != -1)
-		{
-			printf("Closing write end of current pipe: fd[%d][1]\n", context->i - 1);
-			close(context->main[context->i - 1].fd[1]);
-		}
+		close(context->main[i].fd[0]);
+		close(context->main[i].fd[1]);
+		i++;
 	}
-	if (context->pipe_created)
-	{
-		ft_putstr_fd("If pipe_created\n", 0);
-		if (context->main[context->i].fd[0] != -1)
-		{
-			printf("Closing read end of current pipe: fd[%d][0]\n", context->i);
-			close(context->main[context->i].fd[0]);
-		}
-		if (context->main[context->i].fd[1] != -1)
-		{
-			printf("Closing write end of current pipe: fd[%d][1]\n", context->i);
-			close(context->main[context->i].fd[1]);
-		}
-	}
-	waitpid(context->main[context->i].pid, &context->env->status, 0);
+	waitpid(context->main[i].pid, &context->env->status, 0);
+	// i = 0;
+	// while (context->main[i].cmd != NULL)
+	// {
+	// 	//write(1, &i, 1);
+	// 	write(1, "hi\n", 3);
+	// 	waitpid(context->main[i].pid, &context->env->status, 0);
+	// 	i++;
+	// }
 	return WEXITSTATUS(context->env->status);
 }
 
 
 void	handle_child_process(t_exec_context *context)
 {
+	// int 	j;
 	if (context->main[context->i].output_file != NULL)
 		handle_output_redirection(context->main, context->i);
 	if (context->main[context->i].heredoc != NULL && ft_strcmp(context->main[context->i].heredoc, ">>") != 0)
@@ -143,23 +140,40 @@ void	handle_child_process(t_exec_context *context)
 		context->path_cmd = get_cmd_path(&context->main[context->i], context->path_env);
 	
 	//Debug output
-	printf("Executing command: %s\n", context->path_cmd);
-    // printf("Pipe created: %d\n", context->pipe_created);
-	printf("Pipe write end: %d\n", context->main[context->i].fd[1]);
-	printf("Pipe read end: %d\n", context->main[context->i].fd[0]);
-    printf("Redirection for command: %s\n", context->main[context->i].cmd);
+	// printf("Executing command: %s\n", context->path_cmd);
+    // // printf("Pipe created: %d\n", context->pipe_created);
+	// printf("Pipe write end: %d\n", context->main[context->i].fd[1]);
+	// printf("Pipe read end: %d\n", context->main[context->i].fd[0]);
+    // printf("Redirection for command: %s\n", context->main[context->i].cmd);
+		// print_open_fds();
+		// printf("\n");
 
 	context->pipe_created = pipe_redirection(context->main, context->i, context);
+	// j = 0;
+	// while (j < context->main->num_cmds - 1)
+	// {
+	// 	close(context->main[context->i].fd[0]);
+	// 	close(context->main[context->i].fd[1]);
+	// 	j++;
+	// }
 	handle_grandson_process(context);
+	// print_open_fds();
+	if (context->heredoc_fd != -1)
+		close(context->heredoc_fd);
+	// waitpid(context->main[context->i].grandson_pid, &context->env->status, 0);
+	cleanup_split(context->exec_args);
+	context->env->status = WEXITSTATUS(context->env->status);
+	exit(context->env->status);
 }
 
 void	handle_grandson_process(t_exec_context *context)
 {
-	context->main[context->i].grandson_pid = fork();
-	if (context->main[context->i].grandson_pid == -1)
-		error_messages("ERROR_FORK");
-	else if (context->main[context->i].grandson_pid == 0)
-	{
+
+	//context->main[context->i].grandson_pid = fork();
+	// if (context->main[context->i].grandson_pid == -1)
+	// 	error_messages("ERROR_FORK");
+	// else if (context->main[context->i].grandson_pid == 0)
+	// {
 		if (builtins_with_output(context->main[context->i].cmd) != -1)
 		{
 			free(context->path_cmd);
@@ -167,7 +181,7 @@ void	handle_grandson_process(t_exec_context *context)
 		}
 		else 
 		{
-			printf("Executing execve for command: %s\n", context->path_cmd);
+			// printf("Executing execve for command: %s\n", context->path_cmd);
 			if (execve(context->path_cmd, context->exec_args, context->env->env_vars) == -1)
 			{
 				ft_putstr_fd(context->main[context->i].cmd, 2);
@@ -176,13 +190,7 @@ void	handle_grandson_process(t_exec_context *context)
 				exit(context->env->status);
 			}
 		}
-	}
-	if (context->heredoc_fd != -1)
-		close(context->heredoc_fd);
-	waitpid(context->main[context->i].grandson_pid, &context->env->status, 0);
-	cleanup_split(context->exec_args);
-	context->env->status = WEXITSTATUS(context->env->status);
-	exit(context->env->status);
+	// }
 }
 
 int	execute_with_commands(t_exec_context *context)
@@ -198,10 +206,10 @@ int	execute_with_commands(t_exec_context *context)
 				error_messages("ERROR_FORK");
 			if (context->main[context->i].pid == 0)
 				handle_child_process(context);
-			else
-				context->env->status = parent_process(context);
 			context->i++;
 		}
+	
+		context->env->status = parent_process(context);
 		return (context->env->status);
 	}
 	return (-1);

@@ -31,14 +31,15 @@ t_main	*parse_command(char *line)
 }
 int	execute_commands(t_env *env_var, t_main *main_var)
 {
-	int	num_commands;
+	// int	num_commands;
 	int	status;
 
-	num_commands = 0;
-	while (main_var[num_commands].cmd)
-		num_commands++;
+	main_var->num_cmds = 0;
+	while (main_var[main_var->num_cmds].cmd)
+		main_var->num_cmds++;
 	status = execute_command(env_var, main_var);
-	free_parsed_struct(main_var, num_commands);
+	// status = execute_command2(env_var, main_var);
+	free_parsed_struct(main_var, main_var->num_cmds);
 	return (status);
 }
 
