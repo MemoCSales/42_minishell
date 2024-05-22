@@ -21,13 +21,13 @@ void	handle_input_redirection(t_main *main, int i)
 		fd = open(main[i].input_file, O_RDONLY);
 		if (fd < 0)
 		{
-			ft_putstr_fd ("zsh: No such file or directory: ", 2);
-			ft_putstr_fd (main[i].input_file, 2);
-			ft_putstr_fd ("\n", 2);
-			exit (EXIT_FAILURE);
+			ft_putstr_fd("zsh: No such file or directory: ", 2);
+			ft_putstr_fd(main[i].input_file, 2);
+			ft_putstr_fd("\n", 2);
+			exit(EXIT_FAILURE);
 		}
-		dup2 (fd, STDIN_FILENO);
-		close (fd);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
 	}
 }
 
@@ -49,15 +49,16 @@ void	handle_output_redirection(t_main *main, int i)
 		if (fd < 0)
 			error_messages("ERROR_OPEN_FILE");
 		dup2(fd, STDOUT_FILENO);
-		close (fd);
+		close(fd);
 	}
 }
 
 int	handle_heredoc(t_main *main, int i)
 {
 	char	*tmp;
-	int		fd = -1;
+	int		fd;
 
+	fd = -1;
 	tmp = "/tmp/minishell_heredoc";
 	if (main[i].heredoc != NULL)
 	{
@@ -104,7 +105,8 @@ void	exec_handle_redirections(t_exec_context *context)
 {
 	if (context->main[context->i].output_file != NULL)
 		handle_output_redirection(context->main, context->i);
-	if (context->main[context->i].heredoc != NULL && ft_strcmp(context->main[context->i].heredoc, ">>") != 0)
+	if (context->main[context->i].heredoc != NULL
+		&& ft_strcmp(context->main[context->i].heredoc, ">>") != 0)
 	{
 		context->heredoc_fd = handle_heredoc(context->main, context->i);
 		if (context->heredoc_fd >= 0)

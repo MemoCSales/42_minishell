@@ -29,7 +29,7 @@ void	ft_close_fds(t_exec_context *context)
 	{
 		if (context->i != j)
 			close(context->main[j].fd[1]);
-		if (context->i -1 != j)
+		if (context->i - 1 != j)
 			close(context->main[j].fd[0]);
 		j++;
 	}

@@ -14,12 +14,14 @@
 
 int	execute_with_commands(t_exec_context *context)
 {
-	if (context->main[context->i].cmd != NULL && ft_strlen(context->main[context->i].cmd) > 0)
+	if (context->main[context->i].cmd != NULL
+		&& ft_strlen(context->main[context->i].cmd) > 0)
 	{
 		while (context->main[context->i].cmd != NULL)
 		{
 			if (builtins_no_output(context->main->cmd) != -1)
-				return (context->env->status = exec_builtin(context->env, &context->main[context->i]));
+				return (context->env->status = exec_builtin(context->env,
+						&context->main[context->i]));
 			context->main[context->i].pid = fork();
 			if (context->main[context->i].pid < 0)
 				error_messages("ERROR_FORK");
@@ -33,19 +35,21 @@ int	execute_with_commands(t_exec_context *context)
 			}
 			context->i++;
 		}
-	
 		context->env->status = parent_process(context);
 		return (context->env->status);
 	}
 	return (-1);
 }
 
-int execute_without_commands(t_exec_context *context)
+int	execute_without_commands(t_exec_context *context)
 {
-	if (context->main[context->i].cmd == NULL && (context->main[context->i].input_file || context->main[context->i].output_file || context->main[context->i].heredoc))
+	if (context->main[context->i].cmd == NULL
+		&& (context->main[context->i].input_file
+			|| context->main[context->i].output_file
+			|| context->main[context->i].heredoc))
 	{
 		context->env->status = exec_without_cmds(context);
-		return (context->env ->status);
+		return (context->env->status);
 	}
 	else
 	{
@@ -62,7 +66,6 @@ int	execute_command(t_env *env, t_main *main)
 	context.main = main;
 	context.env = env;
 	initialize_context(&context);
-
 	status = execute_with_commands(&context);
 	if (status != -1)
 		return (status);
@@ -75,7 +78,10 @@ int	exec_without_cmds(t_exec_context *context)
 	{
 		context->heredoc_fd = handle_heredoc(context->main, context->i);
 	}
-	if ((context->main[context->i].input_file != NULL && context->main[context->i].output_file != NULL) || (context->main[context->i].heredoc != NULL && context->main[context->i].output_file))
+	if ((context->main[context->i].input_file != NULL
+			&& context->main[context->i].output_file != NULL)
+		|| (context->main[context->i].heredoc != NULL
+			&& context->main[context->i].output_file))
 	{
 		printf("HANDLE FILE REDIRECTION\n");
 		handle_file_redirection(context->main, context->i, context->heredoc_fd);
