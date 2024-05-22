@@ -26,6 +26,8 @@ SRC =	main.c \
 		./parsing/parse_utils/10_placeholder_1.c \
 		./parsing/parse_utils/11_placeholder_2.c \
 		./parsing/parse_utils/12_placeholder_3.c \
+		./parsing/parse_utils/13_string_manipulation_2.c \
+		./parsing/parse_utils/14_insert_spaces.c \
 		./parsing/parse_utils/parse_test.c \
 		./utils/general_utils.c \
 		./buildins/buildins.c \
@@ -87,7 +89,7 @@ $(OBJ_DIR)%.o: %.c $(LIBFT) message
 			@printf "$(RED)ψΨ"
 
 message:
-	@printf "$(RED)        $(DEFAULT)"
+	@printf "$(RED)     $(DEFAULT)"
 
 # CHANGED clean AND fclean SO THE make re DOES NOT DELETE THE LIBFT (FASTER RECOMPILATION)
 clean:

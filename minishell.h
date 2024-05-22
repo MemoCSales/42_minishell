@@ -59,6 +59,15 @@ typedef struct s_process_string_params
 	char	**res;
 }			t_process_string_params;
 
+typedef struct s_command_params
+{
+	char	*command;
+	char	*changed;
+	int		*i;
+	int		*j;
+	int		in_string;
+}				t_command_params;
+
 typedef struct s_env
 {
 	char	**env_vars;
@@ -194,9 +203,8 @@ int			ft_strequ(char const *s1, char const *s2);
 //2_input_handling.c
 char		*prepare_line(char *line, char ***ph_strings, t_env *env_var);
 void		handle_input(char *line, char *prepared);
-void		handle_others(char *line, char *prepared, int *i, int *j);
-char		*get_last_exit_status(void);
 void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+// void		handle_others(char *line, char *prepared, int *i, int *j);
 
 //3_redirection_and_variables.c
 int			check_redir(char **args, int j);
@@ -210,18 +218,18 @@ void		handle_quotes(char *line, int *i, int *in_quotes);
 int			in_quotes(char *line);
 void		clean_quotes(char **args);
 void		erase_quotes(char *command);
-void		remove_double_quotes(char *str);
+// void		remove_double_quotes(char *str);
 
 //5_command_processing.c
 char		*process_command_string(char *command);
-void		insert_spaces_in_command(char *command, \
-			char *changed, int *i, int *j);
 int			word_count_mini(const char *str, char chr);
 void		process_string(const char *s, char c, \
 			t_process_string_params *params);
 char		**ft_split_args(const char *s, char c);
 // char	*insert_spaces(char *command);
 // void	process_command(char *command, char *changed);
+// void		insert_spaces_in_command(char *command, \
+// 			char *changed, int *i, int *j);
 
 //6_pipe_and_redirection.c
 char		*read_quotes(char *delimiter, char *line);
@@ -236,7 +244,7 @@ char		*ft_strncpy(char *dest, char *src, size_t n);
 char		*ft_strcat(char *dest, const char *src);
 char		*ft_strswap(char *str, char *substr, char *replacement);
 char		*ft_strnjoin(char const *s1, char const *s2, size_t n);
-char		*ft_strndup(const char *s, size_t n);
+// char		*ft_strndup(const char *s, size_t n);
 
 //8_is_and_prints.c
 int			is_whitespace(char c); //CHECK IF CHAR IS WHITESPACE
@@ -298,6 +306,15 @@ void		replace_with_placeholder(char *line);
 int			count_occurrences(const char *str, char c, char d);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
 void		reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
+
+//13_string_manipulation_2.c
+char		*ft_strndup(const char *s, size_t n);
+
+//14_insert_spaces.c
+void		insert_spaces_in_command(char *command, \
+			char *changed, int *i, int *j);
+void		insert_spaces_and_duplicate_command(char *changed, \
+			int *j, char *command, int *i);
 
 //parse_test
 // void	append_var_value(char **prepared, int *j, char *var_value)

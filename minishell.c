@@ -25,7 +25,6 @@ t_main	*parse_command(char *line, t_env *env_var)
 	if (!main_var)
 	{
 		printf("Error parsing line\n");
-		free(line);
 	}
 	return (main_var);
 }
@@ -48,7 +47,6 @@ void	main_loop(t_env env_var, t_main *main_var)
 	char	*line;
 
 	line = NULL;
-	// setup_signals();
 	while (1)
 	{
 		line = read_command();
@@ -70,3 +68,5 @@ void	main_loop(t_env env_var, t_main *main_var)
 		line = NULL;
 	}
 }
+//EXTRACTED FROM LINE 51
+// setup_signals();
