@@ -21,62 +21,215 @@ void	placeholder(char *line, char ***ph_strings)
 		replace_with_placeholder(line);
 }
 
-// WITH PRINTS
-// void	placeholder(char *line, char ***ph_strings)
-// {
-// 	int	i;
-// 	int	num_strings;
+void	replace_placeholder_sub(char **str, \
+		char *placeholder, char *replacement)
+{
+	char	*pos;
+	char	*new_str;
 
-// 	*ph_strings = extract_strings(line, &num_strings);
-// 	if (*ph_strings)
+	if (*str != NULL && placeholder != NULL)
+	{
+		pos = strstr(*str, placeholder);
+		if (pos != NULL)
+		{
+			new_str = malloc(strlen(*str) - strlen(placeholder) \
+			+ strlen(replacement) + 1);
+			check_malloc(new_str);
+			memcpy(new_str, *str, pos - *str);
+			new_str[pos - *str] = '\0';
+			strcpy(new_str + (pos - *str), replacement);
+			strcpy(new_str + (pos - *str) + strlen(replacement), \
+			pos + strlen(placeholder));
+			free(*str);
+			*str = new_str;
+		}
+	}
+}
+
+// CHANGE WHILE IN CASE ISSUES: while (*i < 10)
+void	handle_psi(char **str, char ***ph_strings, int *i)
+{
+	char	*placeholder;
+	char	*replacement;
+
+	while ((*ph_strings)[*i] != NULL)
+	{
+		placeholder = ft_strjoin("Ψ(", ft_itoa((*i) + 1));
+		if (!placeholder)
+			return ;
+		placeholder = ft_strjoin(placeholder, ")");
+		if (!placeholder)
+			return ;
+		replacement = (*ph_strings)[*i];
+		if (!replacement)
+			return ;
+		replace_placeholder_sub(str, placeholder, replacement);
+		free(placeholder);
+		(*i)++;
+	}
+}
+
+void	handle_psi_lower(char **str, char ***ph_strings, int *i)
+{
+	char	*placeholder;
+	char	*replacement;
+
+	while ((*ph_strings)[*i] != NULL)
+	{
+		placeholder = ft_strjoin("ψ(", ft_itoa((*i) + 1));
+		if (!placeholder)
+			return ;
+		placeholder = ft_strjoin(placeholder, ")");
+		if (!placeholder)
+			return ;
+		replacement = (*ph_strings)[*i];
+		if (!replacement)
+			return ;
+		replace_placeholder_sub(str, placeholder, replacement);
+		free(placeholder);
+		(*i)++;
+	}
+}
+
+void	reverse_placeholders(char **str, char ***ph_strings)
+{
+	int		i;
+	int		j;
+	size_t	len;
+
+	if (!str || !*str || !ph_strings || !*ph_strings)
+		return ;
+	i = 0;
+	len = ft_strlen(*str);
+	if (ft_strnstr(*str, "Ψ", len) != NULL)
+	{
+		handle_psi(str, ph_strings, &i);
+		j = 0;
+		while (*str != NULL && (*str)[j] != '\0')
+		{
+			handle_variables_ph(*str, str, &j, &j);
+			j++;
+		}
+	}
+	else if (ft_strnstr(*str, "ψ", len) != NULL)
+	{
+		handle_psi_lower(str, ph_strings, &i);
+	}
+}
+
+// //ANTES DE QUEBRAR EM 3
+// void	reverse_placeholders(char **str, char ***ph_strings)
+// {
+// 	char	*placeholder;
+// 	char	*replacement;
+// 	int		i;
+// 	int		j;
+// 	size_t	len;
+
+// 	if (!str || !*str || !ph_strings || !*ph_strings)
+// 		return ;
+// 	i = 0;
+// 	len = ft_strlen(*str);
+// 	if (ft_strnstr(*str, "Ψ", len) != NULL)
 // 	{
-// 		replace_with_placeholder(line);
-// 		printf("Modified line: %s\n", line);
-// 		printf("Strings between quotes:\n");
-// 		i = 0;
-// 		while (i < num_strings)
+// 		while (i < 10)
 // 		{
-// 			printf("%d: %s\n", i + 1, (*ph_strings)[i]);
+// 			placeholder = ft_strjoin("Ψ(", ft_itoa(i + 1));
+// 			if (!placeholder)
+// 				return ;
+// 			placeholder = ft_strjoin(placeholder, ")");
+// 			if (!placeholder)
+// 				return ;
+// 			replacement = (*ph_strings)[i];
+// 			if (!replacement)
+// 				return ;
+// 			replace_placeholder_sub(str, placeholder, replacement);
+// 			free(placeholder);
+// 			i++;
+// 		}
+// 		j = 0;
+// 		while (*str != NULL && (*str)[j] != '\0')
+// 		{
+// 			handle_variables_ph(*str, str, &j, &j);
+// 			j++;
+// 		}
+// 	}
+// 	else if (ft_strnstr(*str, "ψ", len) != NULL)
+// 	{
+// 		while ((*ph_strings)[i] != NULL)
+// 		{
+// 			placeholder = ft_strjoin("ψ(", ft_itoa(i + 1));
+// 			if (!placeholder)
+// 				return ;
+// 			placeholder = ft_strjoin(placeholder, ")");
+// 			if (!placeholder)
+// 				return ;
+// 			replacement = (*ph_strings)[i];
+// 			if (!replacement)
+// 				return ;
+// 			replace_placeholder_sub(str, placeholder, replacement);
+// 			free(placeholder);
 // 			i++;
 // 		}
 // 	}
 // }
 
-// void	replace_single_placeholder(char **command,
-// 			char *placeholder, char *replacement)
+//ANTES DO NORMINETTE
+// void	reverse_placeholders(char **str, char ***ph_strings)
 // {
-// 	char	*new_command;
+// 	char	*placeholder;
+// 	char	*replacement;
+// 	int		i;
+// 	int		j;
+// 	size_t	len;
 
-// 	new_command = ft_strswap(*command, placeholder, replacement);
-// 	free(*command);
-// 	*command = new_command;
+// 	if (!str || !*str || !ph_strings || !*ph_strings)
+// 		return ;
+// 	i = 0;
+// 	len = ft_strlen(*str);
+// 	if (ft_strnstr(*str, "Ψ", len) != NULL)
+// 	{
+// 		while (i < 10)
+// 		{
+// 			placeholder = ft_strjoin("Ψ(", ft_itoa(i + 1));
+// 			if (!placeholder)
+// 				return ;
+// 			placeholder = ft_strjoin(placeholder, ")");
+// 			if (!placeholder)
+// 				return ;
+// 			replacement = (*ph_strings)[i];
+// 			if (!replacement)
+// 				return ;
+// 			replace_placeholder_sub(str, placeholder, replacement);
+// 			free(placeholder);
+// 			i++;
+// 		}
+// 		j = 0;
+// 		while (*str != NULL && (*str)[j] != '\0')
+// 		{
+// 			handle_variables_ph(*str, str, &j, &j);
+// 			j++;
+// 		}
+// 	}
+// 	else if (ft_strnstr(*str, "ψ", len) != NULL)
+// 	{
+// 		while ((*ph_strings)[i] != NULL)
+// 		{
+// 			placeholder = ft_strjoin("ψ(", ft_itoa(i + 1));
+// 			if (!placeholder)
+// 				return ;
+// 			placeholder = ft_strjoin(placeholder, ")");
+// 			if (!placeholder)
+// 				return ;
+// 			replacement = (*ph_strings)[i];
+// 			if (!replacement)
+// 				return ;
+// 			replace_placeholder_sub(str, placeholder, replacement);
+// 			free(placeholder);
+// 			i++;
+// 		}
+// 	}
 // }
-
-void replace_placeholder_sub(char **str, char *placeholder, char *replacement)
-{
-    char *pos;
-    char *new_str;
-
-    if (*str != NULL && placeholder != NULL)
-    {
-        pos = strstr(*str, placeholder);
-        if (pos != NULL)
-        {
-            new_str = malloc(strlen(*str) - strlen(placeholder) + strlen(replacement) + 1);
-            if (new_str == NULL) // Check if malloc failed
-            {
-                fprintf(stderr, "Failed to allocate memory\n");
-                return;
-            }
-            memcpy(new_str, *str, pos - *str); // Copy the part before the placeholder
-            new_str[pos - *str] = '\0'; // Null terminate the new string
-            strcpy(new_str + (pos - *str), replacement); // Copy the replacement string
-            strcpy(new_str + (pos - *str) + strlen(replacement), pos + strlen(placeholder)); // Copy the part after the placeholder
-            free(*str);
-            *str = new_str;
-        }
-    }
-}
 
 // void	replace_placeholder_sub(char **str,
 // 	char *placeholder, char *replacement)
@@ -134,80 +287,6 @@ void replace_placeholder_sub(char **str, char *placeholder, char *replacement)
 //         i++;
 //     }
 // }
-
-void	reverse_placeholders(char **str, char ***ph_strings)
-{
-    char	*placeholder;
-    char	*replacement;
-    int		i;
-    size_t	len;
-// printf("REVERSE_PLACEHOLDERS\n");
-    if (!str || !*str || !ph_strings || !*ph_strings)
-        return;
-
-    i = 0;
-    len = ft_strlen(*str);
-// printf("str: %s\n", *str);
-
-    if (ft_strnstr(*str, "Ψ", len) != NULL)
-	{
-        // printf("Placeholder %d: DOUBLE\n", i);
-
-// printf("i: %d\n", i);
-// printf("ph_strings[i]: %s\n", (*ph_strings)[i]); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-		// while ((*ph_strings)[i] != NULL)
-		while (i < 10)
-		{
-			placeholder = ft_strjoin("Ψ(", ft_itoa(i + 1));
-			if (!placeholder)
-				return;
-			placeholder = ft_strjoin(placeholder, ")");
-			if (!placeholder)
-				return;
-// printf("PLACEHOLDER: %s\n", placeholder);
-			replacement = (*ph_strings)[i];
-			if (!replacement)
-				return;
-// printf("REPLACEMENT: %s\n", replacement);
-			replace_placeholder_sub(str, placeholder, replacement);
-			free(placeholder);
-			i++;
-		}
-
-		int j = 0;
-		while (*str != NULL && (*str)[j] != '\0')
-		{
-			handle_variables_ph(*str, str, &j, &j);
-			j++;
-		}
-// printf("STR: %s\n", *str);
-
-
-
-
-	}
-    else if (ft_strnstr(*str, "ψ", len) != NULL)
-	{
-        // printf("Placeholder %d: SINGLE\n", i);
-		while ((*ph_strings)[i] != NULL)
-		{
-			placeholder = ft_strjoin("ψ(", ft_itoa(i + 1));
-			if (!placeholder)
-				return;
-			placeholder = ft_strjoin(placeholder, ")");
-			if (!placeholder)
-				return;
-			replacement = (*ph_strings)[i];
-			if (!replacement)
-				return;
-			replace_placeholder_sub(str, placeholder, replacement);
-			free(placeholder);
-			i++;
-		}
-	}
-}
-
 // void	reverse_placeholders(char **str, char ***ph_strings)
 // {
 // 	char	*placeholder;
@@ -226,24 +305,37 @@ void	reverse_placeholders(char **str, char ***ph_strings)
 // 	}
 // }
 
-void	reverse_placeholders_in_struct(t_main *command, char ***ph_strings)
-{
-	int	j;
+// WITH PRINTS
+// void	placeholder(char *line, char ***ph_strings)
+// {
+// 	int	i;
+// 	int	num_strings;
 
-	j = 0;
-	reverse_placeholders(&command->cmd, ph_strings);
-	reverse_placeholders(&command->flags, ph_strings);
-	reverse_placeholders(&command->input_file, ph_strings);
-	reverse_placeholders(&command->output_file, ph_strings);
-	reverse_placeholders(&command->heredoc, ph_strings);
-	reverse_placeholders(&command->extra, ph_strings);
-	while (command->args[j] != NULL)
-	{
-		reverse_placeholders(&command->args[j], ph_strings);
-		j++;
-	}
-}
+// 	*ph_strings = extract_strings(line, &num_strings);
+// 	if (*ph_strings)
+// 	{
+// 		replace_with_placeholder(line);
+// 		printf("Modified line: %s\n", line);
+// 		printf("Strings between quotes:\n");
+// 		i = 0;
+// 		while (i < num_strings)
+// 		{
+// 			printf("%d: %s\n", i + 1, (*ph_strings)[i]);
+// 			i++;
+// 		}
+// 	}
+// }
 
+// void	replace_single_placeholder(char **command,
+// 			char *placeholder, char *replacement)
+// {
+// 	char	*new_command;
+
+// 	new_command = ft_strswap(*command, placeholder, replacement);
+// 	free(*command);
+// 	*command = new_command;
+// }
+// ===============================================================
 // void	replace_placeholders(char **command, char ***ph_strings)
 // {
 // 	char	*placeholder;

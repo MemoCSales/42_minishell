@@ -50,8 +50,6 @@ Output: $
 Input: echo $?HELLO    ✅
 Output: 0HELLO (assuming the last command was successful)
 
-
-===== ERRORS =====
 Escaped Characters Inside Quotes: ✅
 Input: echo "This is a \"double quote\""
 Expected Output: This is a "double quote" - This is a \double quote\
@@ -68,4 +66,5 @@ Mixed Quotes: ✅
 Input: echo "This is 'mixed' and \"matched\" quotes"
 Expected Output: This is 'mixed' and "matched" quotes - This is 'mixed' and \matched\ quotes
 
+===== ERRORS =====
 'a' b c "d" \ | asfdte 'a' fasfs "asfd'" ❌ UNESCAPED

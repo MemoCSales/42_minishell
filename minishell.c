@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*read_command()
+char	*read_command(void)
 {
 	return (readline("\033[1;31mψΨ:\033[0m"));
 }
@@ -29,6 +29,7 @@ t_main	*parse_command(char *line, t_env *env_var)
 	}
 	return (main_var);
 }
+
 int	execute_commands(t_env *env_var, t_main *main_var)
 {
 	int	num_commands;
@@ -47,14 +48,14 @@ void	main_loop(t_env env_var, t_main *main_var)
 	char	*line;
 
 	line = NULL;
-	setup_signals();
+	// setup_signals();
 	while (1)
 	{
 		line = read_command();
 		if (!line)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (line && *line)
 		{
