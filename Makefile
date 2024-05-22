@@ -38,6 +38,9 @@ SRC =	main.c \
 		./parsing/parse.c \
 		./execution/exec.c \
 		./execution/exec_utils.c \
+		./execution/exec_utils_2.c \
+		./execution/family_exec.c \
+		./execution/redirections.c \
 		./signals/signals.c
 
 all: $(NAME)

@@ -59,47 +59,31 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	return (cmd_path); //check this later
 }
 
-int	pipe_redirection(t_main *main, int i, t_exec_context *context)
+void	pipe_redirection(t_exec_context *context)
 {
-	if (i != 0) // If not the first cmd, redirect input from the previous pipe
+	if (context->i != 0) // If not the first cmd, redirect input from the previous pipe
 	{
-		if (main[i - 1].fd[1] != -1)
-			close(main[i - 1].fd[1]);
-		if (dup2(main[i - 1].fd[0], STDIN_FILENO) == -1)
+		if (dup2(context->main[context->i - 1].fd[0], STDIN_FILENO) == -1)
 		{
 			perror("dup2 error");
 			exit(EXIT_FAILURE);
 		}
-		// if (main[i - 1].fd[0] != -1)
-		// 	close(main[i - 1].fd[0]);
 	}
-	if (main[i + 1].cmd != NULL) // If not the last cmd (first command counts), redirect output to the next pipe
+	if (context->main[context->i + 1].cmd != NULL) // If not the last cmd (first command counts), redirect output to the next pipe
 	{
-		if (main[i].fd[0] != -1)
-			close(main[i].fd[0]);
-		if (dup2(main[i].fd[1], STDOUT_FILENO) == -1)
+		if (dup2(context->main[context->i].fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 error");
 			exit(EXIT_FAILURE); 
 		}
-		// if (main[i].fd[1] != -1)
-		// 	close(main[i].fd[1]);
-		context->pipe_created = 1;
-		return (context->pipe_created);
 	}
-	context->pipe_created = 0;
-	return (context->pipe_created);
 }
 
-char	**build_exec_args(t_main *main, char **exec_args, int i)
+void	exec_copy_args(t_main *main, char **exec_args, int i, int num_args)
 {
-	int	num_args;
 	int	j;
 
-	num_args = 0;
-	while (main[i].args[num_args] != NULL)
-		num_args++;
-	exec_args = malloc((num_args + 3) * sizeof(char *));
+	j = 0;
 	exec_args[0] = main[i].cmd;
 	if (main[i].flags != NULL)
 	{
@@ -122,5 +106,16 @@ char	**build_exec_args(t_main *main, char **exec_args, int i)
 		}
 		exec_args[num_args + 1] = NULL;
 	}
+}
+
+char	**build_exec_args(t_main *main, char **exec_args, int i)
+{
+	int	num_args;
+
+	num_args = 0;
+	while (main[i].args[num_args] != NULL)
+		num_args++;
+	exec_args = malloc((num_args + 3) * sizeof(char *));
+	exec_copy_args(main, exec_args, i, num_args);
 	return (exec_args); //free memory from exec_args later on
 }

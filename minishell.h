@@ -75,7 +75,6 @@ typedef struct s_exec
 	char	*path_env;
 	char	*path_cmd;
 	int		heredoc_fd;
-	int		pipe_created;
 }			t_exec_context;
 
 //main
@@ -150,6 +149,9 @@ int			execute_with_commands(t_exec_context *context);
 int			exec_without_cmds(t_exec_context *context);
 int 		execute_without_commands(t_exec_context *context);
 void		initialize_context(t_exec_context *context);
+void		ft_close_fds(t_exec_context *context);
+void		exec_handle_redirections(t_exec_context *context);
+void		exec_copy_args(t_main *main, char **exec_args, int i, int num_args);
 
 /*--------------------GENERAL UTIL FUNCTIONS---------------------*/
 void		error_messages(char *type);
@@ -167,9 +169,7 @@ void		handle_input_redirection(t_main *main, int i);
 //exec_utils.c
 char		*get_env_path(t_env *env);
 char		*get_cmd_path(t_main *main, char *cmd_path);
-//void		pipe_redirection(t_main *main, t_env *env_vars, int i);
-// int			pipe_redirection(t_main *main, int i);
-int			pipe_redirection(t_main *main, int i, t_exec_context *context);
+void		pipe_redirection(t_exec_context *context);
 char		**build_exec_args(t_main *main, char **exec_args, int i);
 
 //utils/cleanup.c
