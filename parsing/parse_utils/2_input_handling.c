@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-int g_status;
 
 char *change_unquoted_dollar_signs(char *str)
 {
@@ -74,7 +73,7 @@ void	clean_string(char *str)
 	str[j] = '\0';
 }
 
-char	*handle_variables(char *line)
+char	*handle_variables(char *line, t_env *env_var)
 {
 	char	*result;
 	char	*env_var_start;
@@ -159,7 +158,7 @@ char	*handle_variables(char *line)
 		}
 		else if (line[i] == '$' && line[i + 1] == '?' && quotes != 1 && line[i - 1] != '\\')//&& (quotes == 2)
 		{
-			status = ft_itoa(g_status);
+			status = ft_itoa(env_var->status);
 // printf("status: %s\n", status);
 			ft_strcpy(&result[j], status);
 			j += ft_strlen(status);
@@ -185,7 +184,7 @@ char	*handle_variables(char *line)
 	return (result);
 }
 
-char	*prepare_line(char *line, char ***ph_strings)
+char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 {
 	char	*prepared;
 
@@ -203,7 +202,7 @@ char	*prepare_line(char *line, char ***ph_strings)
 		return (prepared);
 	}
 
-	prepared = handle_variables(line);
+	prepared = handle_variables(line, env_var);
 // printf("prepared_handlevairables: %s\n", prepared);
 	// clean_string(prepared);
 	// remove_double_quotes(prepared);

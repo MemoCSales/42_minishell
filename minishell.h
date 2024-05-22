@@ -34,8 +34,6 @@
 
 # define DEBUG 1
 
-extern int g_status;
-
 typedef struct s_main
 {
 	char	*cmd;
@@ -183,7 +181,7 @@ void		free_parsed_struct(t_main *parsed_struct, int num_commands);//MUDAR FREE_M
 void		free_args_2(char ***args);
 
 //parse
-t_main		*parse_line(char *line);
+t_main		*parse_line(char *line, t_env *env_var);
 t_main		*initialize_main(t_main *main_var, int num_commands);
 
 //parse_utils
@@ -194,7 +192,7 @@ void		remove_args_first_last_quotes(char *arg);//REMOVE FIRST AND LAST QUOTES FR
 int			ft_strequ(char const *s1, char const *s2);//COMPARE STRINGS
 
 //2_input_handling.c
-char		*prepare_line(char *line, char ***ph_strings); //MALLOC *prepared, CALL handle_input 
+char		*prepare_line(char *line, char ***ph_strings, t_env *env_var); //MALLOC *prepared, CALL handle_input 
 void		handle_input(char *line, char *prepared); //CALL handle_quotes, handle_variables, handle_others 
 void		handle_others(char *line, char *prepared, int *i, int *j); //JUST COPY, NO REDIR OR VAR
 char		*get_last_exit_status(void);

@@ -12,8 +12,7 @@
 
 #include "../minishell.h"
 
-//O FT SPLIT DEVE TIRA SPACES?
-t_main	*parse_line(char *line)
+t_main	*parse_line(char *line, t_env *env_var)
 {
 	t_main		*parsed_struct;
 	char		**args;
@@ -23,7 +22,7 @@ t_main	*parse_line(char *line)
 
 	i = 0;
 	ph_strings = NULL;
-	line = prepare_line(line, &ph_strings);
+	line = prepare_line(line, &ph_strings, env_var);
 // printf("OKKKKKKK\n");
 // printf("1.Line: %s\n", line);
 	if (line[0] == '\0')

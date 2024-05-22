@@ -17,11 +17,11 @@ char	*read_command()
 	return (readline("\033[1;31mψΨ:\033[0m"));
 }
 
-t_main	*parse_command(char *line)
+t_main	*parse_command(char *line, t_env *env_var)
 {
 	t_main	*main_var;
 
-	main_var = parse_line(line);
+	main_var = parse_line(line, env_var);
 	if (!main_var)
 	{
 		printf("Error parsing line\n");
@@ -59,11 +59,10 @@ void	main_loop(t_env env_var, t_main *main_var)
 		if (line && *line)
 		{
 			add_history(line);
-			main_var = parse_command(line);
+			main_var = parse_command(line, &env_var);
 			if (main_var)
 			{
 				env_var.status = execute_commands(&env_var, main_var);
-				g_status = env_var.status;
 			}
 		}
 		free(line);
