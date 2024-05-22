@@ -41,7 +41,7 @@ SRC =	main.c \
 		./signals/signals.c
 
 all: $(NAME)
-	# @./minishell
+	@./minishell
 
 OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 

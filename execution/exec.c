@@ -87,7 +87,7 @@ void	handle_input_redirection(t_main *main, int i)
 
 int	parent_process(t_exec_context *context)
 {
-	int	i;
+	// int	i;
 
 	// i = 0;
 	// while (context->main[i].cmd != NULL)
@@ -96,14 +96,14 @@ int	parent_process(t_exec_context *context)
 	// 		close(context->main[i].fd[1]);
 	// 	i++;
 	// }
-	i = 0;
-	while (context->main[i].cmd != NULL)
-	{
-		close(context->main[i].fd[0]);
-		close(context->main[i].fd[1]);
-		i++;
-	}
-	waitpid(context->main[i].pid, &context->env->status, 0);
+	// i = 0;
+	// while (context->main[i].cmd != NULL)
+	// {
+	// 	close(context->main[i].fd[0]);
+	// 	close(context->main[i].fd[1]);
+	// 	i++;
+	// }
+	waitpid(context->main[context->i].pid, &context->env->status, 0);
 	// i = 0;
 	// while (context->main[i].cmd != NULL)
 	// {
@@ -160,7 +160,7 @@ void	handle_child_process(t_exec_context *context)
 	// print_open_fds();
 	if (context->heredoc_fd != -1)
 		close(context->heredoc_fd);
-	// waitpid(context->main[context->i].grandson_pid, &context->env->status, 0);
+	waitpid(context->main[context->i].grandson_pid, &context->env->status, 0);
 	cleanup_split(context->exec_args);
 	context->env->status = WEXITSTATUS(context->env->status);
 	exit(context->env->status);
@@ -169,11 +169,11 @@ void	handle_child_process(t_exec_context *context)
 void	handle_grandson_process(t_exec_context *context)
 {
 
-	//context->main[context->i].grandson_pid = fork();
-	// if (context->main[context->i].grandson_pid == -1)
-	// 	error_messages("ERROR_FORK");
-	// else if (context->main[context->i].grandson_pid == 0)
-	// {
+	context->main[context->i].grandson_pid = fork();
+	if (context->main[context->i].grandson_pid == -1)
+		error_messages("ERROR_FORK");
+	else if (context->main[context->i].grandson_pid == 0)
+	{
 		if (builtins_with_output(context->main[context->i].cmd) != -1)
 		{
 			free(context->path_cmd);
@@ -190,7 +190,7 @@ void	handle_grandson_process(t_exec_context *context)
 				exit(context->env->status);
 			}
 		}
-	// }
+	}
 }
 
 int	execute_with_commands(t_exec_context *context)
@@ -206,6 +206,21 @@ int	execute_with_commands(t_exec_context *context)
 				error_messages("ERROR_FORK");
 			if (context->main[context->i].pid == 0)
 				handle_child_process(context);
+			// else
+			// 	if (context->i != 0)
+			// 	{
+			// 		printf("If i != 0\n");
+			// 		if (context->main[context->i].fd[0] != -1)
+			// 		{
+			// 			printf("Closing read end of current pipe: fd[%d][0]\n", context->i - 1);
+			// 			close (context->main[context->i - 1].fd[0]);
+			// 		}
+			// 		if (context->main[context->i - 1].fd[1] != -1)
+			// 		{
+			// 			printf("Closing write end of the current pipe: fd[%d][1]\n", context->i - 1);
+			// 			close (context->main[context->i - 1].fd[1]);
+			// 		}
+			// 	}
 			context->i++;
 		}
 	
