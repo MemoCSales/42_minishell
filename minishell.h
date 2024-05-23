@@ -269,7 +269,7 @@ void		process_string(const char *s, char c, \
 char		**ft_split_args(const char *s, char c);
 // char	*insert_spaces(char *command);
 // void	process_command(char *command, char *changed);
-// void		insert_spaces_in_command(char *command, \
+// void		insert_spaces_in_command(char *command, 
 // 			char *changed, int *i, int *j);
 
 //6_pipe_and_redirection.c
@@ -279,7 +279,7 @@ char		*read_heredoc(char *delimiter);
 void		create_pipe(t_main *command, int i, int num_commands);
 void		handle_redirections(t_main *parsed_struct, char **args, int i);
 
-//7_string_manipulation.c
+//7_string_manipulation_1.c
 int			ft_strcpy(char *dst, const char *src); //COPY SRC TO DST
 char		*ft_strncpy(char *dest, char *src, size_t n);
 char		*ft_strcat(char *dest, const char *src);
@@ -320,7 +320,7 @@ char		**extract_strings(const char *line, int *numStrings);
 // // int			count_occurrences(const char *str, char c);
 // int			count_occurrences(const char *str, char c, char d);
 // char		*ft_strsub(char const *s, unsigned int start, size_t len);
-// void		process_string_extract(const char **start, \
+// void		process_string_extract(const char **start, 
 // 			char **strings, int *occurrence);
 // const char	*find_start(const char *start);
 
@@ -331,13 +331,13 @@ void		replace_placeholder_sub(char **str, \
 void		handle_psi(char **str, char ***ph_strings, int *i);
 void		handle_psi_lower(char **str, char ***ph_strings, int *i);
 void		reverse_placeholders(char **str, char ***ph_strings);
-// void		replace_single_placeholder(char **command, \
+// void		replace_single_placeholder(char **command, 
 // 			char *placeholder, char *replacement);
-// void		replace_placeholder_sub(char **str, char *placeholder, \
+// void		replace_placeholder_sub(char **str, char *placeholder, 
 // 			char *replacement);
 // void		reverse_placeholders(char **command, char ***ph_strings);
 // void		reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
-// void		handle_variables_ph(char *line, \
+// void		handle_variables_ph(char *line, 
 // 			char **prepared, int *i, int *j);
 // void	replace_placeholders(char **command, char ***ph_strings);
 
@@ -357,8 +357,16 @@ void		insert_spaces_in_command(char *command, \
 void		insert_spaces_and_duplicate_command(char *changed, \
 			int *j, char *command, int *i);
 
-//15_handle_variables.c
-char		*handle_variables(char *line, t_env *env_var);
+//15_handle_variables_1.c
+char			*handle_variables(char *line, t_env *env_var);
+t_handle_vars	start_h_vars(t_handle_vars *h_vars, char *line);
+
+//16_handle_variables_2.c
+t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line);
+t_handle_vars	quotes_double(t_handle_vars *h_vars, char *line);
+t_handle_vars	dollar_question(t_handle_vars *h_vars, t_env *env_var);
+t_handle_vars	escaped_dollar(t_handle_vars *h_vars, char *line);
+t_handle_vars	if_conditions(t_handle_vars *h_vars, char *line, t_env *env_var);
 
 //parse_test
 // void	append_var_value(char **prepared, int *j, char *var_value)

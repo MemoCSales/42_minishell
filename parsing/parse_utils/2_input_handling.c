@@ -47,7 +47,8 @@ char	*change_unquoted_dollar_signs(char *str)
 		if (str[unq_dollar.i] == '\'')
 			unq_dollar.in_single_quotes = !unq_dollar.in_single_quotes;
 		if (!unq_dollar.in_double_quotes
-			&& !unq_dollar.in_single_quotes && str[unq_dollar.i] == '$')
+			&& !unq_dollar.in_single_quotes && str[unq_dollar.i] == '$'
+			&& str[unq_dollar.i - 1] != '\\')
 			unq_dollar = *process_dollar_unquoted(&unq_dollar, str);
 		else
 			unq_dollar.result[unq_dollar.j++] = str[unq_dollar.i++];
@@ -172,14 +173,14 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // 			env_var_start = &line[ft_strchr(line, '$') - line];
 // 			env_var_end = env_var_start;
 // 			env_var_end++;
-// // printf("env_var_start:%c, env_var_end:%c\n", \
+// // printf("env_var_start:%c, env_var_end:%c\n", 
 // *env_var_start, *env_var_end);
 // 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 // 				env_var_end++;
-// // printf("env_var_start:%c, env_var_end:%c\n", \
+// // printf("env_var_start:%c, env_var_end:%c\n", 
 // *(env_var_start), *(env_var_end - 1));
 // 			char env_var_name[env_var_end - (env_var_start + 1)];
-// 			ft_strncpy(env_var_name, env_var_start + 1, \
+// 			ft_strncpy(env_var_name, env_var_start + 1, 
 // ((env_var_end) - (env_var_start)));
 // 			env_var_name[env_var_end - env_var_start] = '\0';
 // // printf("env_var_name: %s\n", env_var_name);
@@ -212,7 +213,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 // 				env_var_end++;
 // 			char env_var_name[env_var_end - env_var_start + 1];
-// 			ft_strncpy(env_var_name, env_var_start, \
+// 			ft_strncpy(env_var_name, env_var_start, 
 // (env_var_end - env_var_start));
 // 			env_var_name[env_var_end - env_var_start] = '\0';
 // // printf("env_var_name: %s\n", env_var_name);
@@ -446,7 +447,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 // 				env_var_end++;
 // 			char env_var_name[env_var_end - env_var_start + 1];
-// 			ft_strncpy(env_var_name, env_var_start, \
+// 			ft_strncpy(env_var_name, env_var_start, 
 // (env_var_end - env_var_start));
 // 			env_var_name[env_var_end - env_var_start] = '\0';
 // 			char *env_var_value = getenv(env_var_name);
