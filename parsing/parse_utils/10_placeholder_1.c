@@ -116,7 +116,7 @@ char	**extract_strings(const char *line, int *numStrings)
 // 		symbol = "Ψ";
 // 	}
 // 	occurrence_str = ft_itoa(occurrence + 1);
-// 	placeholder = malloc(strlen(symbol) + strlen("()") \
+// 	placeholder = malloc(strlen(symbol) + strlen("()")
 // 	+ strlen(occurrence_str) + 1);
 // 	strcpy(placeholder, symbol);
 // 	strcat(placeholder, "(");

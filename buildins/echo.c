@@ -39,7 +39,7 @@ char	*ft_strremove(char *string, int c)
 	return (new_start);
 }
 
-int	echo_builtin(t_main *main, t_env *env)
+int	echo_builtin(t_main *main)
 {
 	int		i;
 	int		cut_newline;
@@ -49,11 +49,6 @@ int	echo_builtin(t_main *main, t_env *env)
 	// arg_no_quotes = NULL;
 
 	cut_newline = 0;
-	if (ft_strcmp(main->args[0], "$?") == 0)
-	{
-		exit_code(env);
-		return (0);
-	}
 	if (ft_strcmp(main->flags, "-n") == 0 && main->flags != NULL)
 		cut_newline = 1;
 	i = 0;

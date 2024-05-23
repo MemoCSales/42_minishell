@@ -31,14 +31,12 @@ t_main	*parse_command(char *line, t_env *env_var)
 
 int	execute_commands(t_env *env_var, t_main *main_var)
 {
-	// int	num_commands;
 	int	status;
 
 	main_var->num_cmds = 0;
 	while (main_var[main_var->num_cmds].cmd)
 		main_var->num_cmds++;
 	status = execute_command(env_var, main_var);
-	// status = execute_command2(env_var, main_var);
 	free_parsed_struct(main_var, main_var->num_cmds);
 	return (status);
 }
@@ -50,6 +48,7 @@ void	main_loop(t_env env_var, t_main *main_var)
 	line = NULL;
 	while (1)
 	{
+		setup_signals();
 		line = read_command();
 		if (!line)
 		{
@@ -69,5 +68,3 @@ void	main_loop(t_env env_var, t_main *main_var)
 		line = NULL;
 	}
 }
-//EXTRACTED FROM LINE 51
-// setup_signals();

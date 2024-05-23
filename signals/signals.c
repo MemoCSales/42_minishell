@@ -12,21 +12,22 @@
 
 #include "../minishell.h"
 
-// void siginit_handler()
-// {
-// 	printf("\n");
-// 	rl_on_new_line();
-// 	// rl_replace_line("", 0);
-// 	rl_redisplay();
-// }
+void siginit_handler(int sig_num)
+{
+    (void)sig_num;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-// void sigquit_handler()
-// {
+void sigquit_handler(int sig_num)
+{
+    (void)sig_num;
+}
 
-// }
-
-// void	setup_signals()
-// {
-// 	signal(SIGINT, siginit_handler);
-// 	signal(SIGQUIT, sigquit_handler);
-// }
+void	setup_signals()
+{
+	signal(SIGINT, siginit_handler);
+	signal(SIGQUIT, sigquit_handler);
+}

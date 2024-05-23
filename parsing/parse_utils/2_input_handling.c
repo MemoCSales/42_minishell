@@ -111,7 +111,7 @@ char	*handle_variables(char *line, t_env *env_var)
 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 				env_var_end++;
 			char	env_var_name[env_var_end - (env_var_start + 1)];
-			ft_strncpy(env_var_name, env_var_start + 1, \
+			ft_strncpy(env_var_name, env_var_start + 1,
 				((env_var_end) - (env_var_start)));
 			env_var_name[env_var_end - env_var_start] = '\0';
 			char	*env_var_value = getenv(env_var_name);
@@ -138,7 +138,7 @@ char	*handle_variables(char *line, t_env *env_var)
 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 				env_var_end++;
 			char	env_var_name[env_var_end - env_var_start + 1];
-			ft_strncpy(env_var_name, env_var_start, \
+			ft_strncpy(env_var_name, env_var_start,
 				(env_var_end - env_var_start));
 			env_var_name[env_var_end - env_var_start] = '\0';
 			char	*env_var_value = getenv(env_var_name);
@@ -248,14 +248,14 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // 			env_var_start = &line[ft_strchr(line, '$') - line];
 // 			env_var_end = env_var_start;
 // 			env_var_end++;
-// // printf("env_var_start:%c, env_var_end:%c\n", \
+// // printf("env_var_start:%c, env_var_end:%c\n",
 // *env_var_start, *env_var_end);
 // 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 // 				env_var_end++;
-// // printf("env_var_start:%c, env_var_end:%c\n", \
+// // printf("env_var_start:%c, env_var_end:%c\n",
 // *(env_var_start), *(env_var_end - 1));
 // 			char env_var_name[env_var_end - (env_var_start + 1)];
-// 			ft_strncpy(env_var_name, env_var_start + 1, \
+// 			ft_strncpy(env_var_name, env_var_start + 1,
 // ((env_var_end) - (env_var_start)));
 // 			env_var_name[env_var_end - env_var_start] = '\0';
 // // printf("env_var_name: %s\n", env_var_name);
@@ -288,7 +288,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 // 				env_var_end++;
 // 			char env_var_name[env_var_end - env_var_start + 1];
-// 			ft_strncpy(env_var_name, env_var_start, \
+// 			ft_strncpy(env_var_name, env_var_start,
 // (env_var_end - env_var_start));
 // 			env_var_name[env_var_end - env_var_start] = '\0';
 // // printf("env_var_name: %s\n", env_var_name);
@@ -499,7 +499,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // 			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
 // 				env_var_end++;
 // 			char env_var_name[env_var_end - env_var_start + 1];
-// 			ft_strncpy(env_var_name, env_var_start, \
+// 			ft_strncpy(env_var_name, env_var_start,
 // (env_var_end - env_var_start));
 // 			env_var_name[env_var_end - env_var_start] = '\0';
 // 			char *env_var_value = getenv(env_var_name);

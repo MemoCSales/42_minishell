@@ -135,7 +135,7 @@ int			unset_builtin(t_env *env_vars, char *var_name);
 int			find_index(t_env *env_vars, char *var_name);
 
 /*-----------------------ECHO BUILTIN-----------------------------*/
-int			echo_builtin(t_main *main, t_env *env);
+int			echo_builtin(t_main *main);
 
 /*--------------------ENVIRONMENT VARIABLES FUNCTION--------------*/
 void		init_env(t_env *env_vars, char **env);
@@ -167,8 +167,8 @@ void		error_messages(char *type);
 void		print_open_fds(void);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
-void		siginit_handler(void);
-void		sigquit_handler(void);
+void 		siginit_handler(int sig_num);
+void 		sigquit_handler(int sig_num);
 void		setup_signals(void);
 
 // redirections
@@ -225,12 +225,12 @@ void		erase_quotes(char *command);
 //5_command_processing.c
 char		*process_command_string(char *command);
 int			word_count_mini(const char *str, char chr);
-void		process_string(const char *s, char c, \
+void		process_string(const char *s, char c,
 			t_process_string_params *params);
 char		**ft_split_args(const char *s, char c);
 // char	*insert_spaces(char *command);
 // void	process_command(char *command, char *changed);
-// void		insert_spaces_in_command(char *command, \
+// void		insert_spaces_in_command(char *command,
 // 			char *changed, int *i, int *j);
 
 //6_pipe_and_redirection.c
@@ -272,7 +272,7 @@ char		**allocate_strings(const char *line, int *num_strings);
 const char	*find_next_string(const char *start, \
 			const char *line, const char **end);
 char		**extract_strings(const char *line, int *numStrings);
-void		process_string_placehoder(char **strings, \
+void		process_string_placehoder(char **strings,
 			const char *start, const char *end, int occurrence);
 char		**extract_strings(const char *line, int *numStrings);
 // char		*generate_placeholder(int occurrence, char quote_type);
@@ -281,24 +281,24 @@ char		**extract_strings(const char *line, int *numStrings);
 // // int			count_occurrences(const char *str, char c);
 // int			count_occurrences(const char *str, char c, char d);
 // char		*ft_strsub(char const *s, unsigned int start, size_t len);
-// void		process_string_extract(const char **start, \
+// void		process_string_extract(const char **start,
 // 			char **strings, int *occurrence);
 // const char	*find_start(const char *start);
 
 //11_placeholder_2.c
 void		placeholder(char *line, char ***ph_strings);
-void		replace_placeholder_sub(char **str, \
+void		replace_placeholder_sub(char **str,
 			char *placeholder, char *replacement);
 void		handle_psi(char **str, char ***ph_strings, int *i);
 void		handle_psi_lower(char **str, char ***ph_strings, int *i);
 void		reverse_placeholders(char **str, char ***ph_strings);
-// void		replace_single_placeholder(char **command, \
+// void		replace_single_placeholder(char **command,
 // 			char *placeholder, char *replacement);
-// void		replace_placeholder_sub(char **str, char *placeholder, \
+// void		replace_placeholder_sub(char **str, char *placeholder,
 // 			char *replacement);
 // void		reverse_placeholders(char **command, char ***ph_strings);
 // void		reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
-// void		handle_variables_ph(char *line, \
+// void		handle_variables_ph(char *line,
 // 			char **prepared, int *i, int *j);
 // void	replace_placeholders(char **command, char ***ph_strings);
 
@@ -313,9 +313,9 @@ void		reverse_placeholders_in_struct(t_main *command, char ***ph_strings);
 char		*ft_strndup(const char *s, size_t n);
 
 //14_insert_spaces.c
-void		insert_spaces_in_command(char *command, \
+void		insert_spaces_in_command(char *command,
 			char *changed, int *i, int *j);
-void		insert_spaces_and_duplicate_command(char *changed, \
+void		insert_spaces_and_duplicate_command(char *changed,
 			int *j, char *command, int *i);
 
 //parse_test
