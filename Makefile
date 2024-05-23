@@ -28,7 +28,7 @@ SRC =	main.c \
 		./parsing/parse_utils/12_placeholder_3.c \
 		./parsing/parse_utils/13_string_manipulation_2.c \
 		./parsing/parse_utils/14_insert_spaces.c \
-		./parsing/parse_utils/parse_test.c \
+		./parsing/parse_utils/15_handle_variables.c \
 		./utils/general_utils.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \

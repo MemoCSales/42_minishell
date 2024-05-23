@@ -50,6 +50,41 @@ typedef struct s_main
 	pid_t	grandson_pid;
 }			t_main;
 
+//PARSING STRUCTS
+typedef struct s_handle_vars
+{
+	char	*result;
+	char	*var_start;
+	char	*var_end;
+	char	*var_name;
+	char	*var_value;
+	char	*status;
+	int		size;//TENTANDO RESOLVER O PROBLEMA DE SIZE
+	int		i;
+	int		j;
+	int		quotes;
+}				t_handle_vars;
+
+typedef struct s_unq_dolar
+{
+	char	*result;
+	int		i;
+	int		j;
+	int		in_double_quotes;
+	int		in_single_quotes;
+	int		start;
+	int		len;
+}				t_unq_dolar;
+
+typedef struct s_quotes_escaped
+{
+	int	i;
+	int	in_single_quotes;
+	int	in_double_quotes;
+	int	last_unspace;
+	int	bckslash;
+}			t_quotes_escaped;
+
 typedef struct s_process_string_params
 {
 	int		i;
@@ -68,6 +103,7 @@ typedef struct s_command_params
 	int		in_string;
 }				t_command_params;
 
+//EXECUTION STRUCTS
 typedef struct s_env
 {
 	char	**env_vars;
@@ -201,10 +237,14 @@ void		remove_args_first_last_quotes(char *arg);
 int			ft_strequ(char const *s1, char const *s2);
 
 //2_input_handling.c
+t_unq_dolar	*process_dollar_unquoted(t_unq_dolar \
+			*un_dollar_vars, char *str);
+char		*change_unquoted_dollar_signs(char *str);
 char		*prepare_line(char *line, char ***ph_strings, t_env *env_var);
-void		handle_input(char *line, char *prepared);
 void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+// void		handle_input(char *line, char *prepared);
 // void		handle_others(char *line, char *prepared, int *i, int *j);
+// void		clean_string(char *str);
 
 //3_redirection_and_variables.c
 int			check_redir(char **args, int j);
@@ -215,6 +255,7 @@ char		*replace_var_value(char *var_name, char *prepared, int *j);
 
 //4_quotes.c
 void		handle_quotes(char *line, int *i, int *in_quotes);
+int			return_quotes(int in_single_quotes, int in_double_quotes);
 int			in_quotes(char *line);
 void		clean_quotes(char **args);
 void		erase_quotes(char *command);
@@ -315,6 +356,9 @@ void		insert_spaces_in_command(char *command, \
 			char *changed, int *i, int *j);
 void		insert_spaces_and_duplicate_command(char *changed, \
 			int *j, char *command, int *i);
+
+//15_handle_variables.c
+char		*handle_variables(char *line, t_env *env_var);
 
 //parse_test
 // void	append_var_value(char **prepared, int *j, char *var_value)

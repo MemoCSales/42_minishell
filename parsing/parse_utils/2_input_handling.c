@@ -12,164 +12,48 @@
 
 #include "../minishell.h"
 
+t_unq_dolar	*process_dollar_unquoted(t_unq_dolar \
+	*un_dollar_vars, char *str)
+{
+	t_unq_dolar	*p_unq_dollar;
+
+	p_unq_dollar = un_dollar_vars;
+	p_unq_dollar->start = p_unq_dollar->i;
+	while (str[p_unq_dollar->i] != ' ' && str[p_unq_dollar->i] != '\0')
+		p_unq_dollar->i++;
+	p_unq_dollar->len = p_unq_dollar->i - p_unq_dollar->start;
+	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j], "\"", 1);
+	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j + 1], \
+		&str[p_unq_dollar->start], p_unq_dollar->len);
+	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j \
+		+ p_unq_dollar->len + 1], "\"", 1);
+	p_unq_dollar->j += p_unq_dollar->len + 2;
+	return (p_unq_dollar);
+}
+
 char	*change_unquoted_dollar_signs(char *str)
 {
-	char	*result;
-	int		i;
-	int		j;
-	int		in_double_quotes;
-	int		in_single_quotes;
-	int		start;
-	int		len;
+	t_unq_dolar	unq_dollar;
 
-	result = malloc(strlen(str) * 2);
-	i = 0;
-	j = 0;
-	in_double_quotes = 0;
-	in_single_quotes = 0;
-	while (str[i] != '\0')
+	unq_dollar.result = malloc(strlen(str) * 2);
+	unq_dollar.i = 0;
+	unq_dollar.j = 0;
+	unq_dollar.in_double_quotes = 0;
+	unq_dollar.in_single_quotes = 0;
+	while (str[unq_dollar.i] != '\0')
 	{
-		if (str[i] == '"')
-		{
-			in_double_quotes = !in_double_quotes;
-		}
-		if (str[i] == '\'')
-		{
-			in_single_quotes = !in_single_quotes;
-		}
-		if (!in_double_quotes && !in_single_quotes && str[i] == '$')
-		{
-			start = i;
-			while (str[i] != ' ' && str[i] != '\0')
-			{
-				i++;
-			}
-			len = i - start;
-			ft_strncpy(&result[j], "\"", 1);
-			ft_strncpy(&result[j + 1], &str[start], len);
-			ft_strncpy(&result[j + len + 1], "\"", 1);
-			j += len + 2;
-		}
+		if (str[unq_dollar.i] == '"')
+			unq_dollar.in_double_quotes = !unq_dollar.in_double_quotes;
+		if (str[unq_dollar.i] == '\'')
+			unq_dollar.in_single_quotes = !unq_dollar.in_single_quotes;
+		if (!unq_dollar.in_double_quotes
+			&& !unq_dollar.in_single_quotes && str[unq_dollar.i] == '$')
+			unq_dollar = *process_dollar_unquoted(&unq_dollar, str);
 		else
-		{
-			result[j++] = str[i++];
-		}
+			unq_dollar.result[unq_dollar.j++] = str[unq_dollar.i++];
 	}
-	result[j] = '\0';
-	return (result);
-}
-
-void	clean_string(char *str)
-{
-	int	i;
-	int	j;
-	int	length;
-
-	i = 0;
-	j = 0;
-	length = strlen(str);
-	while (i < length)
-	{
-		if (str[i] == '\\'
-			&& (str[i + 1] == '"' || str[i + 1] == '$'))
-		{
-			i++;
-		}
-		str[j] = str[i];
-		j++;
-		i++;
-	}
-	str[j] = '\0';
-}
-
-char	*handle_variables(char *line, t_env *env_var)
-{
-	char	*result;
-	char	*env_var_start;
-	char	*env_var_end;
-	char	*status;
-	int		i;
-	int		j;
-	int		quotes;
-
-	i = 0;
-	j = 0;
-	env_var_start = NULL;
-	env_var_end = NULL;
-	status = NULL;
-	result = malloc(strlen(line) * 200);
-	line = change_unquoted_dollar_signs(line);
-	quotes = 0;
-	if (ft_strchr(line, '$'))
-	{
-		quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
-		if (quotes == 0)
-		{
-			env_var_start = &line[ft_strchr(line, '$') - line];
-			env_var_end = env_var_start;
-			env_var_end++;
-			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
-				env_var_end++;
-			char	env_var_name[env_var_end - (env_var_start + 1)];
-			ft_strncpy(env_var_name, env_var_start + 1, \
-				((env_var_end) - (env_var_start)));
-			env_var_name[env_var_end - env_var_start] = '\0';
-			char	*env_var_value = getenv(env_var_name);
-			if (env_var_value != NULL)
-			{
-				strcpy(&result[j], env_var_value);
-				j += strlen(env_var_value);
-			}
-			i = env_var_end - line;
-		}
-	}
-	i = 0;
-	quotes = ft_strchr(line, '$') - line;
-	if (quotes >= 0)
-		quotes = is_char_in_quotes(line, quotes);
-	while (line[i] != '\0')
-	{
-		if ((line[i] == '$' && (i == 0 || line[i - 1] != '\\'))
-			&& (quotes == 2) && (line[i + 1] != ' ') && (line [i + 1] != '?')
-			&& (line[i + 1] != '\'' && line[i + 1] != '\"'))
-		{
-			env_var_start = &line[i + 1];
-			env_var_end = env_var_start;
-			while (ft_isalnum(*env_var_end) || *env_var_end == '_')
-				env_var_end++;
-			char	env_var_name[env_var_end - env_var_start + 1];
-			ft_strncpy(env_var_name, env_var_start, \
-				(env_var_end - env_var_start));
-			env_var_name[env_var_end - env_var_start] = '\0';
-			char	*env_var_value = getenv(env_var_name);
-			if (env_var_value != NULL)
-			{
-				strcpy(&result[j], env_var_value);
-				j += strlen(env_var_value);
-			}
-			i = env_var_end - line;
-		}
-		else if (line[i] == '$' && line[i + 1] == '?'
-			&& quotes != 1 && line[i - 1] != '\\')
-		{
-			status = ft_itoa(env_var->status);
-			ft_strcpy(&result[j], status);
-			j += ft_strlen(status);
-			i += 2;
-		}
-		else
-		{
-			if (line[i] == '\\' && line[i + 1] == '$')
-			{
-				result[j++] = '$';
-				i += 2;
-			}
-			else
-				result[j++] = line[i++];
-		}
-	}
-	result[j] = '\0';
-	return (result);
+	unq_dollar.result[unq_dollar.j] = '\0';
+	return (unq_dollar.result);
 }
 
 char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
@@ -214,6 +98,46 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	free(ptr);
 	return (new_ptr);
 }
+
+//ANTIGA
+// char	*change_unquoted_dollar_signs(char *str)
+// {
+// 	char	*result;
+// 	int		i;
+// 	int		j;
+// 	int		in_double_quotes;
+// 	int		in_single_quotes;
+// 	int		start;
+// 	int		len;
+
+// 	result = malloc(strlen(str) * 2);
+// 	i = 0;
+// 	j = 0;
+// 	in_double_quotes = 0;
+// 	in_single_quotes = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		if (str[i] == '"')
+// 			in_double_quotes = !in_double_quotes;
+// 		if (str[i] == '\'')
+// 			in_single_quotes = !in_single_quotes;
+// 		if (!in_double_quotes && !in_single_quotes && str[i] == '$')
+// 		{
+// 			start = i;
+// 			while (str[i] != ' ' && str[i] != '\0')
+// 				i++;
+// 			len = i - start;
+// 			ft_strncpy(&result[j], "\"", 1);
+// 			ft_strncpy(&result[j + 1], &str[start], len);
+// 			ft_strncpy(&result[j + len + 1], "\"", 1);
+// 			j += len + 2;
+// 		}
+// 		else
+// 			result[j++] = str[i++];
+// 	}
+// 	result[j] = '\0';
+// 	return (result);
+// }
 
 // ANTIGO SEM NORMINETTE
 // char	*handle_variables(char *line, t_env *env_var)
@@ -363,6 +287,29 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 // 	// prepared = ft_strdup(line);
 // 	return (prepared);
 // 	// return (line);
+// }
+
+// void	clean_string(char *str)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	length;
+
+// 	i = 0;
+// 	j = 0;
+// 	length = strlen(str);
+// 	while (i < length)
+// 	{
+// 		if (str[i] == '\\'
+// 			&& (str[i + 1] == '"' || str[i + 1] == '$'))
+// 		{
+// 			i++;
+// 		}
+// 		str[j] = str[i];
+// 		j++;
+// 		i++;
+// 	}
+// 	str[j] = '\0';
 // }
 
 // void	handle_input(char *line, char *prepared)
