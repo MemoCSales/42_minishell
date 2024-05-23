@@ -12,23 +12,23 @@
 
 #include "minishell.h"
 
-char	*read_command()
+char	*read_command(void)
 {
 	return (readline("\033[1;31mψΨ:\033[0m"));
 }
 
-t_main	*parse_command(char *line)
+t_main	*parse_command(char *line, t_env *env_var)
 {
 	t_main	*main_var;
 
-	main_var = parse_line(line);
+	main_var = parse_line(line, env_var);
 	if (!main_var)
 	{
 		printf("Error parsing line\n");
-		free(line);
 	}
 	return (main_var);
 }
+
 int	execute_commands(t_env *env_var, t_main *main_var)
 {
 	// int	num_commands;
@@ -48,23 +48,26 @@ void	main_loop(t_env env_var, t_main *main_var)
 	char	*line;
 
 	line = NULL;
-	setup_signals();
 	while (1)
 	{
 		line = read_command();
 		if (!line)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (line && *line)
 		{
 			add_history(line);
-			main_var = parse_command(line);
+			main_var = parse_command(line, &env_var);
 			if (main_var)
+			{
 				env_var.status = execute_commands(&env_var, main_var);
+			}
 		}
 		free(line);
 		line = NULL;
 	}
 }
+//EXTRACTED FROM LINE 51
+// setup_signals();

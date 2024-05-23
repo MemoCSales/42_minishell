@@ -17,7 +17,7 @@ char	*read_quotes(char *delimiter, char *line)
 	char	*quotes;
 	char	*new_line;
 	char	*temp;
-// printf("*line: %s\n", line);
+
 	quotes = NULL;
 	if (check_delimiter(delimiter))
 		return (NULL);
@@ -25,30 +25,19 @@ char	*read_quotes(char *delimiter, char *line)
 	{
 		ft_putstr_fd("> ", 1);
 		new_line = get_next_line(0);
-// printf("new_line: %s\n", new_line);
 		temp = ft_strdup(line);
-// printf("tempstrdup: %s\n", temp);
 		temp = ft_strjoin(new_line, "\n");
-// printf("tempstrjoin: %s\n", temp);
 		temp = quotes;
-// printf("tempquotes: %s\n", temp);
 		if (quotes)
-		{
 			quotes = ft_strjoin(temp, new_line);
-// printf("quotesif: %s\n", quotes);
-		}
 		else
-		{
 			quotes = ft_strdup(new_line);
-// printf("quoteselse: %s\n", quotes);
-		}
 		free(temp);
 		free(new_line);
 		if (!new_line || !quotes
 			|| !ft_strncmp(new_line, delimiter, ft_strlen(delimiter)))
 			break ;
 	}
-// printf("quotesfinal: %s\n", quotes);
 	return (quotes);
 }
 
@@ -68,23 +57,15 @@ char	*check_closed_quotes(char *line)
 	while (*ptr != '\0')
 	{
 		if (*ptr == '\'' && !in_double_quotes)
-		{
-			// single_quote_count++;
 			in_single_quotes = ++single_quote_count % 2;
-		}
 		if (*ptr == '\"' && !in_single_quotes)
-		{
-			// double_quote_count++;
 			in_double_quotes = ++double_quote_count % 2;
-		}
 		ptr++;
 	}
-// printf("1..check_closed_quotes-line: %s\n", line);
 	if (in_single_quotes)
 		line = ft_strdup("\'");
 	else if (in_double_quotes)
 		line = ft_strdup("\"");
-// printf("1..check_closed_quotes-line: %s\n", line);
 	return (line);
 }
 

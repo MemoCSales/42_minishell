@@ -36,52 +36,6 @@ char	*process_command_string(char *command)
 	return (changed);
 }
 
-void	insert_spaces_in_command(char *command, char *changed, int *i, int *j)
-{
-	int	in_string;
-
-	in_string = 0;
-	if (command[*i] == '"')
-		in_string = !in_string;
-
-	if (!in_string && command[*i] == '<' && command[*i + 1] == '<')
-	{
-		changed[(*j)++] = ' ';
-		changed[(*j)++] = command[*i];
-		changed[(*j)++] = command[*i];
-		(*i)++;
-		changed[(*j)++] = ' ';
-	}
-	else if (!in_string && command[*i] == '>' && command[*i + 1] == '>')
-	{
-		changed[(*j)++] = ' ';
-		changed[(*j)++] = command[*i];
-		changed[(*j)++] = command[*i];
-		(*i)++;
-		changed[(*j)++] = ' ';
-	}
-	else if (!in_string && (command[*i] == '>' || command[*i] == '<')
-		&& command[*i + 1] != ' ' && command[*i + 1] != command[*i])
-	{
-		changed[(*j)++] = ' ';
-		changed[(*j)++] = command[*i];
-		changed[(*j)++] = ' ';
-	}
-	else if (!in_string && command[*i] == command[*i + 1]
-		&& command[*i + 2] != ' ' && command[*i] == '>'
-		&& command[*i] == '<')
-	{
-		changed[(*j)++] = ' ';
-		changed[(*j)++] = command[*i];
-		changed[(*j)++] = command[*i];
-		(*i)++;
-		changed[(*j)++] = ' ';
-	}
-	else
-		changed[(*j)++] = command[*i];
-	(*i)++;
-}
-
 int	word_count_mini(const char *str, char chr)
 {
 	size_t	word;

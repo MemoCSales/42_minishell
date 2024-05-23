@@ -6,18 +6,6 @@ Nested Quotes: ✅
 Input: echo "This is 'nested' quotes" 
 Expected Output: This is 'nested' quotes // Getting: This is nested quotes
 
-Escaped Characters Inside Quotes: ✅
-Input: echo "This is a \"double quote\""
-Expected Output: This is a "double quote" // Getting: This is nested quotes
-
-Escaping Special Characters: ✅
-Input: echo "This \$100 is mine"
-Expected Output: This $100 is mine // This \ is mine
-
-Mixed Quotes: ✅
-Input: echo "This is 'mixed' and \"matched\" quotes"
-Expected Output: This is 'mixed' and "matched" quotes // Getting: This is mixed and matched quotes
-
 No Quotes: ✅
 Input: echo Hello World
 Expected Output: Hello World
@@ -25,35 +13,6 @@ Expected Output: Hello World
 Single Quotes with Literal Interpretation: ✅
 Input: echo 'This is a $USER'
 Expected Output: This is a $USER // Getting: This is a demacinema
-
-Mixed Quoting with Special Characters: ✅
-Input: echo "Don't \"worry\" about \$money"
-Expected Output: Don't "worry" about $money // Getting: Dont worry about \
-
-
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-FALTA VER ISSO: cat input.txt | grep “pattern” | wc -l > output.txt
-TEM A VER COM O remove_args - parse_utils.c - 73
-
-JA DA RUIM COM ls | ls > output.txt
-NAO PODERIA USAR return (&parsed_struct[i]); , MELHOR PASSAR O POINTER DA STRUCT DIRETAMENTE
-(SOLVED)
-
-
-AGORA DA PROBLEMA QDO TEM UM ARGUMENTO
-Faltava um j = 0 ANTES DE UM WHILE
-
-cat input.txt | wc
-
-APARENTEMENTE BEM, TESTAR MAIS... AS VEZES TEM Q REPETIR PARA IR...
-===================================================================
-
-$?
-
-
-git diff ./utils/parse_utils_2.c
-
-
 ===================================================================
 Input: echo hello""world ✅
 Output: helloworld
@@ -76,7 +35,7 @@ Output: > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
 Input: echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'  ✅
 Output: > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
 
-Input: echo "exit_code ->$? user ->$USER home -> $HOME" ❌
+Input: echo "exit_code ->$? user ->$USER home -> $HOME" ✅
 Output: exit_code ->0 user ->username home -> /home/username (assuming the last command was successful and the username is "username")
 
 Input: echo 'exit_code ->$? user ->$USER home -> $HOME' ✅
@@ -86,24 +45,26 @@ Input: echo "$"       ✅
 Output: $
 
 Input: echo $          ✅   
-Output: (empty line)
+Output: $
 
-Input: echo $?HELLO    ❌
+Input: echo $?HELLO    ✅
 Output: 0HELLO (assuming the last command was successful)
 
-t_main[0].cmd: echo
-t_main[0].flags: (null)
-t_main.args[0]: $?HELLO
-t_main[0].input_file: (null)
-t_main[0].output_file: (null)
-t_main[0].heredoc: (null)
-t_main[0].extra: (null)
-t_main[0].fd[0]: 0
-t_main[0].fd[1]: 0
+Escaped Characters Inside Quotes: ✅
+Input: echo "This is a \"double quote\""
+Expected Output: This is a "double quote" - This is a \double quote\
 
-$?HELLO
+Escaping Special Characters: ✅
+Input: echo "This \$100 is mine"
+Expected Output: This $100 is mine - This \$100 is mine
 
+Mixed Quoting with Special Characters: ✅
+Input: echo "Don't \"worry\" about \$money"
+Expected Output: Don't "worry" about $money - Don't \worry\ about \$money
 
+Mixed Quotes: ✅
+Input: echo "This is 'mixed' and \"matched\" quotes"
+Expected Output: This is 'mixed' and "matched" quotes - This is 'mixed' and \matched\ quotes
+
+===== ERRORS =====
 'a' b c "d" \ | asfdte 'a' fasfs "asfd'" ❌ UNESCAPED
-
->>>NORMINETTING 10_PLACEHOLDER

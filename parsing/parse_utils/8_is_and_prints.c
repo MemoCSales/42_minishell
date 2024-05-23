@@ -30,33 +30,19 @@ int	is_escaped(char *line, int index)
 	}
 	return (count % 2 != 0);
 }
+
 int	is_char_in_quotes(char *line, int index)
 {
-    int		status;
-    char    *substring;
+	int		status;
+	char	*substring;
 
-    substring = malloc((index + 2) * sizeof(char));
-    strncpy(substring, line, index + 1);
-    substring[index + 1] = '\0';
-// printf("substring up to index + 1: %s\n", substring); // Debug print
-    status = in_quotes(substring);
-// printf("status: %d\n", status); // Debug print
-    free(substring);
-    return (status);
+	substring = malloc((index + 2) * sizeof(char));
+	ft_strncpy(substring, line, index + 1);
+	substring[index + 1] = '\0';
+	status = in_quotes(substring);
+	free(substring);
+	return (status);
 }
-// int	is_char_in_quotes(char *line, int index)
-// {
-//     char	temp;
-//     int		status;
-
-//     temp = line[index + 1];
-//     line[index + 1] = '\0';
-//     printf("line up to index + 1: %s\n", line); // Debug print
-//     status = in_quotes(line);
-//     printf("status: %d\n", status); // Debug print
-//     line[index + 1] = temp;
-//     return (status);
-// }
 
 void	print_args(char **args)
 {
@@ -92,6 +78,21 @@ void	print_struct(t_main *main_var, int i)
 	printf("t_main[%d].fd[0]: %d\n", i, main_var[i].fd[0]);
 	printf("t_main[%d].fd[1]: %d\n\n", i, main_var[i].fd[1]);
 }
+
+//ANTIGO
+// int	is_char_in_quotes(char *line, int index)
+// {
+//     char	temp;
+//     int		status;
+
+//     temp = line[index + 1];
+//     line[index + 1] = '\0';
+//     printf("line up to index + 1: %s\n", line); // Debug print
+//     status = in_quotes(line);
+//     printf("status: %d\n", status); // Debug print
+//     line[index + 1] = temp;
+//     return (status);
+// }
 
 // char	*handling(char *command)
 // {
