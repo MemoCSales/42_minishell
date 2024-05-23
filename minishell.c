@@ -68,5 +68,3 @@ void	main_loop(t_env env_var, t_main *main_var)
 		line = NULL;
 	}
 }
-//EXTRACTED FROM LINE 51
-// setup_signals();
