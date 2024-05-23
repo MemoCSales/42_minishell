@@ -136,6 +136,7 @@ int			find_index(t_env *env_vars, char *var_name);
 
 /*-----------------------ECHO BUILTIN-----------------------------*/
 int			echo_builtin(t_main *main);
+int			handle_flag(t_main *main);
 
 /*--------------------ENVIRONMENT VARIABLES FUNCTION--------------*/
 void		init_env(t_env *env_vars, char **env);

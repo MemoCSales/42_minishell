@@ -37,6 +37,7 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 		return (1);
 	free(env_vars->env_vars);
 	env_vars->env_vars = new_env_vars;
+	free(new_env_vars);
 	return (0);
 }
 

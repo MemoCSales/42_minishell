@@ -39,6 +39,13 @@ char	*ft_strremove(char *string, int c)
 	return (new_start);
 }
 
+int	handle_flag(t_main *main)
+{
+	if (ft_strcmp(main->flags, "-n") == 0 && main->flags != NULL)
+		return (1);
+	return (0);
+}
+
 int	echo_builtin(t_main *main)
 {
 	int		i;
@@ -46,9 +53,7 @@ int	echo_builtin(t_main *main)
 	char	*arg;
 	char	*arg_no_quotes;
 
-	cut_newline = 0;
-	if (ft_strcmp(main->flags, "-n") == 0 && main->flags != NULL)
-		cut_newline = 1;
+	cut_newline = handle_flag(main);
 	i = 0;
 	while (main->args[i] != NULL)
 	{
@@ -65,5 +70,6 @@ int	echo_builtin(t_main *main)
 	}
 	if (!cut_newline)
 		printf("\n");
+	free(arg_no_quotes);
 	return (0);
 }
