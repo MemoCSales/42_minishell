@@ -21,8 +21,8 @@ void	error_messages(char *type)
 	}
 	else if (ft_strcmp(type, "ERROR_FORK") == 0)
 	{
-		perror ("Error: Unable to fork\n");
-		exit (EXIT_FAILURE);
+		perror("Error: Unable to fork\n");
+		exit(EXIT_FAILURE);
 	}
 	else if (ft_strcmp(type, "BASH_MANY_ARGUMENTS") == 0)
 	{
@@ -51,4 +51,29 @@ void	print_open_fds(void)
 			printf("File descriptor %d is open\n", i);
 		i++;
 	}
+}
+
+void	ft_strcpy_memo(char *dst, char *src)
+{
+	while (*src)
+		*dst++ = *src++;
+	*dst = '\0';
+}
+
+/* This function will handle the updating of the environment variables.*/
+void	update_env(t_env *env_vars, char *prev_dir, t_main *main)
+{
+	if (prev_dir != NULL)
+		update_env_var(env_vars, "OLDPWD", prev_dir);
+	if (main->current_dir != NULL)
+		update_env_var(env_vars, "PWD", main->current_dir);
+}
+
+void	update_env_var(t_env *env, char *var_name, char *new_value)
+{
+	char	*new_var;
+
+	new_var = create_new_var(var_name, new_value);
+	if (new_var != NULL)
+		find_and_replace_var(env, var_name, new_var);
 }

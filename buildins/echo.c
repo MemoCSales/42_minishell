@@ -46,20 +46,14 @@ int	echo_builtin(t_main *main)
 	char	*arg;
 	char	*arg_no_quotes;
 
-	// arg_no_quotes = NULL;
-
 	cut_newline = 0;
 	if (ft_strcmp(main->flags, "-n") == 0 && main->flags != NULL)
 		cut_newline = 1;
 	i = 0;
 	while (main->args[i] != NULL)
 	{
-// printf ("ECHO BUILTIN INICIO");
-// print_args(main[0].args);
 		arg = main->args[i];
-		// arg_no_quotes = ft_strremove(arg, '\'');// CHANGED TO SEE IF FIX ECHO EXIT. IT WAS (arg, '\'')
 		arg_no_quotes = ft_strremove(arg, 0);
-
 		if (printf("%s", arg_no_quotes) < 0)
 		{
 			free(arg_no_quotes);
@@ -69,8 +63,6 @@ int	echo_builtin(t_main *main)
 			printf(" ");
 		i++;
 	}
-// printf ("ECHO BUILTIN FINAL");
-// print_args(main[0].args);
 	if (!cut_newline)
 		printf("\n");
 	return (0);

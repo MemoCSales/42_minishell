@@ -167,8 +167,8 @@ void		error_messages(char *type);
 void		print_open_fds(void);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
-void 		siginit_handler(int sig_num);
-void 		sigquit_handler(int sig_num);
+void		siginit_handler(int sig_num);
+void		sigquit_handler(int sig_num);
 void		setup_signals(void);
 
 // redirections
@@ -226,7 +226,7 @@ void		erase_quotes(char *command);
 char		*process_command_string(char *command);
 int			word_count_mini(const char *str, char chr);
 void		process_string(const char *s, char c,
-			t_process_string_params *params);
+				t_process_string_params *params);
 char		**ft_split_args(const char *s, char c);
 // char	*insert_spaces(char *command);
 // void	process_command(char *command, char *changed);
@@ -273,7 +273,7 @@ const char	*find_next_string(const char *start, \
 			const char *line, const char **end);
 char		**extract_strings(const char *line, int *numStrings);
 void		process_string_placehoder(char **strings,
-			const char *start, const char *end, int occurrence);
+				const char *start, const char *end, int occurrence);
 char		**extract_strings(const char *line, int *numStrings);
 // char		*generate_placeholder(int occurrence, char quote_type);
 // // char		*generate_placeholder(int occurrence);
@@ -288,7 +288,7 @@ char		**extract_strings(const char *line, int *numStrings);
 //11_placeholder_2.c
 void		placeholder(char *line, char ***ph_strings);
 void		replace_placeholder_sub(char **str,
-			char *placeholder, char *replacement);
+				char *placeholder, char *replacement);
 void		handle_psi(char **str, char ***ph_strings, int *i);
 void		handle_psi_lower(char **str, char ***ph_strings, int *i);
 void		reverse_placeholders(char **str, char ***ph_strings);
@@ -314,9 +314,9 @@ char		*ft_strndup(const char *s, size_t n);
 
 //14_insert_spaces.c
 void		insert_spaces_in_command(char *command,
-			char *changed, int *i, int *j);
+				char *changed, int *i, int *j);
 void		insert_spaces_and_duplicate_command(char *changed,
-			int *j, char *command, int *i);
+				int *j, char *command, int *i);
 
 //parse_test
 // void	append_var_value(char **prepared, int *j, char *var_value)

@@ -14,6 +14,10 @@ SRC =	main.c \
 		./utils/init_env.c \
 		./utils/cleanup.c \
 		./utils/cleanup_2.c \
+		./utils/general_utils.c \
+		./utils/general_utils_2.c \
+		./utils/general_utils_export.c \
+		./utils/general_utils_export_2.c \
 		./parsing/parse_utils/1_args.c \
 		./parsing/parse_utils/2_input_handling.c \
 		./parsing/parse_utils/3_redirection_and_variables.c \
@@ -29,7 +33,6 @@ SRC =	main.c \
 		./parsing/parse_utils/13_string_manipulation_2.c \
 		./parsing/parse_utils/14_insert_spaces.c \
 		./parsing/parse_utils/parse_test.c \
-		./utils/general_utils.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
