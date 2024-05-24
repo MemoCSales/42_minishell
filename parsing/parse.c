@@ -25,7 +25,6 @@ t_main	*parse_line(char *line, t_env *env_var)
 	if (line[0] == '\0')
 		return (NULL);
 	commands = ft_split(line, '|');
-	free(line);
 	parsed_struct = initialize_main(NULL, count_elements(commands));
 	while (i < count_elements(commands))
 	{
@@ -39,7 +38,6 @@ t_main	*parse_line(char *line, t_env *env_var)
 		i++;
 	}
 	parsed_struct[count_elements(commands)].cmd = NULL;
-	cleanup_split(commands);
 	return (parsed_struct);
 }
 

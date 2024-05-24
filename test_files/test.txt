@@ -1,6 +1,3 @@
-VALGRIND CHECK:
-valgrind --leak-check=full --trace-children=yes --track-fds=all --->  ❌
-
 BUILTINS:
 echo hello world                                            ---> ✅ ✅
    hello world
@@ -29,13 +26,13 @@ echo '$USER'                                                ---> ✅ ✅
 echo '$PWD'                                                 ---> ✅ ✅
       $PWD
 
-echo "aspas ->'"                                            ---> ❌ ✅
-echo "aspas -> ' "                                          ---> ❌ ✅
-echo 'aspas ->"'                                            ---> ❌ ✅               PROVAVELMENTE O DAS ASPAS PENSAR ALGO QUE CONSIDERE AS ASPAS DE FORA E ELIMINA AS DE DENTRO
-echo 'aspas -> " '                                          ---> ❌ ✅               DEIXA ISSO QUE EU DOU UMA OLHADA E TE FALO.
-echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ❌ ✅
-echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ❌ ✅
-echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ❌ ✅
+echo "aspas ->'"                                            ---> ✅ ✅
+echo "aspas -> ' "                                          ---> ✅ ✅
+echo 'aspas ->"'                                            ---> ✅ ✅               PROVAVELMENTE O DAS ASPAS PENSAR ALGO QUE CONSIDERE AS ASPAS DE FORA E ELIMINA AS DE DENTRO
+echo 'aspas -> " '                                          ---> ✅ ✅               DEIXA ISSO QUE EU DOU UMA OLHADA E TE FALO.
+echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"          ---> ✅ ✅
+echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'          ---> ✅ ✅
+echo "exit_code ->$? user ->$USER home -> $HOME"            ---> ✅ ✅
    exit_code ->0 user ->demacinema home -> /Users/demacinema
 echo 'exit_code ->$? user ->$USER home -> $HOME'            ---> ✅ ✅
    exit_code ->$? user ->$USER home -> $HOME
@@ -47,11 +44,11 @@ echo $                          ---> ✅ ✅
 $
 echo $?                         ---> ✅ ✅
 0
-echo $?HELLO                    ---> ❌ ✅
+echo $?HELLO                    ---> ✅ ✅
 0HELLO
-pwd                             ---> ✅ ❌
+pwd                             ---> ✅ ✅
 /Users/demacinema/Desktop/MINIHELL/170524/42_minishell
-pwd oi                          ---> ✅ ❌
+pwd oi                          ---> ✅ ✅
 /Users/demacinema/Desktop/MINIHELL/170524/42_minishell
 export hello                    ---> ✅  ?
 export HELLO=123                ---> ✅  ?
@@ -68,10 +65,10 @@ unset HELLO1 HELLO2             ---> ✅  ?
 unset HOME                      ---> ✅  ?
 unset PATH                      ---> ✅  ?
 unset SHELL                     ---> ✅  ?
-cd $PWD                         ---> ❌ ✅//cd: No such file or directory: $PWD ---.cmd: cd, .args[0]: $PWD
-cd $PWD hi                      ---> ❌ ❌ ✅ //Tem que testar no bash: bash: cd: too many arguments
-cd 123123                       ---> ❌  ? ✅ //bash: cd: 123123: No such file or directory --> exit code: 1
-exit 123                        ---> ✅  ❌ //SAI, MAS seg fault
+cd $PWD                         ---> ✅ ✅//cd: No such file or directory: $PWD ---.cmd: cd, .args[0]: $PWD
+cd $PWD hi                      ---> ✅ ✅ //Tem que testar no bash: bash: cd: too many arguments
+cd 123123                       ---> ✅ ✅ //bash: cd: 123123: No such file or directory --> exit code: 1
+exit 123                        ---> ✅ ✅ //SAI, MAS seg fault
 exit 298                        ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not need to close the terminal???
 exit +100                       ---> ✅ ✅ //SAI, MAS NAO IMPRIME "exit" // SOLVED
 exit "+100"                     ---> ✅ ✅ //SAI, MAS NAO FECHA O TERMINAL // SOLVED does not need to close the terminal
@@ -85,10 +82,10 @@ exit 42 world                   ---> ✅ ✅
 
 REDIRECTION:
 cat input.txt | grep "pattern" > output.txt                     ---> ✅ ✅  //APARENTEMENTE SIM, CONFIRMAR
-cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ❌ // diferent wc - bash: 1, ours 3.
-cat main.c | grep "while" | wc -l
+cat input.txt | grep "pattern" | wc -l > output.txt             ---> ✅ ✅ // diferent wc - bash: 1, ours 3.
+cat main.c | grep "while" | wc -l                               ---> ✅
 
-< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ❌
+< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 > output.txt    ---> ✅ 
 ours: 
 ANTES DE CERRAR 0
 ANTES y DESPUES DE CERRAR 1
@@ -104,7 +101,7 @@ APPEND:
 date >> file.txt																---> ✅ // working
 ls -la >> file.txt																---> ✅ // working
 
-< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt		---> ✅ ❌
+< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt		---> ✅ ✅
 
 ψΨ:< ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt
 Modified line: < ./test_files/colors.txt sort | uniq -c | sort -r | head -3 >> outputcolor.txt
@@ -212,13 +209,13 @@ This is line 1
 This is line 2
 EOF
 
-cat <<EOF | grep "line" | wc -l		---> ✅ ❌
+cat <<EOF | grep "line" | wc -l		---> ✅ ✅
 heredoc>This is 1 line
 heredoc>This is 2 line
 heredoc>This is 3 line
 heredoc>EOF
 
-cat <<EOF > output.txt				---> ❌  ✅ // The parsing is considering "> output.txt" as arguments // SOLVED
+cat <<EOF > output.txt				---> ✅ ✅
 heredoc>This text
 heredoc>should be in the
 heredoc>output.txt file
@@ -227,15 +224,14 @@ heredoc>EOF
 
 PIPES:
 env | sort | grep -v SHLVL | grep -v ^_ ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
-cat ./test_files/infile_big | grep oi   ---> ❌ ❌ GETS STUCK IN cat
+cat ./test_files/infile_big | grep oi   ---> ✅ ✅
 cat minishell.h | grep ");"$            ---> ✅ ✅
-export GHOST=123 | env | grep GHOST     ---> ❌  ?
 pwd | wc -l                             ---> ✅ ✅
 date | sort | uniq                      ---> ✅ ✅
-echo "hello" | ls                       ---> ✅  ? //APARENTEMENTE SIM, CONFIRMAR
-ls | echo "hello"                       --->     ? //APARENTEMENTE SIM, CONFIRMAR
+echo "hello" | ls                       ---> ✅ ✅ 
+ls | echo "hello"                       ---> ✅ ✅ 
 ls | echo "hello" | ls | pwd            --->    ✅
-env | sort | grep -v SHLVL | grep -v ^_ --->     ? //APARENTEMENTE SIM, CONFIRMAR
+env | sort | grep -v SHLVL | grep -v ^_ ---> ✅ ✅
 cat ./data/lorem.txt | grep oi          --->    ✅
 cat ./data/lorem.txt | grep ");"$       --->    ✅
 cat ./data/empty.txt | wc -l            --->    ✅
@@ -245,16 +241,17 @@ ls | ls | ls | ls | ls                  ---> ✅ ✅
 ls | ls | ls | ls | ls | grep a         ---> ✅ ✅
 ls -l | sed -e "s/[aeio]/u/g"           ---> ✅ ✅
 ls -l | grep "\.txt$"                   ---> ✅ ✅
-ls -l | grep drw | awk '{print $9}' | sort  ---> ❌❌
-export GHOST=123 | env | grep GHOST         --->   ?
-seq 100 | echo "Line ++" | grep 'Line' | sort | uniq -c | sort -nr | head -n 5  ---> ❌ ? //APARENTEMENTE SIM, CONFIRMAR
+ls -l | grep drw | awk '{print $9}' | sort  --->  ✅ ✅
+seq 100 | echo "Line ++" | grep 'Line' | sort | uniq -c | sort -nr | head -n 5  --->  ✅ ✅
+export GHOST=123 | env | grep GHOST         --->  ❌ 
+export GHOST=123 | env | grep GHOST         ---> ❌  ?
 
 PARSING:
 ls                                     --->     ✅
 ls la                                  --->     ✅
 ls -la                                 --->     ✅
 ls -la la                              --->     ✅
-ls -l -a                               --->     ❌ // -a VAI COMO ARGUMENTO. TERIA QUE JUNTAR (SIMILAR AO insert_space)?
+ls -l -a                               --->     ✅ ✅✅✅✅
 < buceta.txt                           --->     ✅
 <buceta.txt                            --->     ✅
 > buceta.txt                           --->     ✅
@@ -268,8 +265,8 @@ ls -l -a                               --->     ❌ // -a VAI COMO ARGUMENTO. TE
 
 ------------------------------------------------------------------------------------------------
 EDGE CASES
-./minishell						--->     ❌ ✅   //running the minishell should working
-cat | ls						--->     ❌ 
+./minishell						--->     ✅ ✅   //running the minishell should working
+cat | ls						   --->        ✅ 
 
 (readline history is staying in readline buffer)
 

@@ -34,7 +34,6 @@ SRC =	main.c \
 		./parsing/parse_utils/14_insert_spaces.c \
 		./parsing/parse_utils/15_handle_variables_1.c \
 		./parsing/parse_utils/16_handle_variables_2.c \
-		./utils/general_utils.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
@@ -52,7 +51,6 @@ SRC =	main.c \
 		./signals/signals.c
 
 all: $(NAME)
-	# @./minishell
 
 OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 
@@ -92,7 +90,7 @@ $(NAME): $(OBJ) $(LIBFT)
 			@# @echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
 
 # Check this because is relinking
-$(OBJ_DIR)%.o: %.c $(LIBFT) message
+$(OBJ_DIR)%.o: %.c $(LIBFT)
 			@mkdir -p $(@D)
 			@$(CC) $(CFLAGS) -I$(LIBFT_DIRECTORY) -c $< -o $@
 			@printf "$(RED)ψΨ"

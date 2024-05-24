@@ -69,11 +69,11 @@ void	main_loop(t_env env_var, t_main *main_var)
 				env_var.status = execute_commands(&env_var, main_var);
 			}
 		}
-		if (main_var && main_var != original_pointer)
-		{
-			free_main_struct(main_var);
-			main_var = NULL;
-		}
+		// if (main_var && main_var != original_pointer)
+		// {
+		// 	free_main_struct(main_var);
+		// 	main_var = NULL;
+		// }
 		free(line);
 		line = NULL;
 	}

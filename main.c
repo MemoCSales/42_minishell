@@ -24,6 +24,3 @@ int	main(int argc, char **argv, char **env)
 	main_loop(env_var, main_var);
 	return (0);
 }
-
-// EXCLUIDO DA LINHA 25
-// //check_env(&env_var);
