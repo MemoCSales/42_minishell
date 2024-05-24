@@ -28,6 +28,11 @@ int	exit_builtin(t_main *main)
 	else
 	{
 		first_char = main->args[0][0];
+		if (!ft_isdigit(first_char))
+		{
+			error_messages("BASH_NUMERIC_ARGS");
+			return (2);
+		}
 		if (ft_isdigit(first_char) || first_char == '-' || first_char == '+')
 			status = ft_atoi(main->args[0]);
 		else
