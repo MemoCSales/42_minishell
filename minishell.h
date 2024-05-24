@@ -37,7 +37,6 @@
 typedef struct s_main
 {
 	char	*cmd;
-	// char	**flags;
 	char	*flags;
 	char	**args;
 	char	*input_file;
@@ -337,10 +336,12 @@ void			insert_spaces_and_duplicate_command(char *changed, \
 //15_handle_variables_1.c
 char			*handle_variables(char *line, t_env *env_var);
 t_handle_vars	start_h_vars(t_handle_vars *h_vars, char *line);
+char			*get_env_var(t_env *env, char *name);
 
 //16_handle_variables_2.c
-t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line);
-t_handle_vars	quotes_double(t_handle_vars *h_vars, char *line);
+t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line, t_env *env_var);
+t_handle_vars	quotes_double(t_handle_vars *h_vars, char *line, \
+				t_env *env_var);
 t_handle_vars	dollar_question(t_handle_vars *h_vars, t_env *env_var);
 t_handle_vars	escaped_dollar(t_handle_vars *h_vars, char *line);
 t_handle_vars	if_conditions(t_handle_vars *h_vars, \

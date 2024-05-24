@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line)
+t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line, t_env *env_var)
 {
 	h_vars->var_start = &line[ft_strchr(line, '$') - line];
 	h_vars->var_end = h_vars->var_start;
@@ -25,11 +25,12 @@ t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line)
 	ft_strncpy(h_vars->var_name, h_vars->var_start + 1, \
 		((h_vars->var_end) - (h_vars->var_start)));
 	h_vars->var_name[h_vars->var_end - h_vars->var_start] = '\0';
-	h_vars->var_value = getenv(h_vars->var_name);
+	// h_vars->var_value = getenv(h_vars->var_name);
+	h_vars->var_value = get_env_var(env_var, h_vars->var_name);
 	if (h_vars->var_value != NULL)
 	{
 		ft_strcpy(&h_vars->result[h_vars->j], h_vars->var_value);
-		h_vars->j += strlen(h_vars->var_value);
+		h_vars->j += ft_strlen(h_vars->var_value);
 	}
 	h_vars->i = h_vars->var_end - line;
 	h_vars->size = 0;
@@ -37,7 +38,7 @@ t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line)
 	return (*h_vars);
 }
 
-t_handle_vars	quotes_double(t_handle_vars *h_vars, char *line)
+t_handle_vars	quotes_double(t_handle_vars *h_vars, char *line, t_env *env_var)
 {
 	h_vars->var_start = &line[h_vars->i + 1];
 	h_vars->var_end = h_vars->var_start;
@@ -49,7 +50,8 @@ t_handle_vars	quotes_double(t_handle_vars *h_vars, char *line)
 	ft_strncpy(h_vars->var_name, h_vars->var_start, \
 		((h_vars->var_end) - (h_vars->var_start)));
 	h_vars->var_name[h_vars->var_end - h_vars->var_start] = '\0';
-	h_vars->var_value = getenv(h_vars->var_name);
+	// h_vars->var_value = getenv(h_vars->var_name);
+	h_vars->var_value = get_env_var(env_var, h_vars->var_name);
 	if (h_vars->var_value != NULL)
 	{
 		ft_strcpy(&h_vars->result[h_vars->j], h_vars->var_value);
@@ -90,7 +92,7 @@ t_handle_vars	if_conditions(t_handle_vars *h_vars, char *line, t_env *env_var)
 				|| line[h_vars->i - 1] != '\\')) && (h_vars->quotes == 2)
 		&& (line[h_vars->i + 1] != ' ') && (line [h_vars->i + 1] != '?')
 		&& (line[h_vars->i + 1] != '\'' && line[h_vars->i + 1] != '\"'))
-		h_vars_sub = quotes_double(h_vars, line);
+		h_vars_sub = quotes_double(h_vars, line, env_var);
 	else if (line[h_vars->i] == '$' && line[h_vars->i + 1] == '?'
 		&& h_vars->quotes != 1 && line[h_vars->i - 1] != '\\')
 		h_vars_sub = dollar_question(h_vars, env_var);

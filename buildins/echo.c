@@ -55,6 +55,11 @@ int	echo_builtin(t_main *main)
 
 	cut_newline = handle_flag(main);
 	i = 0;
+	if (main->args[i] == NULL)
+	{
+		printf("\n");
+		return (0);
+	}
 	while (main->args[i] != NULL)
 	{
 		arg = main->args[i];

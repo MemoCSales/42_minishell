@@ -22,7 +22,7 @@ char	*handle_variables(char *line, t_env *env_var)
 	{
 		h_vars.quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
 		if (h_vars.quotes == 0)
-			h_vars = quotes_zero(&h_vars, line);
+			h_vars = quotes_zero(&h_vars, line, env_var);
 	}
 	h_vars.i = 0;
 	h_vars.quotes = ft_strchr(line, '$') - line;
@@ -45,4 +45,23 @@ t_handle_vars	start_h_vars(t_handle_vars *h_vars, char *line)
 	h_vars->result = malloc(strlen(line) * 200);
 	h_vars->quotes = 0;
 	return (*h_vars);
+}
+
+char	*get_env_var(t_env *env, char *name)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = ft_strlen(name);
+	while (env->env_vars[i])
+	{
+		if (ft_strncmp(env->env_vars[i], name, len) == 0
+			&& env->env_vars[i][len] == '=')
+		{
+			return (&env->env_vars[i][len + 1]);
+		}
+		i++;
+	}
+	return (NULL);
 }

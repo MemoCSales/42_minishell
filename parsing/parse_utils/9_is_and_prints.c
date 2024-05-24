@@ -78,3 +78,11 @@ void	print_struct(t_main *main_var, int i)
 	printf("t_main[%d].fd[0]: %d\n", i, main_var[i].fd[0]);
 	printf("t_main[%d].fd[1]: %d\n\n", i, main_var[i].fd[1]);
 }
+
+// //PRINT STRUCT
+// 	i = 0;
+// 	while (parsed_struct[i].cmd)
+// 	{
+// 		print_struct(&parsed_struct[i], i);
+// 		i++;
+// 	}

@@ -118,7 +118,7 @@ cleanlib:
 fre: fclean cleanlib all #TO DELETE THE LIBFT AND RECOMPILE IT
 
 re: fclean all
-	@# @./minishell
+	@./minishell
 
 norminette: 
 		norminette $(SRC) minishell.h $(LIBFT_DIRECTORY)
