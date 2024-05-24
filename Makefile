@@ -24,15 +24,17 @@ SRC =	main.c \
 		./parsing/parse_utils/4_quotes.c \
 		./parsing/parse_utils/5_command_processing.c \
 		./parsing/parse_utils/6_pipe_and_redirection.c \
-		./parsing/parse_utils/7_string_manipulation.c \
-		./parsing/parse_utils/8_is_and_prints.c \
-		./parsing/parse_utils/9_checkers_and_counters.c \
-		./parsing/parse_utils/10_placeholder_1.c \
-		./parsing/parse_utils/11_placeholder_2.c \
-		./parsing/parse_utils/12_placeholder_3.c \
-		./parsing/parse_utils/13_string_manipulation_2.c \
+		./parsing/parse_utils/7_string_manipulation_1.c \
+		./parsing/parse_utils/9_is_and_prints.c \
+		./parsing/parse_utils/8_string_manipulation_2.c \
+		./parsing/parse_utils/10_checkers_and_counters.c \
+		./parsing/parse_utils/11_placeholder_1.c \
+		./parsing/parse_utils/12_placeholder_2.c \
+		./parsing/parse_utils/13_placeholder_3.c \
 		./parsing/parse_utils/14_insert_spaces.c \
-		./parsing/parse_utils/parse_test.c \
+		./parsing/parse_utils/15_handle_variables_1.c \
+		./parsing/parse_utils/16_handle_variables_2.c \
+		./utils/general_utils.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
