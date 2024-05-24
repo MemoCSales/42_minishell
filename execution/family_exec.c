@@ -19,8 +19,10 @@ int	parent_process(t_exec_context *context)
 	i = 0;
 	while (context->main[i].cmd != NULL)
 	{
-		close(context->main[i].fd[0]);
-		close(context->main[i].fd[1]);
+		if (context->main[i].fd[0] != -1)
+			close(context->main[i].fd[0]);
+		if (context->main[i].fd[1] != -1)
+			close(context->main[i].fd[1]);
 		waitpid(context->main[i].pid, &context->env->status, 0);
 		i++;
 	}

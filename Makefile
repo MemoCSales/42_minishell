@@ -50,7 +50,7 @@ SRC =	main.c \
 		./signals/signals.c
 
 all: $(NAME)
-	@./minishell
+	# @./minishell
 
 OBJ = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRC))
 
@@ -89,6 +89,7 @@ $(NAME): $(OBJ) $(LIBFT)
 			@# @echo "$(RED)│                         <=--Ψψ  $(LIGHT_RED)miniℍΞLL  $(RED)ψΨ--=>                         │"
 			@# @echo "$(RED)└──────────────────────────────────────────────────────────────────────────┘$(DEFAULT)"
 
+# Check this because is relinking
 $(OBJ_DIR)%.o: %.c $(LIBFT) message
 			@mkdir -p $(@D)
 			@$(CC) $(CFLAGS) -I$(LIBFT_DIRECTORY) -c $< -o $@
@@ -124,8 +125,9 @@ norminette:
 
 va:
 		# valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=all ./minishell
-		valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
+		# valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
 		# valgrind --trace-children=yes --track-fds=all ./minishell
+		valgrind --leak-check=full --trace-children=yes ./minishell
 		
 
 .PHONY: all clean fclean re

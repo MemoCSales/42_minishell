@@ -16,6 +16,7 @@ void	handle_input_redirection(t_main *main, int i)
 {
 	int	fd;
 
+	fd = -1;
 	if (main[i].input_file != NULL)
 	{
 		fd = open(main[i].input_file, O_RDONLY);
@@ -27,7 +28,8 @@ void	handle_input_redirection(t_main *main, int i)
 			exit(EXIT_FAILURE);
 		}
 		dup2(fd, STDIN_FILENO);
-		close(fd);
+		if (fd != -1)
+			close(fd);
 	}
 }
 
@@ -35,13 +37,15 @@ void	handle_output_redirection(t_main *main, int i)
 {
 	int	fd;
 
+	fd = -1;
 	if (main[i].output_file && ft_strcmp(main[i].extra, ">>") == 0)
 	{
 		fd = open(main[i].output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
 			error_messages("ERROR_OPEN_FILE");
 		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		if (fd != -1)
+			close(fd);
 	}
 	else if (main[i].output_file != NULL)
 	{
@@ -49,7 +53,8 @@ void	handle_output_redirection(t_main *main, int i)
 		if (fd < 0)
 			error_messages("ERROR_OPEN_FILE");
 		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		if (fd != -1)
+			close(fd);
 	}
 }
 
@@ -66,7 +71,8 @@ int	handle_heredoc(t_main *main, int i)
 		if (fd < 0)
 			error_messages("ERROR_OPEN_FILE");
 		write(fd, main[i].heredoc, ft_strlen(main[i].heredoc));
-		close(fd);
+		if (fd != -1)
+			close(fd);
 		fd = open(tmp, O_RDONLY);
 		if (fd < 0)
 			error_messages("ERROR_OPEN_FILE");
@@ -80,7 +86,8 @@ void	handle_file_redirection(t_main *main, int i, int heredoc_fd)
 	int		in;
 	int		out;
 
-	in = 0;
+	in = -1;
+	out = -1;
 	if (main[i].input_file)
 	{
 		in = open(main[i].input_file, O_RDONLY);

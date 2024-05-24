@@ -169,6 +169,7 @@ char	*handle_variables(char *line, t_env *env_var)
 		}
 	}
 	result[j] = '\0';
+	free(line);
 	return (result);
 }
 
@@ -191,6 +192,7 @@ char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
 	check_malloc(ph_strings);
 	placeholder(prepared, ph_strings);
+	free_ph_strings(ph_strings);
 	return (prepared);
 }
 

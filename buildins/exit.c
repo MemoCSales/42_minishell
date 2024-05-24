@@ -37,6 +37,7 @@ int	exit_builtin(t_main *main)
 		}
 	}
 	printf("exit\n");
+	free(main->current_dir);
 	exit(status);
 }
 

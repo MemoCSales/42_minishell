@@ -162,6 +162,7 @@ void		initialize_context(t_exec_context *context);
 void		ft_close_fds(t_exec_context *context);
 void		exec_handle_redirections(t_exec_context *context);
 void		exec_copy_args(t_main *main, char **exec_args, int i, int num_args);
+void		ft_close_fds_main(t_exec_context *context);
 
 /*--------------------GENERAL UTIL FUNCTIONS---------------------*/
 void		error_messages(char *type);
@@ -191,6 +192,8 @@ void		free_parsed_struct(t_main *parsed_struct, int num_commands);
 
 //utils/cleanup_2.c
 void		free_args_2(char ***args);
+void		free_main_struct(t_main *main_var);
+void		free_ph_strings(char ***ph_strings);
 
 //parse.c
 t_main		*parse_line(char *line, t_env *env_var);

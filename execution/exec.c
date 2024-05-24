@@ -12,6 +12,17 @@
 
 #include "../minishell.h"
 
+void	ft_close_fds_main(t_exec_context *context)
+{
+	if (context->i > 0)
+	{
+		if(context->main[context->i - 1].fd[0] != -1)
+			close(context->main[context->i - 1].fd[0]);
+	}
+	if (context->main[context->i].fd[1] != -1)
+		close(context->main[context->i].fd[1]);
+}
+
 int	execute_with_commands(t_exec_context *context)
 {
 	if (context->main[context->i].cmd != NULL
@@ -28,11 +39,7 @@ int	execute_with_commands(t_exec_context *context)
 			if (context->main[context->i].pid == 0)
 				handle_child_process(context);
 			else
-			{
-				if (context->i > 0)
-					close(context->main[context->i - 1].fd[0]);
-				close(context->main[context->i].fd[1]);
-			}
+				ft_close_fds_main(context);
 			context->i++;
 		}
 		context->env->status = parent_process(context);
@@ -86,7 +93,7 @@ int	exec_without_cmds(t_exec_context *context)
 		printf("HANDLE FILE REDIRECTION\n");
 		handle_file_redirection(context->main, context->i, context->heredoc_fd);
 	}
-	if (context->heredoc_fd)
+	if (context->heredoc_fd != -1)
 		close(context->heredoc_fd);
 	return (context->env->status);
 }

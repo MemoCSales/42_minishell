@@ -90,15 +90,15 @@ void	free_parsed_struct(t_main *parsed_struct, int num_commands)
 		free_and_nullify((void **)&parsed_struct[i].output_file);
 		free_and_nullify((void **)&parsed_struct[i].heredoc);
 		free_and_nullify((void **)&parsed_struct[i].extra);
-		if (parsed_struct[i].fd[0])
+		if (parsed_struct[i].fd[0] != -1)
 		{
 			close(parsed_struct[i].fd[0]);
-			parsed_struct[i].fd[0] = 0;
+			parsed_struct[i].fd[0] = -1;
 		}
-		if (parsed_struct[i].fd[1])
+		if (parsed_struct[i].fd[1] != -1)
 		{
 			close(parsed_struct[i].fd[1]);
-			parsed_struct[i].fd[1] = 0;
+			parsed_struct[i].fd[1] = -1;
 		}
 		i++;
 	}
