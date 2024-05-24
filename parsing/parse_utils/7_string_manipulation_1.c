@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   7_string_manipulation.c    ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   7_string_manipulation_1.c      ψΨ MiniℍΞLL Ψψ        :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */

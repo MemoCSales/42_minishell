@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   9_checkers_and_counters.c      ψΨ MiniℍΞLL Ψψ        :::      ::::::::   */
+/*   10_checkers_and_counters.c      ψΨ MiniℍΞLL Ψψ       :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
