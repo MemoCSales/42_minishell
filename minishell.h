@@ -85,6 +85,41 @@ typedef struct s_quotes_escaped
 	int	bckslash;
 }			t_quotes_escaped;
 
+//PARSING STRUCTS
+typedef struct s_handle_vars
+{
+	char	*result;
+	char	*var_start;
+	char	*var_end;
+	char	*var_name;
+	char	*var_value;
+	char	*status;
+	int		size;//TENTANDO RESOLVER O PROBLEMA DE SIZE
+	int		i;
+	int		j;
+	int		quotes;
+}				t_handle_vars;
+
+typedef struct s_unq_dolar
+{
+	char	*result;
+	int		i;
+	int		j;
+	int		in_double_quotes;
+	int		in_single_quotes;
+	int		start;
+	int		len;
+}				t_unq_dolar;
+
+typedef struct s_quotes_escaped
+{
+	int	i;
+	int	in_single_quotes;
+	int	in_double_quotes;
+	int	last_unspace;
+	int	bckslash;
+}			t_quotes_escaped;
+
 typedef struct s_process_string_params
 {
 	int		i;
@@ -103,6 +138,7 @@ typedef struct s_command_params
 	int		in_string;
 }				t_command_params;
 
+//EXECUTION STRUCTS
 //EXECUTION STRUCTS
 typedef struct s_env
 {
@@ -177,6 +213,9 @@ int			handle_flag(t_main *main);
 void			init_env(t_env *env_vars, char **env);
 void			check_env(t_env *env_vars);
 char			*ft_strdup_minishell(char *s1);
+void			init_env(t_env *env_vars, char **env);
+void			check_env(t_env *env_vars);
+char			*ft_strdup_minishell(char *s1);
 
 /*--------------------EXECUTION FUNCTIONS-------------------------*/
 char		*get_env_path(t_env *env);
@@ -202,6 +241,8 @@ void		ft_close_fds_main(t_exec_context *context);
 /*--------------------GENERAL UTIL FUNCTIONS---------------------*/
 void			error_messages(char *type);
 void			print_open_fds(void);
+void			error_messages(char *type);
+void			print_open_fds(void);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
 void		siginit_handler(int sig_num);
@@ -209,6 +250,8 @@ void		sigquit_handler(int sig_num);
 void		setup_signals(void);
 
 // redirections
+void			handle_output_redirection(t_main *main, int i);
+void			handle_input_redirection(t_main *main, int i);
 void			handle_output_redirection(t_main *main, int i);
 void			handle_input_redirection(t_main *main, int i);
 
@@ -224,6 +267,11 @@ void			free_main(t_main *main_var);
 void			free_args(char **args);
 void			free_and_nullify(void **ptr);
 void			free_parsed_struct(t_main *parsed_struct, int num_commands);
+void			cleanup_split(char **split);
+void			free_main(t_main *main_var);
+void			free_args(char **args);
+void			free_and_nullify(void **ptr);
+void			free_parsed_struct(t_main *parsed_struct, int num_commands);
 
 //utils/cleanup_2.c
 void		free_args_2(char ***args);
@@ -231,6 +279,8 @@ void		free_main_struct(t_main *main_var);
 void		free_ph_strings(char ***ph_strings);
 
 //parse.c
+t_main			*parse_line(char *line, t_env *env_var);
+t_main			*initialize_main(t_main *main_var, int num_commands);
 t_main			*parse_line(char *line, t_env *env_var);
 t_main			*initialize_main(t_main *main_var, int num_commands);
 
@@ -242,6 +292,11 @@ void			remove_args_first_last_quotes(char *arg);
 int				ft_strequ(char const *s1, char const *s2);
 
 //2_input_handling.c
+t_unq_dolar		*process_dollar_unquoted(t_unq_dolar \
+				*un_dollar_vars, char *str);
+char			*change_unquoted_dollar_signs(char *str);
+char			*prepare_line(char *line, char ***ph_strings, t_env *env_var);
+void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 t_unq_dolar		*process_dollar_unquoted(t_unq_dolar \
 				*un_dollar_vars, char *str);
 char			*change_unquoted_dollar_signs(char *str);

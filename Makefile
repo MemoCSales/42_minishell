@@ -34,6 +34,7 @@ SRC =	main.c \
 		./parsing/parse_utils/14_insert_spaces.c \
 		./parsing/parse_utils/15_handle_variables_1.c \
 		./parsing/parse_utils/16_handle_variables_2.c \
+		./utils/general_utils.c \
 		./buildins/buildins.c \
 		./buildins/cd.c \
 		./buildins/env.c \
