@@ -82,7 +82,8 @@ char	*read_heredoc(char *delimiter)
 	{
 		ft_putstr_fd("> ", 1);
 		line = get_next_line(0);
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		// if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		if (ft_strequ(line, delimiter))
 			break ;
 		if (heredoc == NULL)
 			heredoc = ft_strdup(line);
@@ -90,7 +91,8 @@ char	*read_heredoc(char *delimiter)
 		{
 			temp = ft_strjoin(heredoc, line);
 			free(heredoc);
-			heredoc = temp;
+			// heredoc = temp;
+			heredoc = ft_strjoin(temp, "\n");
 		}
 		free(line);
 	}

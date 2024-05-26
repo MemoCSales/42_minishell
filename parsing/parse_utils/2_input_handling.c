@@ -60,9 +60,9 @@ char	*change_unquoted_dollar_signs(char *str)
 char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 {
 	char	*prepared;
+	char	*temp;
 
-	prepared = malloc(strlen(line) + 8192);
-	check_malloc(prepared);
+	temp = NULL;
 	prepared = check_closed_quotes(line);
 	if ((ft_strequ(prepared, "\'") || ft_strequ(prepared, "\"")))
 	{
@@ -72,11 +72,11 @@ char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 		check_malloc(prepared);
 		return (prepared);
 	}
-	prepared = handle_variables(line, env_var);
+	temp = handle_variables(line, env_var);
 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
 	check_malloc(ph_strings);
-	placeholder(prepared, ph_strings);
-	return (prepared);
+	placeholder(temp, ph_strings);
+	return (temp);
 }
 
 int	file_exists(const char *filename)
@@ -121,3 +121,26 @@ int	redir_no_arg(char **args, int j)
 	}
 	return (0);
 }
+
+// //ANTIGA, RETORNAR SE DER RUIM
+// char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
+// {
+// 	char	*prepared;
+
+// 	prepared = malloc(strlen(line) + 8192);
+// 	check_malloc(prepared);
+// 	prepared = check_closed_quotes(line);
+// 	if ((ft_strequ(prepared, "\'") || ft_strequ(prepared, "\"")))
+// 	{
+// 		printf("Error: Unclosed quotes (%c)\n", prepared[0]);
+// 		free(prepared);
+// 		prepared = ft_strdup("\0");
+// 		check_malloc(prepared);
+// 		return (prepared);
+// 	}
+// 	prepared = handle_variables(line, env_var);
+// 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
+// 	check_malloc(ph_strings);
+// 	placeholder(prepared, ph_strings);
+// 	return (prepared);
+// }

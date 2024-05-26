@@ -70,10 +70,25 @@ void	remove_args_first_last_quotes(char *arg)
 
 int	ft_strequ(char const *s1, char const *s2)
 {
-	if (s1 && s2)
-		while (*s1 || *s2)
-			if (*s1++ != *s2++)
-				return (0);
+	size_t	len1;
+	size_t	len2;
+	size_t	i;
+
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	i = 0;
+	if (len1 > 0 && s1[len1 - 1] == '\n')
+		len1--;
+	if (len2 > 0 && s2[len2 - 1] == '\n')
+		len2--;
+	if (len1 != len2)
+		return (0);
+	while (i < len1)
+	{
+		if (s1[i] != s2[i])
+			return (0);
+		i++;
+	}
 	return (1);
 }
 

@@ -232,11 +232,6 @@ void			free_main(t_main *main_var);
 void			free_args(char **args);
 void			free_and_nullify(void **ptr);
 void			free_parsed_struct(t_main *parsed_struct, int num_commands);
-void			cleanup_split(char **split);
-void			free_main(t_main *main_var);
-void			free_args(char **args);
-void			free_and_nullify(void **ptr);
-void			free_parsed_struct(t_main *parsed_struct, int num_commands);
 
 //utils/cleanup_2.c
 void			free_args_2(char ***args);
@@ -323,7 +318,6 @@ const char		*find_next_string(const char *start, \
 char			**extract_strings(const char *line, int *numStrings);
 void			process_string_placehoder(char **strings, \
 				const char *start, const char *end, int occurrence);
-char			**extract_strings(const char *line, int *numStrings);
 
 //11_placeholder_2.c
 void			placeholder(char *line, char ***ph_strings);
