@@ -14,7 +14,7 @@
 
 char	*read_command(void)
 {
-	return (readline("\033[1;31mψΨ:\033[0m"));
+	return (readline("\033[1;31mψΨ\033[0m "));
 }
 
 t_main	*parse_command(char *line, t_env *env_var)
