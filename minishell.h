@@ -85,41 +85,6 @@ typedef struct s_quotes_escaped
 	int	bckslash;
 }			t_quotes_escaped;
 
-//PARSING STRUCTS
-typedef struct s_handle_vars
-{
-	char	*result;
-	char	*var_start;
-	char	*var_end;
-	char	*var_name;
-	char	*var_value;
-	char	*status;
-	int		size;//TENTANDO RESOLVER O PROBLEMA DE SIZE
-	int		i;
-	int		j;
-	int		quotes;
-}				t_handle_vars;
-
-typedef struct s_unq_dolar
-{
-	char	*result;
-	int		i;
-	int		j;
-	int		in_double_quotes;
-	int		in_single_quotes;
-	int		start;
-	int		len;
-}				t_unq_dolar;
-
-typedef struct s_quotes_escaped
-{
-	int	i;
-	int	in_single_quotes;
-	int	in_double_quotes;
-	int	last_unspace;
-	int	bckslash;
-}			t_quotes_escaped;
-
 typedef struct s_process_string_params
 {
 	int		i;
@@ -138,7 +103,6 @@ typedef struct s_command_params
 	int		in_string;
 }				t_command_params;
 
-//EXECUTION STRUCTS
 //EXECUTION STRUCTS
 typedef struct s_env
 {
@@ -403,15 +367,3 @@ t_handle_vars	if_conditions(t_handle_vars *h_vars, \
 				char *line, t_env *env_var);
 
 #endif
-
-/* ************************************************************************** */
-/*                                                                            */
-/*   minishell.h                ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
-/*                                                      :+:      :+:    :+:   */
-/*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
-/*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:46:39 by both              #+#    #+#             */
-/*   Updated: 2023/12/17 19:47:12 by both             ###   ########.de       */
-/*                                                                            */
-/* ************************************************************************** */
