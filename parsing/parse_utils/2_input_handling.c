@@ -79,23 +79,45 @@ char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 	return (prepared);
 }
 
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
+int	file_exists(const char *filename)
 {
-	void	*new_ptr;
+	int	fd;
 
-	if (new_size == 0)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 	{
-		free(ptr);
-		return (NULL);
+		return (0);
 	}
-	if (ptr == NULL)
-		return (malloc(new_size));
-	if (new_size <= old_size)
-		return (ptr);
-	new_ptr = malloc(new_size);
-	if (new_ptr == NULL)
-		return (NULL);
-	memcpy(new_ptr, ptr, old_size);
-	free(ptr);
-	return (new_ptr);
+	else
+	{
+		close(fd);
+		return (1);
+	}
+}
+
+int	redir_no_arg(char **args, int j)
+{
+	int	fd;
+
+	fd = 0;
+	if (ft_strcmp(args[j], "<") == 0)
+	{
+		if (file_exists(args[j + 1]) == 1)
+			return (0);
+		else
+			printf("Error: No such file or directory: %s\n", args[j + 1]);
+	}
+	else if ((ft_strcmp(args[j], ">") == 0) || ft_strcmp(args[j], ">>") == 0)
+	{
+		if (file_exists(args[j + 1]) == 1)
+			return (0);
+		else
+		{
+			fd = open(args[j + 1], O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, 0644);
+			if (fd < 0)
+				error_messages("ERROR_OPEN_FILE");
+			close(fd);
+		}
+	}
+	return (0);
 }

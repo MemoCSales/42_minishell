@@ -12,60 +12,6 @@
 
 #include "../minishell.h"
 
-int file_exists(const char *filename)
-{
-	int fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	{
-		// File doesn't exist
-		return (0);
-	} else
-	{
-		// File exists
-		close(fd); // Close the file descriptor
-		return (1);
-	}
-}
-
-int redir_no_arg(char **args, int j)
-{
-	int	fd;
-
-	fd = 0;
-	if (ft_strcmp(args[j], "<") == 0)
-	{
-		// printf("< and no arg\n");
-		if (file_exists(args[j + 1]) == 1)
-			return (0);
-		else
-		{
-			printf("Error: No such file or directory: %s\n", args[j + 1]);
-			// return (0);
-		}
-	}
-	else if ((ft_strcmp(args[j], ">") == 0) || ft_strcmp(args[j], ">>") == 0)
-	{
-		if (file_exists(args[j + 1]) == 1)
-			return (0);
-		else
-		{
-			fd = open(args[j + 1], O_WRONLY | O_CREAT | O_EXCL | O_TRUNC, 0644);
-			if (fd < 0)
-				error_messages("ERROR_OPEN_FILE");
-			close(fd);
-		}
-	}
-	return (0);
-}
-
-// int fd = open("myfile.txt", O_CREAT | O_EXCL, 0644);
-// if (fd < 0) {
-//     // File exists
-// } else {
-//     // File doesn't exist, and has been created
-//     close(fd); // Close the file descriptor
-// }
-
 int	check_redir(char **args, int j)
 {
 	if (ft_strcmp(args[j], ">>") == 0
@@ -73,24 +19,9 @@ int	check_redir(char **args, int j)
 		|| ft_strcmp(args[j], "<") == 0
 		|| ft_strcmp(args[j], ">") == 0)
 	{
-		if (!(args [j + 2]))//AND '<', AND NO input.txt
+		if (!(args [j + 2]))
 		{
 			redir_no_arg(args, j);
-			// printf("Error: No such file or directory: %s\n", args[j + 1]);
-			// return (1);
-		//IF (!(!(args [j + 2]))//AND '<', AND YES input.txt
-			//REPROMPT
-		//
-		//IF (!(!(args [j + 2]))//AND '>', AND NO output.txt
-			//CREATE FILE AND REPROMPT
-		//IF (!(!(args [j + 2]))//AND '>', AND YES output.txt
-			//REPROMPT
-		//IF (!(!(args [j + 2]))//AND '<<'
-			//HEREDOC //return(1);
-		//IF (!(!(args [j + 2]))//AND '>>' AND YES input.txt
-			//REPROMPT
-		//IF (!(!(args [j + 2]))//AND '>>' AND NO input.txt
-			//REPROMPT
 		}
 		return (1);
 	}

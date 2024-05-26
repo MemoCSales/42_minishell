@@ -16,8 +16,8 @@ void	ft_close_fds_main(t_exec_context *context)
 {
 	if (context->i > 0)
 	{
-		if(context->main[context->i - 1].fd[0] != -1)
-			close(context->main[context->i - 1].fd[0]);
+		if (context->main[context->i - 1].fd[0] != -1)
+			close(context->main[context-> i - 1].fd[0]);
 	}
 	if (context->main[context->i].fd[1] != -1)
 		close(context->main[context->i].fd[1]);

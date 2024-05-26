@@ -170,8 +170,8 @@ int				unset_builtin(t_env *env_vars, char *var_name);
 int				find_index(t_env *env_vars, char *var_name);
 
 /*-----------------------ECHO BUILTIN-----------------------------*/
-int			echo_builtin(t_main *main);
-int			handle_flag(t_main *main);
+int				echo_builtin(t_main *main);
+int				handle_flag(t_main *main);
 
 /*--------------------ENVIRONMENT VARIABLES FUNCTION--------------*/
 void			init_env(t_env *env_vars, char **env);
@@ -182,25 +182,26 @@ void			check_env(t_env *env_vars);
 char			*ft_strdup_minishell(char *s1);
 
 /*--------------------EXECUTION FUNCTIONS-------------------------*/
-char		*get_env_path(t_env *env);
-char		*get_cmd_path(t_main *main, char *cmd_path);
-void		handle_file_redirection(t_main *main, int i, int heredoc_fd);
-void		print_exec_args(char **exec_args);
-int			handle_heredoc(t_main *main, int i);
-void		handle_output_redirection(t_main *main, int i);
-void		handle_input_redirection(t_main *main, int i);
-int			parent_process(t_exec_context *context);
-void		handle_child_process(t_exec_context *context);
-void		handle_grandson_process(t_exec_context *context);
-int			execute_command(t_env *env, t_main *main);
-int			execute_with_commands(t_exec_context *context);
-int			exec_without_cmds(t_exec_context *context);
-int			execute_without_commands(t_exec_context *context);
-void		initialize_context(t_exec_context *context);
-void		ft_close_fds(t_exec_context *context);
-void		exec_handle_redirections(t_exec_context *context);
-void		exec_copy_args(t_main *main, char **exec_args, int i, int num_args);
-void		ft_close_fds_main(t_exec_context *context);
+char			*get_env_path(t_env *env);
+char			*get_cmd_path(t_main *main, char *cmd_path);
+void			handle_file_redirection(t_main *main, int i, int heredoc_fd);
+void			print_exec_args(char **exec_args);
+int				handle_heredoc(t_main *main, int i);
+void			handle_output_redirection(t_main *main, int i);
+void			handle_input_redirection(t_main *main, int i);
+int				parent_process(t_exec_context *context);
+void			handle_child_process(t_exec_context *context);
+void			handle_grandson_process(t_exec_context *context);
+int				execute_command(t_env *env, t_main *main);
+int				execute_with_commands(t_exec_context *context);
+int				exec_without_cmds(t_exec_context *context);
+int				execute_without_commands(t_exec_context *context);
+void			initialize_context(t_exec_context *context);
+void			ft_close_fds(t_exec_context *context);
+void			exec_handle_redirections(t_exec_context *context);
+void			exec_copy_args(t_main *main, char **exec_args, \
+				int i, int num_args);
+void			ft_close_fds_main(t_exec_context *context);
 
 /*--------------------GENERAL UTIL FUNCTIONS---------------------*/
 void			error_messages(char *type);
@@ -209,9 +210,9 @@ void			error_messages(char *type);
 void			print_open_fds(void);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
-void		siginit_handler(int sig_num);
-void		sigquit_handler(int sig_num);
-void		setup_signals(void);
+void			siginit_handler(int sig_num);
+void			sigquit_handler(int sig_num);
+void			setup_signals(void);
 
 // redirections
 void			handle_output_redirection(t_main *main, int i);
@@ -220,10 +221,10 @@ void			handle_output_redirection(t_main *main, int i);
 void			handle_input_redirection(t_main *main, int i);
 
 //exec_utils.c
-char		*get_env_path(t_env *env);
-char		*get_cmd_path(t_main *main, char *cmd_path);
-void		pipe_redirection(t_exec_context *context);
-char		**build_exec_args(t_main *main, char **exec_args, int i);
+char			*get_env_path(t_env *env);
+char			*get_cmd_path(t_main *main, char *cmd_path);
+void			pipe_redirection(t_exec_context *context);
+char			**build_exec_args(t_main *main, char **exec_args, int i);
 
 //utils/cleanup.c
 void			cleanup_split(char **split);
@@ -238,9 +239,9 @@ void			free_and_nullify(void **ptr);
 void			free_parsed_struct(t_main *parsed_struct, int num_commands);
 
 //utils/cleanup_2.c
-void		free_args_2(char ***args);
-void		free_main_struct(t_main *main_var);
-void		free_ph_strings(char ***ph_strings);
+void			free_args_2(char ***args);
+void			free_main_struct(t_main *main_var);
+void			free_ph_strings(char ***ph_strings);
 
 //parse.c
 t_main			*parse_line(char *line, t_env *env_var);
@@ -254,18 +255,15 @@ char			**copy_args(char **args);
 void			remove_args(char **args, int start_index, int num_args);
 void			remove_args_first_last_quotes(char *arg);
 int				ft_strequ(char const *s1, char const *s2);
+void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 //2_input_handling.c
 t_unq_dolar		*process_dollar_unquoted(t_unq_dolar \
 				*un_dollar_vars, char *str);
 char			*change_unquoted_dollar_signs(char *str);
 char			*prepare_line(char *line, char ***ph_strings, t_env *env_var);
-void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-t_unq_dolar		*process_dollar_unquoted(t_unq_dolar \
-				*un_dollar_vars, char *str);
-char			*change_unquoted_dollar_signs(char *str);
-char			*prepare_line(char *line, char ***ph_strings, t_env *env_var);
-void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+int				file_exists(const char *filename);
+int				redir_no_arg(char **args, int j);
 
 //3_redirection_and_variables.c
 int				check_redir(char **args, int j);

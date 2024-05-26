@@ -25,7 +25,6 @@ t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line, t_env *env_var)
 	ft_strncpy(h_vars->var_name, h_vars->var_start + 1, \
 		((h_vars->var_end) - (h_vars->var_start)));
 	h_vars->var_name[h_vars->var_end - h_vars->var_start] = '\0';
-	// h_vars->var_value = getenv(h_vars->var_name);
 	h_vars->var_value = get_env_var(env_var, h_vars->var_name);
 	if (h_vars->var_value != NULL)
 	{
@@ -50,7 +49,6 @@ t_handle_vars	quotes_double(t_handle_vars *h_vars, char *line, t_env *env_var)
 	ft_strncpy(h_vars->var_name, h_vars->var_start, \
 		((h_vars->var_end) - (h_vars->var_start)));
 	h_vars->var_name[h_vars->var_end - h_vars->var_start] = '\0';
-	// h_vars->var_value = getenv(h_vars->var_name);
 	h_vars->var_value = get_env_var(env_var, h_vars->var_name);
 	if (h_vars->var_value != NULL)
 	{
