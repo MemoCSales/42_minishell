@@ -18,8 +18,13 @@ void	init_env(t_env *env_vars, char **env)
 	int	i;
 
 	num_vars = 0;
-	while (env[num_vars] != NULL)
-		num_vars++;
+	if (env[0] != NULL)
+	{
+		while (env[num_vars] != NULL)
+			num_vars++;
+	}
+	else
+		num_vars = 3;
 	env_vars->env_vars = (char **)malloc((num_vars + 1) * sizeof(char *));
 	if (!env_vars->env_vars)
 	{
@@ -27,9 +32,22 @@ void	init_env(t_env *env_vars, char **env)
 		return ;
 	}
 	i = 0;
-	while (i < num_vars)
+	if (env[0] != NULL)
 	{
-		env_vars->env_vars[i] = ft_strdup(env[i]);
+		while (i < num_vars)
+		{
+			env_vars->env_vars[i] = ft_strdup(env[i]);
+			i++;
+		}
+	}
+	else
+	{
+		i = 0;
+		env_vars->env_vars[i] = ft_strdup("PWD=/home/mcruz-sa/Documents/GIT_minishell");
+		i++;
+		env_vars->env_vars[i] = ft_strdup("SHLVL=1");
+		i++;
+		env_vars->env_vars[i] = ft_strdup("_=usr/bin/env");
 		i++;
 	}
 	env_vars->env_vars[i] = NULL;

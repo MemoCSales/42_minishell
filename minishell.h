@@ -211,7 +211,7 @@ void			print_open_fds(void);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
 void			siginit_handler(int sig_num);
-void			sigquit_handler(int sig_num);
+// void			sigquit_handler(int sig_num);
 void			setup_signals(void);
 
 // redirections
@@ -232,6 +232,7 @@ void			free_main(t_main *main_var);
 void			free_args(char **args);
 void			free_and_nullify(void **ptr);
 void			free_parsed_struct(t_main *parsed_struct, int num_commands);
+void			cleanup_env_var(char ***env_vars);
 
 //utils/cleanup_2.c
 void			free_args_2(char ***args);

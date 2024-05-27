@@ -31,6 +31,11 @@ int	unset_builtin(t_env *env_vars, char *var_name)
 			i++;
 		}
 	}
+	if (env_vars->env_vars[i] == NULL)
+	{
+		free(env_vars->env_vars[i]);
+		env_vars->env_vars[i] = NULL;
+	}
 	return (0);
 }
 

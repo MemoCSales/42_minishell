@@ -16,6 +16,7 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 {
 	char	**new_env_vars;
 	int		i;
+	int		len;
 
 	if (new_var == NULL)
 	{
@@ -35,9 +36,24 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 		i++;
 	if (add_new_var(new_var, new_env_vars, i))
 		return (1);
-	free(env_vars->env_vars);
-	env_vars->env_vars = new_env_vars;
-	free(new_env_vars);
+	len = 0;
+	while (new_env_vars[len] != NULL)
+		len++;
+	env_vars->env_vars = malloc((len + 1) * sizeof(char *));
+	i = 0;
+	while (i < len)
+	{
+		env_vars->env_vars[i] = ft_strdup(new_env_vars[i]);
+		if (!env_vars->env_vars[i])
+		{
+			ft_putstr_fd("Error: Unable to duplicate string\n", STDERR_FILENO);
+			cleanup_split(new_env_vars);
+			return (1);
+		}
+		i++;
+	}
+	env_vars->env_vars[len] = NULL;
+	cleanup_split(new_env_vars);
 	return (0);
 }
 

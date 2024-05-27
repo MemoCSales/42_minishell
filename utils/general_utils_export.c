@@ -34,7 +34,7 @@ int	validate_new_var(t_env *env_vars, char *new_var)
 		return (0);
 	}
 	name = ft_split(new_var, '=');
-	if (ft_strncmp(new_var, "=", 1) == 0 || (name[0] == NULL
+	if ((name[0] == NULL
 			&& !is_valid_var_name(name[0])) || !is_valid_var_name(name[0])
 		|| check_duplicate(env_vars, new_var))
 		return (0);
