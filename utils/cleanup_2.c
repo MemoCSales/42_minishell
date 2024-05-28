@@ -68,3 +68,16 @@ void	free_ph_strings(char ***ph_strings)
 	}
 	free(*ph_strings);
 }
+
+void	free_string(char *string)
+{
+	int	i;
+
+	i = 0;
+	while (string[i] != '\0')
+	{
+		free(string);
+		i++;
+	}
+}
+

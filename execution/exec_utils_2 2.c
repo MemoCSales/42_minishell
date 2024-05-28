@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   main.c                     ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   exec_utils_2.c             ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -10,18 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "../minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void	initialize_context(t_exec_context *context)
 {
-	t_main	*main_var;
-	t_env	env_var;
+	context->i = 0;
+	context->exec_args = NULL;
+	context->path_cmd = NULL;
+	context->heredoc_fd = -1;
+}
 
-	(void)argc;
-	(void)argv;
-	main_var = NULL;
-	init_env(&env_var, env);
-	main_loop(env_var, main_var);
-	free_args(main_var->args);
-	return (0);
+void	ft_close_fds(t_exec_context *context)
+{
+	int	j;
+
+	j = 0;
+	while (context->main[j].cmd)
+	{
+		if (context->i != j)
+		{
+			if (context->main[j].fd[1] != -1)
+				close(context->main[j].fd[1]);
+		}
+		if (context->i - 1 != j)
+		{
+			if (context->main[j].fd[0] != -1)
+				close(context->main[j].fd[0]);
+		}
+		j++;
+	}
+}
+
+void	print_exec_args(char **exec_args)
+{
+	int	i;
+
+	i = 0;
+	while (exec_args[i])
+	{
+		printf("arg[%d]:%s\n", i, exec_args[i]);
+		i++;
+	}
 }

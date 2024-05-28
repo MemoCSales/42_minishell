@@ -29,17 +29,17 @@ void	replace_placeholder_sub(char **str, \
 
 	if (*str != NULL && placeholder != NULL)
 	{
-		pos = strstr(*str, placeholder);
+		pos = strstr(*str, placeholder); //MAKE A STRSTR
 		if (pos != NULL)
 		{
 			new_str = malloc(strlen(*str) - strlen(placeholder) \
 			+ strlen(replacement) + 1);
 			check_malloc(new_str);
-			memcpy(new_str, *str, pos - *str);
+			ft_memcpy(new_str, *str, pos - *str);
 			new_str[pos - *str] = '\0';
-			strcpy(new_str + (pos - *str), replacement);
-			strcpy(new_str + (pos - *str) + strlen(replacement), \
-			pos + strlen(placeholder));
+			ft_strcpy(new_str + (pos - *str), replacement);
+			ft_strcpy(new_str + (pos - *str) + ft_strlen(replacement), \
+			pos + ft_strlen(placeholder));
 			free(*str);
 			*str = new_str;
 		}
@@ -51,13 +51,18 @@ void	handle_psi(char **str, char ***ph_strings, int *i)
 {
 	char	*placeholder;
 	char	*replacement;
+	char	*temp;
 
 	while ((*ph_strings)[*i] != NULL)
 	{
-		placeholder = ft_strjoin("Ψ(", ft_itoa((*i) + 1));
+		temp = ft_itoa((*i) + 1);
+		placeholder = ft_strjoin("Ψ(", temp);
+		free(temp);
 		if (!placeholder)
 			return ;
+		temp = placeholder;
 		placeholder = ft_strjoin(placeholder, ")");
+		free(temp);
 		if (!placeholder)
 			return ;
 		replacement = (*ph_strings)[*i];
@@ -67,6 +72,7 @@ void	handle_psi(char **str, char ***ph_strings, int *i)
 		free(placeholder);
 		(*i)++;
 	}
+	exit(0);
 }
 
 void	handle_psi_lower(char **str, char ***ph_strings, int *i)

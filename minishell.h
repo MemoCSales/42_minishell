@@ -237,6 +237,7 @@ void			free_parsed_struct(t_main *parsed_struct, int num_commands);
 void			free_args_2(char ***args);
 void			free_main_struct(t_main *main_var);
 void			free_ph_strings(char ***ph_strings);
+void			free_string(char *string);
 
 //parse.c
 t_main			*parse_line(char *line, t_env *env_var);
