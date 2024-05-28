@@ -46,20 +46,13 @@ int	handle_flag(t_main *main)
 	return (0);
 }
 
-int	echo_builtin(t_main *main)
+int	print_args_echo(t_main *main, int cut_newline)
 {
 	int		i;
-	int		cut_newline;
 	char	*arg;
 	char	*arg_no_quotes;
 
-	cut_newline = handle_flag(main);
 	i = 0;
-	if (main->args[i] == NULL)
-	{
-		printf("\n");
-		return (0);
-	}
 	while (main->args[i] != NULL)
 	{
 		arg = main->args[i];
@@ -77,4 +70,18 @@ int	echo_builtin(t_main *main)
 		printf("\n");
 	free(arg_no_quotes);
 	return (0);
+
+}
+
+int	echo_builtin(t_main *main)
+{
+	int		cut_newline;
+
+	cut_newline = handle_flag(main);
+	if (main->args[0] == NULL)
+	{
+		printf("\n");
+		return (0);
+	}
+	return(print_args_echo(main, cut_newline));
 }

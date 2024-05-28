@@ -12,12 +12,31 @@
 
 #include "../minishell.h"
 
+void	cleanup_env_var(char ***env_vars)
+{
+	int	i;
+
+	i = 0;
+	if (*env_vars == NULL)
+		return ;
+	while ((*env_vars)[i] != NULL)
+	{
+		free((*env_vars)[i]);
+		(*env_vars)[i] = NULL;
+		i++;
+	}
+	free(*env_vars);
+	*env_vars = NULL;
+}
+
 void	cleanup_split(char **split)
 {
 	int	i;
 
 	i = 0;
-	while (split[i])
+	if (split == NULL)
+		return ;
+	while (split[i] != NULL)
 	{
 		free(split[i]);
 		i++;

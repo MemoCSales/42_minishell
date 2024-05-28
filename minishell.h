@@ -164,6 +164,10 @@ int				pwd_builtin(t_main *main);
 /*-----------------------EXIT BUILTIN-----------------------------*/
 int				exit_builtin(t_main *main);
 int				ft_normal_exit(t_main *main);
+int				determine_status_from_flags(t_main *main);
+int				determine_status_from_args(t_main *main);
+int				handle_no_or_multiple_args(t_main *main);
+void			perform_exit(t_main *main, int status);
 
 /*-----------------------UNSET BUILTIN-----------------------------*/
 int				unset_builtin(t_env *env_vars, char *var_name);
@@ -172,6 +176,7 @@ int				find_index(t_env *env_vars, char *var_name);
 /*-----------------------ECHO BUILTIN-----------------------------*/
 int				echo_builtin(t_main *main);
 int				handle_flag(t_main *main);
+int				print_args_echo(t_main *main, int cut_newline);
 
 /*--------------------ENVIRONMENT VARIABLES FUNCTION--------------*/
 void			init_env(t_env *env_vars, char **env);
@@ -211,7 +216,7 @@ void			print_open_fds(void);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
 void			siginit_handler(int sig_num);
-void			sigquit_handler(int sig_num);
+// void			sigquit_handler(int sig_num);
 void			setup_signals(void);
 
 // redirections
@@ -232,6 +237,7 @@ void			free_main(t_main *main_var);
 void			free_args(char **args);
 void			free_and_nullify(void **ptr);
 void			free_parsed_struct(t_main *parsed_struct, int num_commands);
+void			cleanup_env_var(char ***env_vars);
 
 //utils/cleanup_2.c
 void			free_args_2(char ***args);
