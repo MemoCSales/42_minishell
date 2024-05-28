@@ -164,6 +164,10 @@ int				pwd_builtin(t_main *main);
 /*-----------------------EXIT BUILTIN-----------------------------*/
 int				exit_builtin(t_main *main);
 int				ft_normal_exit(t_main *main);
+int				determine_status_from_flags(t_main *main);
+int				determine_status_from_args(t_main *main);
+int				handle_no_or_multiple_args(t_main *main);
+void			perform_exit(t_main *main, int status);
 
 /*-----------------------UNSET BUILTIN-----------------------------*/
 int				unset_builtin(t_env *env_vars, char *var_name);
@@ -172,6 +176,7 @@ int				find_index(t_env *env_vars, char *var_name);
 /*-----------------------ECHO BUILTIN-----------------------------*/
 int				echo_builtin(t_main *main);
 int				handle_flag(t_main *main);
+int				print_args_echo(t_main *main, int cut_newline);
 
 /*--------------------ENVIRONMENT VARIABLES FUNCTION--------------*/
 void			init_env(t_env *env_vars, char **env);

@@ -15,16 +15,33 @@
 int	exit_builtin(t_main *main)
 {
 	int		status;
-	char	first_char;
+
+	status = 0;
+	status = determine_status_from_flags(main);
+	if (status == 0)
+		status = determine_status_from_args(main);
+	perform_exit(main, status);
+	return (status);
+}
+
+int	determine_status_from_flags(t_main *main)
+{
+	int		status;
 
 	status = 0;
 	if (main->flags != NULL)
 		status = ft_atoi(main->flags);
-	else if (!main->args[0] || main->args[1] != NULL)
-	{
-		status = ft_normal_exit(main);
-		exit(status);
-	}
+	return (status);
+}
+
+int	determine_status_from_args(t_main *main)
+{
+	int		status;
+	char	first_char;
+
+	status = 0;
+	if (!main->args[0] || main->args[1] != NULL)
+		status = handle_no_or_multiple_args(main);
 	else
 	{
 		first_char = main->args[0][0];
@@ -41,6 +58,20 @@ int	exit_builtin(t_main *main)
 			return (2);
 		}
 	}
+	return (status);
+}
+
+int	handle_no_or_multiple_args(t_main *main)
+{
+	int		status;
+
+	status = 0;
+	status = ft_normal_exit(main);
+	exit(status);
+}
+
+void	perform_exit(t_main *main, int status)
+{
 	printf("exit\n");
 	free(main->current_dir);
 	exit(status);
