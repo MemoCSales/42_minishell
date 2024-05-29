@@ -22,6 +22,5 @@ int	main(int argc, char **argv, char **env)
 	main_var = NULL;
 	init_env(&env_var, env);
 	main_loop(env_var, main_var);
-	free_args(main_var->args);
 	return (0);
 }

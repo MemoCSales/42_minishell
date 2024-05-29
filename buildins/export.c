@@ -25,8 +25,13 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 	}
 	if (main->args[1] != NULL)
 		return (0);
-	if (!validate_new_var(env_vars, new_var))
+	if (!validate_var_name(new_var))
+	{
+		print_invalid_identifier(new_var);
 		return (1);
+	}
+	if (!validate_new_var(env_vars, new_var))
+		return (0);
 	new_env_vars = allocate_new_env_vars(env_vars);
 	if (!new_env_vars)
 		return (1);

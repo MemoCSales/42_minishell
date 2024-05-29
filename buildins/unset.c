@@ -18,6 +18,7 @@ int	unset_builtin(t_env *env_vars, char *var_name)
 	int	i;
 
 	index = -1;
+	i = 0;
 	if (var_name == NULL)
 		return (0);
 	index = find_index(env_vars, var_name);
@@ -30,11 +31,11 @@ int	unset_builtin(t_env *env_vars, char *var_name)
 			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
 			i++;
 		}
-	}
-	if (env_vars->env_vars[i] == NULL)
-	{
-		free(env_vars->env_vars[i]);
-		env_vars->env_vars[i] = NULL;
+		if (env_vars->env_vars[i] == NULL)
+		{
+			free(env_vars->env_vars[i]);
+			env_vars->env_vars[i] = NULL;
+		}
 	}
 	return (0);
 }

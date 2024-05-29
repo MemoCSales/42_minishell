@@ -45,13 +45,18 @@ int	determine_status_from_args(t_main *main)
 	else
 	{
 		first_char = main->args[0][0];
-		if (!ft_isdigit(first_char))
+		if (!ft_isdigit(first_char) && first_char != '+' && first_char != '-')
 		{
 			error_messages("BASH_NUMERIC_ARGS");
 			return (2);
 		}
 		if (ft_isdigit(first_char) || first_char == '-' || first_char == '+')
-			status = ft_atoi(main->args[0]);
+		{
+			if (first_char == '+')
+				status = ft_atoi(main->args[0] + 1);
+			else
+				status = ft_atoi(main->args[0]);
+		}
 		else
 		{
 			error_messages("BASH_NUMERIC_ARGS");

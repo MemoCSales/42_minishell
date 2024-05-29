@@ -125,6 +125,12 @@ typedef struct s_exec
 void			main_loop(t_env env_var, t_main *main_var);
 
 // Functions for the buildins
+/*------------------------BUILTINS-----------------------------*/
+int				builtins_no_output(char *cmd);
+int				builtins_with_output(char *cmd);
+int				env_builtin(t_env *env_vars);
+int				exec_builtin(t_env *env_vars, t_main *main);
+
 /*------------------------CD BUILTIN-----------------------------*/
 int				cd_builtin(t_env *env_vars, char *path, t_main *main);
 char			*create_new_var(char *var_name, char *new_value);
@@ -152,11 +158,7 @@ int				validate_new_var(t_env *env_vars, char *new_var);
 char			**allocate_new_env_vars(t_env *env_vars);
 void			copy_env_vars(t_env *env_vars, char **new_env_vars);
 int				add_new_var(char *new_var, char **new_env_vars, int i);
-
-int				builtins_no_output(char *cmd);
-int				builtins_with_output(char *cmd);
-int				env_builtin(t_env *env_vars);
-int				exec_builtin(t_env *env_vars, t_main *main);
+int 			validate_var_name(char *var_name);
 
 /*-----------------------PWD BUILTIN------------------------------*/
 int				pwd_builtin(t_main *main);
@@ -213,6 +215,7 @@ void			error_messages(char *type);
 void			print_open_fds(void);
 void			error_messages(char *type);
 void			print_open_fds(void);
+int				check_command(t_main *main, char **error_message);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
 void			siginit_handler(int sig_num);

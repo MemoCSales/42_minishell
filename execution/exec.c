@@ -69,10 +69,17 @@ int	execute_command(t_env *env, t_main *main)
 {
 	t_exec_context	context;
 	int				status;
+	char *error_message;
 
 	context.main = main;
 	context.env = env;
 	initialize_context(&context);
+	status = check_command(main, &error_message);
+	if (status != 0)
+	{
+		ft_putstr_fd(error_message, 2);
+		return (status);
+	}
 	status = execute_with_commands(&context);
 	if (status != -1)
 		return (status);
