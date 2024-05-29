@@ -104,8 +104,8 @@ int	redir_no_arg(char **args, int j)
 	{
 		if (file_exists(args[j + 1]) == 1)
 			return (0);
-		// else
-		// 	printf("Error: No such file or directory: %s\n", args[j + 1]);
+		else
+			printf("Error: No such file or directory: %s\n", args[j + 1]);
 	}
 	else if ((ft_strcmp(args[j], ">") == 0) || ft_strcmp(args[j], ">>") == 0)
 	{
