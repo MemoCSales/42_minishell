@@ -244,6 +244,7 @@ void			free_args_2(char ***args);
 void			free_main_struct(t_main *main_var);
 void			free_ph_strings(char ***ph_strings);
 void			free_string(char *string);
+void			free_copied_args(char **args);
 
 //parse.c
 t_main			*parse_line(char *line, t_env *env_var);
