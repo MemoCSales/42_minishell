@@ -170,6 +170,7 @@ int				determine_status_from_flags(t_main *main);
 int				determine_status_from_args(t_main *main);
 int				handle_no_or_multiple_args(t_main *main);
 void			perform_exit(t_main *main, int status);
+int				exit_check_args(t_main *main);
 
 /*-----------------------UNSET BUILTIN-----------------------------*/
 int				unset_builtin(t_env *env_vars, char *var_name);

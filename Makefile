@@ -19,6 +19,7 @@ SRC =	main.c \
 		./utils/general_utils_export.c \
 		./utils/general_utils_export_2.c \
 		./utils/general_utils_export_4.c \
+		./utils/general_utils_exit.c \
 		./parsing/parse_utils/1_args.c \
 		./parsing/parse_utils/2_input_handling.c \
 		./parsing/parse_utils/3_redirection_and_variables.c \
