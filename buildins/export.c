@@ -58,7 +58,6 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 		i++;
 	}
 	env_vars->env_vars[len] = NULL;
-	cleanup_split(new_env_vars);
 	return (0);
 }
 
