@@ -14,7 +14,7 @@
 
 int	exit_builtin(t_main *main)
 {
-	int		status;
+	int	status;
 
 	status = 0;
 	status = determine_status_from_flags(main);
@@ -26,7 +26,7 @@ int	exit_builtin(t_main *main)
 
 int	determine_status_from_flags(t_main *main)
 {
-	int		status;
+	int	status;
 
 	status = 0;
 	if (main->flags != NULL)
@@ -34,45 +34,11 @@ int	determine_status_from_flags(t_main *main)
 	return (status);
 }
 
-int	determine_status_from_args(t_main *main)
+int	exit_check_args(t_main *main)
 {
-	int		status;
-	char	first_char;
-
-	status = 0;
 	if (!main->args[0] || main->args[1] != NULL)
-		status = handle_no_or_multiple_args(main);
-	else
-	{
-		first_char = main->args[0][0];
-		if (!ft_isdigit(first_char) && first_char != '+' && first_char != '-')
-		{
-			error_messages("BASH_NUMERIC_ARGS");
-			return (2);
-		}
-		if (ft_isdigit(first_char) || first_char == '-' || first_char == '+')
-		{
-			if (first_char == '+')
-				status = ft_atoi(main->args[0] + 1);
-			else
-				status = ft_atoi(main->args[0]);
-		}
-		else
-		{
-			error_messages("BASH_NUMERIC_ARGS");
-			return (2);
-		}
-	}
-	return (status);
-}
-
-int	handle_no_or_multiple_args(t_main *main)
-{
-	int		status;
-
-	status = 0;
-	status = ft_normal_exit(main);
-	exit(status);
+		return (handle_no_or_multiple_args(main));
+	return (0);
 }
 
 void	perform_exit(t_main *main, int status)

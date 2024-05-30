@@ -32,7 +32,7 @@ char	*ft_strremove(char *string, int c)
 	while (*string)
 	{
 		if (*string != c)
-			*new++ = *string;
+			*new ++ = *string;
 		string++;
 	}
 	*new = '\0';
@@ -70,12 +70,11 @@ int	print_args_echo(t_main *main, int cut_newline)
 		printf("\n");
 	free(arg_no_quotes);
 	return (0);
-
 }
 
 int	echo_builtin(t_main *main)
 {
-	int		cut_newline;
+	int	cut_newline;
 
 	cut_newline = handle_flag(main);
 	if (main->args[0] == NULL)
@@ -83,5 +82,5 @@ int	echo_builtin(t_main *main)
 		printf("\n");
 		return (0);
 	}
-	return(print_args_echo(main, cut_newline));
+	return (print_args_echo(main, cut_newline));
 }
