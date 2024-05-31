@@ -12,51 +12,80 @@
 
 #include "../minishell.h"
 
+
 int	unset_builtin(t_env *env_vars, char *var_name)
 {
 	int	index;
-	int	i;
+	int	len;
+	char	**new_env;
 
-	index = -1;
-	i = 0;
 	if (var_name == NULL)
 		return (0);
 	index = find_index(env_vars, var_name);
-	if (index != -1)
+	if (index == -1)
+		return (0);
+	free(env_vars->env_vars[index]);
+	len = 0;
+	while (env_vars->env_vars[len] != NULL)
+		len++;
+	shift_env_vars(env_vars->env_vars, index);
+	env_vars->env_vars[len - 1] = NULL;
+	new_env = realloc_new_env(env_vars->env_vars, len - 1);
+	if (!new_env)
 	{
-		free(env_vars->env_vars[index]);
-		i = index;
-		while (env_vars->env_vars[i] != NULL)
-		{
-			env_vars->env_vars[i] = env_vars->env_vars[i + 1];
-			i++;
-		}
-		if (env_vars->env_vars[i] == NULL)
-		{
-			free(env_vars->env_vars[i]);
-			env_vars->env_vars[i] = NULL;
-		}
+		ft_putstr_fd("Unset: Error: Unable to allocate memory\n", 2);
+		return (1);
 	}
+	env_vars->env_vars = new_env;
 	return (0);
+}
+
+void	shift_env_vars(char **env_vars, int index)
+{
+	int	i;
+
+	i = index;
+	while (env_vars[i] != NULL)
+	{
+		env_vars[i] = env_vars[i + 1];
+		i++;
+	}
+}
+
+char	**realloc_new_env(char **env_vars, int len)
+{
+	int	i;
+	char	**new_env;
+
+	new_env = malloc((len + 1) * sizeof(char *));
+	if (!new_env)
+	{
+		ft_putstr_fd("Error: Unable to allocate memory\n", 2);
+		return (NULL);
+	}
+	i = 0;
+	while (i < len)
+	{
+		new_env[i] = env_vars[i];
+		i++;
+	}
+	new_env[len] = NULL;
+	free(env_vars);
+	return (new_env);
 }
 
 int	find_index(t_env *env_vars, char *var_name)
 {
 	int	i;
-	int	index;
 
 	i = 0;
-	index = -1;
 	while (env_vars->env_vars[i] != NULL)
 	{
 		if (ft_strncmp(env_vars->env_vars[i], var_name,
 				ft_strlen(var_name)) == 0
 			&& env_vars->env_vars[i][ft_strlen(var_name)] == '=')
-		{
-			index = i;
-			break ;
-		}
+			return (i);
 		i++;
 	}
-	return (index);
+	return (-1);
 }

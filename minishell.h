@@ -159,6 +159,9 @@ char			**allocate_new_env_vars(t_env *env_vars);
 void			copy_env_vars(t_env *env_vars, char **new_env_vars);
 int				add_new_var(char *new_var, char **new_env_vars, int i);
 int 			validate_var_name(char *var_name);
+int	check_new_var(t_env *env_vars, t_main *main, char *new_var);
+char	**allocate_and_copy(t_env *env_vars);
+int	add_and_duplicate(t_env *env_vars, char *new_var, char **new_env_vars);
 
 /*-----------------------PWD BUILTIN------------------------------*/
 int				pwd_builtin(t_main *main);
@@ -175,6 +178,8 @@ int				exit_check_args(t_main *main);
 /*-----------------------UNSET BUILTIN-----------------------------*/
 int				unset_builtin(t_env *env_vars, char *var_name);
 int				find_index(t_env *env_vars, char *var_name);
+char	**realloc_new_env(char **env_vars, int len);
+void	shift_env_vars(char **env_vars, int index);
 
 /*-----------------------ECHO BUILTIN-----------------------------*/
 int				echo_builtin(t_main *main);

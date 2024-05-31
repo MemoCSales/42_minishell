@@ -40,7 +40,10 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	i = 0;
 	dir_paths = ft_split(cmd_path, ':');
 	if (!cmd_path)
+	{
+		cleanup_split(dir_paths);
 		return (NULL);
+	}
 	while (dir_paths[i])
 	{
 		path_cmd = ft_strjoin(dir_paths[i], "/");
@@ -54,9 +57,8 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 		free(prog);
 		i++;
 	}
-	// free(prog);
 	cleanup_split(dir_paths);
-	return (cmd_path); // check this later
+	return (cmd_path);
 }
 
 void	pipe_redirection(t_exec_context *context)
