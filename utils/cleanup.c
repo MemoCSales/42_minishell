@@ -21,10 +21,12 @@ void	cleanup_env_var(char ***env_vars)
 		return ;
 	while ((*env_vars)[i] != NULL)
 	{
+printf("freeing %p - %s\n", (*env_vars)[i], (*env_vars)[i]);
 		free((*env_vars)[i]);
 		(*env_vars)[i] = NULL;
 		i++;
 	}
+printf("freeing %p\n", *env_vars);
 	free(*env_vars);
 	*env_vars = NULL;
 }

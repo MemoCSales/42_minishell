@@ -33,11 +33,40 @@ t_main	*parse_line(char *line, t_env *env_var)
 		handle_redirections(parsed_struct, args, i);
 		check_flags(&parsed_struct[i], args);
 		create_pipe(&parsed_struct[i], i, count_elements(commands));
-		parsed_struct[i].cmd = args[0];
+	free(parsed_struct[i].cmd);
+	parsed_struct[i].cmd = malloc(ft_strlen(args[0]) + 1);
+	check_malloc(parsed_struct[i].cmd);
+	ft_strlcpy(parsed_struct[i].cmd, args[0], ft_strlen(args[0]) + 1); //SO I AM ABLE TO FREE ARGS
+		// parsed_struct[i].cmd = args[0];
+		// ft_strcpy(parsed_struct[i].cmd, args[0]);//NA DUVIDA AQUI. TEM Q LIBERAR TUDO DO ARGS, MAS E ASSIM Q COPIA PRA LIBERAR DEPOIS?
 		reverse_placeholders_in_struct(&parsed_struct[i], &ph_strings);
 		i++;
 	}
 	parsed_struct[count_elements(commands)].cmd = NULL;
+
+printf("ARGS: %p - %s\n", args, args[0]);
+print_args(args);
+	if (args)
+		cleanup_env_var(&args);//CANNOT FREE HERE, BECAUSE parsed_struct uses it
+
+printf("PH_STRINGS: %p - %s\n", ph_strings, ph_strings[0]);
+print_args(ph_strings);
+	if (ph_strings)
+		cleanup_env_var(&ph_strings);
+
+printf("COMMANDS: %p - %s\n", commands, commands[0]);
+print_args(commands);
+	if (commands)
+		cleanup_env_var(&commands);
+
+printf("LINE: %p - %s\n", line, line);
+	if (line)
+	{
+printf("1freed line: %p - \"%s\"\n", line, line);
+		free(line);
+		line = NULL;
+printf("2freed line: %p - \"%s\"\n", line, line);
+	}
 	return (parsed_struct);
 }
 

@@ -96,16 +96,16 @@ char	*replace_var_value(char *var_name, char *prepared, int *j)
 	if (var_value != NULL && *j >= (int)(strlen(var_name) + 1)
 		&& prepared != NULL)
 	{
-		before_var_len = *j - strlen(var_name) - 1;
-		after_var_len = strlen(prepared + *j);
+		before_var_len = *j - ft_strlen(var_name) - 1;
+		after_var_len = ft_strlen(prepared + *j);
 		new_prepared = malloc(before_var_len + \
-		strlen(var_value) + after_var_len + 1);
+		ft_strlen(var_value) + after_var_len + 1);
 		check_malloc(new_prepared);
-		strncpy(new_prepared, prepared, before_var_len);
+		ft_strncpy(new_prepared, prepared, before_var_len);
 		new_prepared[before_var_len] = '\0';
-		strcpy(new_prepared + before_var_len, var_value);
-		strcpy(new_prepared + before_var_len + \
-		strlen(var_value), prepared + *j);
+		ft_strcpy(new_prepared + before_var_len, var_value);
+		ft_strcpy(new_prepared + before_var_len + \
+		ft_strlen(var_value), prepared + *j);
 		free(prepared);
 		prepared = new_prepared;
 		*j = before_var_len + strlen(var_value);

@@ -55,7 +55,7 @@ void	print_args(char **args)
 	{
 		while (args[k] != NULL)
 		{
-			printf("t_main.args[%d]: %s\n", k, args[k]);
+			printf("t_main.args[%d]: %p - %s\n", k, args[k], args[k]);
 			k++;
 		}
 	}

@@ -250,7 +250,7 @@ void			cleanup_env_var(char ***env_vars);
 
 //utils/cleanup_2.c
 void			free_args_2(char ***args);
-void			free_main_struct(t_main *main_var);
+// void			free_main_struct(t_main *main_var);
 void			free_ph_strings(char ***ph_strings);
 void			free_string(char *string);
 void			free_copied_args(char **args);
