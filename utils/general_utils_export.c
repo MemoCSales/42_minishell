@@ -37,7 +37,11 @@ int	validate_new_var(t_env *env_vars, char *new_var)
 	if ((name[0] == NULL
 			&& !is_valid_var_name(name[0])) || !is_valid_var_name(name[0])
 		|| check_duplicate(env_vars, new_var))
+	{
+		cleanup_split(name);
 		return (0);
+	}
+	cleanup_split(name);
 	return (1);
 }
 

@@ -72,7 +72,6 @@ void	handle_psi(char **str, char ***ph_strings, int *i)
 		free(placeholder);
 		(*i)++;
 	}
-	exit(0);
 }
 
 void	handle_psi_lower(char **str, char ***ph_strings, int *i)

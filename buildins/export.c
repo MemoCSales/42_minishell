@@ -15,9 +15,19 @@
 int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 {
 	char	**new_env_vars;
-	int		i;
-	int		len;
+	int		check;
 
+	check = check_new_var(env_vars, main, new_var);
+	if (check != -1)
+		return (check);
+	new_env_vars = allocate_and_copy(env_vars);
+	if (!new_env_vars)
+		return (1);
+	return (add_and_duplicate(env_vars, new_var, new_env_vars));
+}
+
+int	check_new_var(t_env *env_vars, t_main *main, char *new_var)
+{
 	if (new_var == NULL)
 	{
 		print_env_vars(env_vars);
@@ -25,21 +35,50 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 	}
 	if (main->args[1] != NULL)
 		return (0);
-	if (!validate_new_var(env_vars, new_var))
+	if (!validate_var_name(new_var))
+	{
+		print_invalid_identifier(new_var);
 		return (1);
+	}
+	if (!validate_new_var(env_vars, new_var))
+		return (0);
+	return (-1);
+}
+
+char	**allocate_and_copy(t_env *env_vars)
+{
+	char	**new_env_vars;
+
 	new_env_vars = allocate_new_env_vars(env_vars);
 	if (!new_env_vars)
-		return (1);
+		return (NULL);
 	copy_env_vars(env_vars, new_env_vars);
+	return (new_env_vars);
+}
+
+int	add_and_duplicate(t_env *env_vars, char *new_var, char **new_env_vars)
+{
+	int	i;
+	int	len;
+
 	i = 0;
 	while (new_env_vars[i] != NULL)
 		i++;
 	if (add_new_var(new_var, new_env_vars, i))
+	{
+		cleanup_split(new_env_vars);
 		return (1);
+	}
 	len = 0;
 	while (new_env_vars[len] != NULL)
 		len++;
 	env_vars->env_vars = malloc((len + 1) * sizeof(char *));
+	if (!env_vars->env_vars)
+	{
+		ft_putstr_fd("Error: Unable to allocate memory\n", 2);
+		cleanup_split(new_env_vars);
+		return (1);
+	}
 	i = 0;
 	while (i < len)
 	{
@@ -47,6 +86,9 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 		if (!env_vars->env_vars[i])
 		{
 			ft_putstr_fd("Error: Unable to duplicate string\n", STDERR_FILENO);
+			while(i-- > 0)
+				free(env_vars->env_vars[i]);
+			free(env_vars->env_vars);
 			cleanup_split(new_env_vars);
 			return (1);
 		}
@@ -56,6 +98,7 @@ int	export_builtin(t_env *env_vars, t_main *main, char *new_var)
 	cleanup_split(new_env_vars);
 	return (0);
 }
+
 
 int	get_name_length(char *new_var)
 {

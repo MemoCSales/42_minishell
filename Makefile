@@ -18,6 +18,8 @@ SRC =	main.c \
 		./utils/general_utils_2.c \
 		./utils/general_utils_export.c \
 		./utils/general_utils_export_2.c \
+		./utils/general_utils_export_4.c \
+		./utils/general_utils_exit.c \
 		./parsing/parse_utils/1_args.c \
 		./parsing/parse_utils/2_input_handling.c \
 		./parsing/parse_utils/3_redirection_and_variables.c \
@@ -126,9 +128,9 @@ norminette:
 
 va:
 		# valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=all ./minishell
-		# valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
 		# valgrind --leak-check=full --trace-children=yes env -i ./minishell
-		valgrind --trace-children=yes --track-fds=all ./minishell
+		# valgrind --trace-children=yes --track-fds=all ./minishell
+		valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
 		
 
 .PHONY: all clean fclean re

@@ -21,6 +21,7 @@ void	init_env(t_env *env_vars, char **env)
 	if (env[0] != NULL)
 	{
 		while (env[num_vars] != NULL)
+		// while (num_vars < 10)
 			num_vars++;
 	}
 	else

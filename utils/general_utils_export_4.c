@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   exit.c                     ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
+/*   general_utils_export.c     ψΨ MiniℍΞLL Ψψ            :::      ::::::::   */
 /*                                                      :+:      :+:    :+:   */
 /*   By: mcruz-sa <mcruz-sa@student.42.de>            +:+ +:+         +:+     */
 /*   By: demrodri <demrodri@student.42.de>          +#+  +:+       +#+        */
@@ -12,50 +12,37 @@
 
 #include "../minishell.h"
 
-int	exit_builtin(t_main *main)
+int validate_var_name(char *var_name)
 {
-	int	status;
+    int i;
 
-	status = 0;
-	status = determine_status_from_flags(main);
-	if (status == 0)
-		status = determine_status_from_args(main);
-	perform_exit(main, status);
-	return (status);
+    i = 0;
+    if (!ft_isalpha(var_name[0]) && var_name[0] != '_')
+        return (0);
+    while (var_name[i] != '\0' && var_name[i] != '=')
+    {
+        if (!ft_isalnum(var_name[i]) && var_name[i] != '_')
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
-int	determine_status_from_flags(t_main *main)
+int	check_command(t_main *main, char **error_message)
 {
-	int	status;
-
-	status = 0;
-	if (main->flags != NULL)
-		status = ft_atoi(main->flags);
-	return (status);
-}
-
-int	exit_check_args(t_main *main)
-{
-	if (!main->args[0] || main->args[1] != NULL)
-		return (handle_no_or_multiple_args(main));
-	return (0);
-}
-
-void	perform_exit(t_main *main, int status)
-{
-	printf("exit\n");
-	free(main->current_dir);
-	exit(status);
-}
-
-int	ft_normal_exit(t_main *main)
-{
-	if (!main->args[0])
-		printf("exit\n");
-	else
+	if (ft_strncmp(main->cmd, "/", 1) == 0)
 	{
-		error_messages("BASH_MANY_ARGUMENTS");
-		return (1);
+        ft_putstr_fd("bash: ", 2);
+        ft_putstr_fd(main->cmd, 2);
+		*error_message = ": Is a directory\n";
+		return (126);
 	}
+    else if (ft_strncmp(main->cmd, "./", 2) == 0)
+    {
+        ft_putstr_fd("bash: ", 2);
+        ft_putstr_fd(main->cmd, 2);
+        *error_message = ": No such file o directory\n";
+        return (126);
+    }
 	return (0);
 }

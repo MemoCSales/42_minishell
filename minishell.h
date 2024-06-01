@@ -125,6 +125,12 @@ typedef struct s_exec
 void			main_loop(t_env env_var, t_main *main_var);
 
 // Functions for the buildins
+/*------------------------BUILTINS-----------------------------*/
+int				builtins_no_output(char *cmd);
+int				builtins_with_output(char *cmd);
+int				env_builtin(t_env *env_vars);
+int				exec_builtin(t_env *env_vars, t_main *main);
+
 /*------------------------CD BUILTIN-----------------------------*/
 int				cd_builtin(t_env *env_vars, char *path, t_main *main);
 char			*create_new_var(char *var_name, char *new_value);
@@ -152,11 +158,10 @@ int				validate_new_var(t_env *env_vars, char *new_var);
 char			**allocate_new_env_vars(t_env *env_vars);
 void			copy_env_vars(t_env *env_vars, char **new_env_vars);
 int				add_new_var(char *new_var, char **new_env_vars, int i);
-
-int				builtins_no_output(char *cmd);
-int				builtins_with_output(char *cmd);
-int				env_builtin(t_env *env_vars);
-int				exec_builtin(t_env *env_vars, t_main *main);
+int 			validate_var_name(char *var_name);
+int	check_new_var(t_env *env_vars, t_main *main, char *new_var);
+char	**allocate_and_copy(t_env *env_vars);
+int	add_and_duplicate(t_env *env_vars, char *new_var, char **new_env_vars);
 
 /*-----------------------PWD BUILTIN------------------------------*/
 int				pwd_builtin(t_main *main);
@@ -168,10 +173,13 @@ int				determine_status_from_flags(t_main *main);
 int				determine_status_from_args(t_main *main);
 int				handle_no_or_multiple_args(t_main *main);
 void			perform_exit(t_main *main, int status);
+int				exit_check_args(t_main *main);
 
 /*-----------------------UNSET BUILTIN-----------------------------*/
 int				unset_builtin(t_env *env_vars, char *var_name);
 int				find_index(t_env *env_vars, char *var_name);
+char	**realloc_new_env(char **env_vars, int len);
+void	shift_env_vars(char **env_vars, int index);
 
 /*-----------------------ECHO BUILTIN-----------------------------*/
 int				echo_builtin(t_main *main);
@@ -213,6 +221,7 @@ void			error_messages(char *type);
 void			print_open_fds(void);
 void			error_messages(char *type);
 void			print_open_fds(void);
+int				check_command(t_main *main, char **error_message);
 
 /*--------------------SIGNALS FUNCTIONS--------------------------*/
 void			siginit_handler(int sig_num);
