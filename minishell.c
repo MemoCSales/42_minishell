@@ -38,13 +38,16 @@ int	execute_commands(t_env *env_var, t_main *main_var)
 	while (main_var[main_var->num_cmds].cmd)
 		main_var->num_cmds++;
 	status = execute_command(env_var, main_var);
-	free_parsed_struct(main_var, main_var->num_cmds);
+	// free_parsed_struct(main_var, main_var->num_cmds);//THIS IS CAUSING ISSUES... BUT WHERE DO I FREE IT??
+	// print_args(main_var->args);
+	printf("status: %d\n", status);
 	return (status);
 }
 
 void	main_loop(t_env env_var, t_main *main_var)
 {
 	char	*line;
+	t_main	*new_main_var;
 
 	line = NULL;
 	while (1)
@@ -60,11 +63,20 @@ void	main_loop(t_env env_var, t_main *main_var)
 		if (line && *line)
 		{
 			add_history(line);
-			main_var = parse_command(line, &env_var);
-			if (main_var)
-			{
-				env_var.status = execute_commands(&env_var, main_var);
-			}
+
+            new_main_var = parse_command(line, &env_var);
+            if (new_main_var)
+            {
+                // free(main_var);
+                main_var = new_main_var;
+                env_var.status = execute_commands(&env_var, main_var);
+            }
+			// free(main_var);
+			// main_var = parse_command(line, &env_var);
+			// if (main_var)
+			// {
+			// 	env_var.status = execute_commands(&env_var, main_var);
+			// }
 		}
 		free(line);
 		line = NULL;

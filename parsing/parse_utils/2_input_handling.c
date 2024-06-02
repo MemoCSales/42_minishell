@@ -73,8 +73,8 @@ char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 		return (prepared);
 	}
 	temp = handle_variables(line, env_var);
-	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
-	check_malloc(ph_strings);
+	// *ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
+	// check_malloc(ph_strings);//APARENTEMENTE NAO PRECISA, TIREI PRA AJUDAR LEAKS
 	placeholder(temp, ph_strings);
 	return (temp);
 }

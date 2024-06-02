@@ -105,8 +105,11 @@ void	free_parsed_struct(t_main *parsed_struct, int num_commands)
 	while ((parsed_struct) && (i < num_commands))
 	{
 		free_and_nullify((void **)&parsed_struct[i].cmd);
-		free_and_nullify((void **)&parsed_struct[i].flags);
-		free_args_2(&parsed_struct[i].args);
+		if (parsed_struct[i].flags)
+			free_and_nullify((void **)&parsed_struct[i].flags);
+		// cleanup_env_var(&parsed_struct[i].args);
+		if (parsed_struct[i].args)
+			cleanup_env_var(&parsed_struct[i].args);
 		free_and_nullify((void **)&parsed_struct[i].input_file);
 		free_and_nullify((void **)&parsed_struct[i].output_file);
 		free_and_nullify((void **)&parsed_struct[i].heredoc);
