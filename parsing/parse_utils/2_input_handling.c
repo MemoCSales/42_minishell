@@ -100,6 +100,8 @@ int	redir_no_arg(char **args, int j)
 	int	fd;
 
 	fd = 0;
+	// if (args[j + 1] != NULL)//ADDED NOT SURE IF NEEDED
+	// {
 	if (ft_strcmp(args[j], "<") == 0)
 	{
 		if (file_exists(args[j + 1]) == 1)
@@ -119,6 +121,12 @@ int	redir_no_arg(char **args, int j)
 			close(fd);
 		}
 	}
+	// }
+	// else
+	// {
+	// 	printf("Error: No argument provided for %s\n", args[j]);
+	// 	// return (1);
+	// }
 	return (0);
 }
 

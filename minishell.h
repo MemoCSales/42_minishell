@@ -258,8 +258,6 @@ void			free_copied_args(char **args);
 //parse.c
 t_main			*parse_line(char *line, t_env *env_var);
 t_main			*initialize_main(t_main *main_var, int num_commands);
-t_main			*parse_line(char *line, t_env *env_var);
-t_main			*initialize_main(t_main *main_var, int num_commands);
 
 //parse_utils
 //1_args.c
@@ -298,6 +296,7 @@ int				word_count_mini(const char *str, char chr);
 void			process_string(const char *s, char c, \
 				t_process_string_params *params);
 char			**ft_split_args(const char *s, char c);
+int				ft_count_splits(const char *str, char delimiter);
 
 //6_pipe_and_redirection.c
 char			*read_quotes(char *delimiter, char *line);
@@ -365,6 +364,7 @@ void			insert_spaces_and_duplicate_command(char *changed, \
 char			*handle_variables(char *line, t_env *env_var);
 t_handle_vars	start_h_vars(t_handle_vars *h_vars, char *line);
 char			*get_env_var(t_env *env, char *name);
+char			**ft_malloc_args(int count);
 
 //16_handle_variables_2.c
 t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line, t_env *env_var);

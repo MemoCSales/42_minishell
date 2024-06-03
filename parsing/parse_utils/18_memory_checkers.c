@@ -23,7 +23,7 @@ void	*my_malloc(size_t size)
 
 void	my_free(void *ptr)
 {
-	printf("Freed memory at address %p\n", ptr);
+	// printf("Freed memory at address %p\n", ptr);
 	free(ptr);
 }
 //Custom Memory Allocator

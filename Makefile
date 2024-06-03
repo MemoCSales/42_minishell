@@ -130,7 +130,8 @@ va:
 		# valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=all ./minishell
 		# valgrind --leak-check=full --trace-children=yes env -i ./minishell
 		# valgrind --trace-children=yes --track-fds=all ./minishell
-		valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
+		# valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
+		valgrind --leak-check=full --trace-children=yes --track-fds=all --suppressions=valgrind.supp ./minishell
 		
 
 .PHONY: all clean fclean re

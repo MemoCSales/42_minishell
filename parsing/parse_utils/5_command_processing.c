@@ -98,3 +98,25 @@ char	**ft_split_args(const char *s, char c)
 	params.res[params.j] = NULL;
 	return (params.res);
 }
+
+int	ft_count_splits(const char *str, char delimiter)
+{
+	int	count;
+	int	in_word;
+
+	count = 0;
+	in_word = 0;
+
+	while (*str)
+	{
+		if (*str == delimiter)
+			in_word = 0;
+		else if (!in_word)
+		{
+			in_word = 1;
+			++count;
+		}
+		++str;
+	}
+	return (count);
+}

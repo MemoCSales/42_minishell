@@ -74,3 +74,13 @@ char	*get_env_var(t_env *env, char *name)
 	}
 	return (NULL);
 }
+
+char	**ft_malloc_args(int count)
+{
+	char	**args;
+
+	args = malloc((count + 1) * sizeof(char *));
+	check_malloc(args);
+	args[count] = NULL;
+	return (args);
+}

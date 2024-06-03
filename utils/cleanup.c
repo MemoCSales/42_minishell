@@ -21,12 +21,12 @@ void	cleanup_env_var(char ***env_vars)
 		return ;
 	while ((*env_vars)[i] != NULL)
 	{
-printf("freeing %p - %s\n", (*env_vars)[i], (*env_vars)[i]);
+// printf("freeing [%d] %p - %s\n", i, (*env_vars)[i], (*env_vars)[i]);
 		free((*env_vars)[i]);
 		(*env_vars)[i] = NULL;
 		i++;
 	}
-printf("freeing %p\n", *env_vars);
+// printf("freeing %p\n", *env_vars);
 	free(*env_vars);
 	*env_vars = NULL;
 }
@@ -93,6 +93,7 @@ void	free_and_nullify(void **ptr)
 	if (*ptr)
 	{
 		free(*ptr);
+// printf("freed %p\n", *ptr);
 		*ptr = NULL;
 	}
 }
@@ -107,13 +108,13 @@ void	free_parsed_struct(t_main *parsed_struct, int num_commands)
 		free_and_nullify((void **)&parsed_struct[i].cmd);
 		if (parsed_struct[i].flags)
 			free_and_nullify((void **)&parsed_struct[i].flags);
-		// cleanup_env_var(&parsed_struct[i].args);
 		if (parsed_struct[i].args)
 			cleanup_env_var(&parsed_struct[i].args);
 		free_and_nullify((void **)&parsed_struct[i].input_file);
 		free_and_nullify((void **)&parsed_struct[i].output_file);
 		free_and_nullify((void **)&parsed_struct[i].heredoc);
 		free_and_nullify((void **)&parsed_struct[i].extra);
+		free_and_nullify((void **)&parsed_struct[i].current_dir);
 		if (parsed_struct[i].fd[0] != -1)
 		{
 			close(parsed_struct[i].fd[0]);

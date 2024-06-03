@@ -56,6 +56,7 @@ int	print_args_echo(t_main *main, int cut_newline)
 	while (main->args[i] != NULL)
 	{
 		arg = main->args[i];
+		arg_no_quotes = NULL;
 		arg_no_quotes = ft_strremove(arg, 0);
 		if (printf("%s", arg_no_quotes) < 0)
 		{

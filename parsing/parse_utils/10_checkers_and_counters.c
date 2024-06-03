@@ -23,8 +23,17 @@ void	check_malloc(void *ptr)
 
 void	check_flags(t_main *command, char **args)
 {
+	// char	*flags;
+
+
 	if (args[1] && args[1][0] == '-')
 	{
+		// flags = args[1];
+		// // free(command->flags);
+		// command->flags = malloc(ft_strlen(flags) + 1);
+		// check_malloc(command->flags);
+		// ft_strlcpy(command->flags, flags, ft_strlen(flags) + 1);
+
 		command->flags = args[1];
 		command->args = copy_args(&args[2]);
 	}
@@ -33,6 +42,7 @@ void	check_flags(t_main *command, char **args)
 		command->flags = NULL;
 		command->args = copy_args(&args[1]);
 	}
+
 }
 
 int	check_delimiter(char *delimiter)
