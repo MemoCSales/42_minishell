@@ -12,25 +12,6 @@
 
 #include "../minishell.h"
 
-void	cleanup_env_var(char ***env_vars)
-{
-	int	i;
-
-	i = 0;
-	if (*env_vars == NULL)
-		return ;
-	while ((*env_vars)[i] != NULL)
-	{
-// printf("freeing [%d] %p - %s\n", i, (*env_vars)[i], (*env_vars)[i]);
-		free((*env_vars)[i]);
-		(*env_vars)[i] = NULL;
-		i++;
-	}
-// printf("freeing %p\n", *env_vars);
-	free(*env_vars);
-	*env_vars = NULL;
-}
-
 void	cleanup_split(char **split)
 {
 	int	i;
@@ -93,7 +74,6 @@ void	free_and_nullify(void **ptr)
 	if (*ptr)
 	{
 		free(*ptr);
-// printf("freed %p\n", *ptr);
 		*ptr = NULL;
 	}
 }

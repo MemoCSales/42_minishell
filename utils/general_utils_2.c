@@ -18,7 +18,7 @@ char	*create_new_var(char *var_name, char *new_value)
 	char	*new_var;
 
 	var_name_len = ft_strlen(var_name);
-	new_var = malloc(var_name_len + ft_strlen(new_value));
+	new_var = malloc(var_name_len + ft_strlen(new_value) + 2);
 	if (!new_var)
 	{
 		ft_putstr_fd("Error allocating memory for new_value\n", 2);
@@ -27,6 +27,7 @@ char	*create_new_var(char *var_name, char *new_value)
 	ft_memcpy(new_var, var_name, var_name_len);
 	new_var[var_name_len] = '=';
 	ft_strcpy_memo(new_var + var_name_len + 1, new_value);
+	new_var[var_name_len + ft_strlen(new_value) + 1] = '\0';
 	return (new_var);
 }
 
@@ -76,4 +77,17 @@ char	*get_path(t_main *main, char *path)
 	else if (ft_strcmp(path, "..") == 0)
 		return ("..");
 	return (path);
+}
+
+char	**split_cmd_path(char *cmd_path)
+{
+	char	**dir_paths;
+
+	dir_paths = ft_split(cmd_path, ':');
+	if (!cmd_path)
+	{
+		cleanup_split(dir_paths);
+		return (NULL);
+	}
+	return (dir_paths);
 }

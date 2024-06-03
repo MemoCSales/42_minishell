@@ -69,6 +69,7 @@ char	**realloc_new_env(char **env_vars, int len)
 		i++;
 	}
 	new_env[len] = NULL;
+	free(env_vars[len]);
 	free(env_vars);
 	return (new_env);
 }

@@ -19,6 +19,7 @@ SRC =	main.c \
 		./utils/general_utils_export.c \
 		./utils/general_utils_export_2.c \
 		./utils/general_utils_export_4.c \
+		./utils/general_utils_export_5.c \
 		./utils/general_utils_exit.c \
 		./parsing/parse_utils/1_args.c \
 		./parsing/parse_utils/2_input_handling.c \
@@ -131,7 +132,7 @@ va:
 		# valgrind --leak-check=full --trace-children=yes env -i ./minishell
 		# valgrind --trace-children=yes --track-fds=all ./minishell
 		# valgrind --leak-check=full --trace-children=yes --track-fds=all ./minishell
-		valgrind --leak-check=full --trace-children=yes --track-fds=all --suppressions=valgrind.supp ./minishell
+		valgrind --leak-check=full --trace-children=yes --suppressions=valgrind.supp  ./minishell
 		
 
 .PHONY: all clean fclean re

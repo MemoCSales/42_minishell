@@ -25,7 +25,7 @@ char	*process_command_string(char *command)
 	if (!command)
 	{
 		ft_putstr_fd("Error: No command specified\n", 2);
-		exit (1);
+		exit(1);
 	}
 	while (command[i])
 	{
@@ -59,8 +59,8 @@ void	process_string(const char *s, char c, t_process_string_params *params)
 	while (s[params->i] != '\0' && !(s[params->i] == c
 			&& params->quote_char == 0))
 	{
-		if ((s[params->i] == '"' || s[params->i] == '\'')
-			&& (params->i == 0 || s[params->i - 1] != '\\'))
+		if ((s[params->i] == '"' || s[params->i] == '\'') && (params->i == 0
+				|| s[params->i - 1] != '\\'))
 		{
 			if (params->quote_char == 0)
 				params->quote_char = s[params->i];
@@ -69,8 +69,8 @@ void	process_string(const char *s, char c, t_process_string_params *params)
 			params->i++;
 		}
 		if (params->i > params->start)
-			params->res[params->j++]
-				= ft_substr(s, params->start, params->i - params->start);
+			params->res[params->j++] = ft_substr(s, params->start, params->i
+					- params->start);
 		while (s[params->i] == c)
 			params->i++;
 	}
@@ -78,8 +78,8 @@ void	process_string(const char *s, char c, t_process_string_params *params)
 
 char	**ft_split_args(const char *s, char c)
 {
-	char						**res;
-	t_process_string_params		params;
+	char					**res;
+	t_process_string_params	params;
 
 	params.i = 0;
 	params.j = 0;
@@ -106,7 +106,6 @@ int	ft_count_splits(const char *str, char delimiter)
 
 	count = 0;
 	in_word = 0;
-
 	while (*str)
 	{
 		if (*str == delimiter)

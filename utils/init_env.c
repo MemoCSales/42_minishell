@@ -15,13 +15,11 @@
 void	init_env(t_env *env_vars, char **env)
 {
 	int	num_vars;
-	int	i;
 
 	num_vars = 0;
 	if (env[0] != NULL)
 	{
-		// while (env[num_vars] != NULL)
-		while (num_vars < 10)
+		while (env[num_vars] != NULL)
 			num_vars++;
 	}
 	else
@@ -32,27 +30,38 @@ void	init_env(t_env *env_vars, char **env)
 		env_vars->status = -1;
 		return ;
 	}
-	i = 0;
 	if (env[0] != NULL)
-	{
-		while (i < num_vars)
-		{
-			env_vars->env_vars[i] = ft_strdup(env[i]);
-			i++;
-		}
-	}
+		duplicating_env_vars(env_vars, env, num_vars);
 	else
+		set_default_env_vars(env_vars);
+	env_vars->env_vars[num_vars] = NULL;
+	env_vars->status = 0;
+}
+
+void	duplicating_env_vars(t_env *env_vars, char **env, int num_vars)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_vars)
 	{
-		i = 0;
-		env_vars->env_vars[i] = ft_strdup("PWD=/home/mcruz-sa/Documents/GIT_minishell");
-		i++;
-		env_vars->env_vars[i] = ft_strdup("SHLVL=1");
-		i++;
-		env_vars->env_vars[i] = ft_strdup("_=usr/bin/env");
+		env_vars->env_vars[i] = ft_strdup(env[i]);
 		i++;
 	}
-	env_vars->env_vars[i] = NULL;
-	env_vars->status = 0;
+}
+
+void	set_default_env_vars(t_env *env_vars)
+{
+	int	i;
+
+	i = 0;
+	env_vars->env_vars[i] = ft_strdup("PWD=/home/mcruz-sa/Documents \
+									/GIT_minishell");
+	i++;
+	env_vars->env_vars[i] = ft_strdup("SHLVL=1");
+	i++;
+	env_vars->env_vars[i] = ft_strdup("_=usr/bin/env");
+	i++;
 }
 
 void	check_env(t_env *env_vars)
@@ -92,7 +101,7 @@ char	*ft_strdup_minishell(char *s1)
 			ns[0] = '\0';
 		return (ns);
 	}
-	ns = (char *) malloc(ft_strlen(s1) + 1);
+	ns = (char *)malloc(ft_strlen(s1) + 1);
 	if (!(ns))
 		return (NULL);
 	while (s1[i])

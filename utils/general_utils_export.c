@@ -63,7 +63,7 @@ char	**allocate_new_env_vars(t_env *env_vars)
 	return (new_env_vars);
 }
 
-void	copy_env_vars(t_env *env_vars, char **new_env_vars)
+int	copy_env_vars(t_env *env_vars, char **new_env_vars)
 {
 	int	j;
 
@@ -73,6 +73,7 @@ void	copy_env_vars(t_env *env_vars, char **new_env_vars)
 		new_env_vars[j] = env_vars->env_vars[j];
 		j++;
 	}
+	return (1);
 }
 
 int	add_new_var(char *new_var, char **new_env_vars, int i)

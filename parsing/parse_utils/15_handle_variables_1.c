@@ -15,8 +15,8 @@
 char	*handle_variables(char *line, t_env *env_var)
 {
 	t_handle_vars	h_vars;
-	char	*temp;
-	char	*line_copy;
+	char			*temp;
+	char			*line_copy;
 
 	h_vars = start_h_vars(&h_vars, line);
 	line_copy = ft_strdup(line);

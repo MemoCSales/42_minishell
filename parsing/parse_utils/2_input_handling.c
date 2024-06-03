@@ -12,8 +12,7 @@
 
 #include "../minishell.h"
 
-t_unq_dolar	*process_dollar_unquoted(t_unq_dolar \
-	*un_dollar_vars, char *str)
+t_unq_dolar	*process_dollar_unquoted(t_unq_dolar *un_dollar_vars, char *str)
 {
 	t_unq_dolar	*p_unq_dollar;
 
@@ -23,10 +22,10 @@ t_unq_dolar	*process_dollar_unquoted(t_unq_dolar \
 		p_unq_dollar->i++;
 	p_unq_dollar->len = p_unq_dollar->i - p_unq_dollar->start;
 	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j], "\"", 1);
-	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j + 1], \
+	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j + 1],
 		&str[p_unq_dollar->start], p_unq_dollar->len);
-	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j \
-		+ p_unq_dollar->len + 1], "\"", 1);
+	ft_strncpy(&p_unq_dollar->result[p_unq_dollar->j + p_unq_dollar->len + 1],
+		"\"", 1);
 	p_unq_dollar->j += p_unq_dollar->len + 2;
 	return (p_unq_dollar);
 }
@@ -46,9 +45,8 @@ char	*change_unquoted_dollar_signs(char *str)
 			unq_dollar.in_double_quotes = !unq_dollar.in_double_quotes;
 		if (str[unq_dollar.i] == '\'')
 			unq_dollar.in_single_quotes = !unq_dollar.in_single_quotes;
-		if (!unq_dollar.in_double_quotes
-			&& !unq_dollar.in_single_quotes && str[unq_dollar.i] == '$'
-			&& str[unq_dollar.i - 1] != '\\')
+		if (!unq_dollar.in_double_quotes && !unq_dollar.in_single_quotes
+			&& str[unq_dollar.i] == '$' && str[unq_dollar.i - 1] != '\\')
 			unq_dollar = *process_dollar_unquoted(&unq_dollar, str);
 		else
 			unq_dollar.result[unq_dollar.j++] = str[unq_dollar.i++];
@@ -73,8 +71,6 @@ char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 		return (prepared);
 	}
 	temp = handle_variables(line, env_var);
-	// *ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
-	// check_malloc(ph_strings);//APARENTEMENTE NAO PRECISA, TIREI PRA AJUDAR LEAKS
 	placeholder(temp, ph_strings);
 	return (temp);
 }

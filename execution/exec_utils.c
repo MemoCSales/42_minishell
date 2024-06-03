@@ -38,12 +38,9 @@ char	*get_cmd_path(t_main *main, char *cmd_path)
 	char	**dir_paths;
 
 	i = 0;
-	dir_paths = ft_split(cmd_path, ':');
-	if (!cmd_path)
-	{
-		cleanup_split(dir_paths);
+	dir_paths = split_cmd_path(cmd_path);
+	if (!dir_paths)
 		return (NULL);
-	}
 	while (dir_paths[i])
 	{
 		path_cmd = ft_strjoin(dir_paths[i], "/");
@@ -119,5 +116,5 @@ char	**build_exec_args(t_main *main, char **exec_args, int i)
 		num_args++;
 	exec_args = malloc((num_args + 3) * sizeof(char *));
 	exec_copy_args(main, exec_args, i, num_args);
-	return (exec_args); // free memory from exec_args later on
+	return (exec_args);
 }

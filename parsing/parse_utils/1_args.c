@@ -43,9 +43,7 @@ void	remove_args(char **args, int start_index, int num_args)
 {
 	int	i;
 	int	j;
-print_args(args);
-printf("start_index: %d\n", start_index);
-printf("num_args: %d\n", num_args);
+
 	i = start_index;
 	j = start_index + num_args;
 	while (args[j] != NULL)

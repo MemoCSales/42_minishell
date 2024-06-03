@@ -83,3 +83,32 @@ void	free_string(char *string)
 	}
 }
 
+void	free_env_vars(t_env *env_vars)
+{
+	int	i;
+
+	i = 0;
+	while (env_vars->env_vars[i] != NULL)
+	{
+		free(env_vars->env_vars[i]);
+		i++;
+	}
+	free(env_vars->env_vars);
+}
+
+void	cleanup_env_var(char ***env_vars)
+{
+	int	i;
+
+	i = 0;
+	if (*env_vars == NULL)
+		return ;
+	while ((*env_vars)[i] != NULL)
+	{
+		free((*env_vars)[i]);
+		(*env_vars)[i] = NULL;
+		i++;
+	}
+	free(*env_vars);
+	*env_vars = NULL;
+}
