@@ -99,7 +99,6 @@ int	add_and_duplicate(t_env *env_vars, char *new_var, char **new_env_vars)
 	return (0);
 }
 
-
 int	get_name_length(char *new_var)
 {
 	char	*name;
