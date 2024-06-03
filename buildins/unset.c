@@ -12,12 +12,11 @@
 
 #include "../minishell.h"
 
-
 int	unset_builtin(t_env *env_vars, char *var_name)
 {
-	int	index;
-	int	len;
 	char	**new_env;
+	int		index;
+	int		len;
 
 	if (var_name == NULL)
 		return (0);
@@ -54,10 +53,10 @@ void	shift_env_vars(char **env_vars, int index)
 
 char	**realloc_new_env(char **env_vars, int len)
 {
-	int	i;
 	char	**new_env;
+	int		i;
 
-	new_env = malloc((len + 1) * sizeof(char *));
+	new_env = calloc((len + 1), sizeof(char *));
 	if (!new_env)
 	{
 		ft_putstr_fd("Error: Unable to allocate memory\n", 2);

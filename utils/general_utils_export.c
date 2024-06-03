@@ -53,10 +53,11 @@ char	**allocate_new_env_vars(t_env *env_vars)
 	i = 0;
 	while (env_vars->env_vars[i] != NULL)
 		i++;
-	new_env_vars = malloc((i + 2) * sizeof(char *));
+	new_env_vars = calloc((i + 2), sizeof(char *));
 	if (!new_env_vars)
 	{
 		ft_putstr_fd("Error: Unable to allocate memory\n", 2);
+		cleanup_split(new_env_vars);
 		exit(EXIT_FAILURE);
 	}
 	return (new_env_vars);
