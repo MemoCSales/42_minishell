@@ -29,7 +29,7 @@ void	replace_placeholder_sub(char **str, \
 
 	if (*str != NULL && placeholder != NULL)
 	{
-		pos = strstr(*str, placeholder); //MAKE A STRSTR
+		pos = strstr(*str, placeholder);
 		if (pos != NULL)
 		{
 			new_str = malloc(strlen(*str) - strlen(placeholder) \

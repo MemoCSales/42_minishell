@@ -18,7 +18,7 @@ int	is_whitespace(char c)
 }
 
 int	is_escaped(char *line, int index)
-	{
+{
 	int	count;
 
 	count = 0;
@@ -69,12 +69,17 @@ void	print_struct(t_main *main_var, int i)
 		return ;
 	}
 	printf("\nt_main[%d].cmd: %p - %s\n", i, main_var[i].cmd, main_var[i].cmd);
-	printf("t_main[%d].flags: %p - %s\n", i, main_var[i].flags, main_var[i].flags);
+	printf("t_main[%d].flags: %p - %s\n", i, main_var[i].flags,
+		main_var[i].flags);
 	print_args(main_var[i].args);
-	printf("t_main[%d].input_file: %p - %s\n", i, main_var[i].input_file, main_var[i].input_file);
-	printf("t_main[%d].output_file: %p - %s\n", i, main_var[i].output_file, main_var[i].output_file);
-	printf("t_main[%d].heredoc: %p - %s\n", i, main_var[i].heredoc, main_var[i].heredoc);
-	printf("t_main[%d].extra: %p - %s\n", i, main_var[i].extra, main_var[i].extra);
+	printf("t_main[%d].input_file: %p - %s\n", i, main_var[i].input_file,
+		main_var[i].input_file);
+	printf("t_main[%d].output_file: %p - %s\n", i, main_var[i].output_file,
+		main_var[i].output_file);
+	printf("t_main[%d].heredoc: %p - %s\n", i, main_var[i].heredoc,
+		main_var[i].heredoc);
+	printf("t_main[%d].extra: %p - %s\n", i, main_var[i].extra,
+		main_var[i].extra);
 	printf("t_main[%d].fd[0]: %d\n", i, main_var[i].fd[0]);
 	printf("t_main[%d].fd[1]: %d\n\n", i, main_var[i].fd[1]);
 }

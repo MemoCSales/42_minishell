@@ -27,7 +27,6 @@ int	check_redir(t_main *main, char **args, int j)
 		}
 		else if (!(args [j + 2]))
 		{
-			// printf("ERROR check\n");
 			redir_no_arg(args, j);
 			return (1);
 		}
