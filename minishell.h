@@ -45,6 +45,7 @@ typedef struct s_main
 	char		*current_dir;
 	int			fd[2];
 	int			num_cmds;
+	int			syntaxflag;
 	pid_t		pid;
 	pid_t		grandson_pid;
 }				t_main;
@@ -283,7 +284,8 @@ int				file_exists(const char *filename);
 int				redir_no_arg(char **args, int j);
 
 // 3_redirection_and_variables.c
-int				check_redir(char **args, int j);
+// int				check_redir(char **args, int j);
+int				check_redir(t_main *main, char **args, int j);
 void			redirection(t_main *parsed_struct, char **args, int i, int j);
 void			handle_variables_ph(char *line, char **prepared, int *i,
 					int *j);

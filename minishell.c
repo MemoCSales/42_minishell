@@ -37,7 +37,12 @@ int	execute_commands(t_env *env_var, t_main *main_var)
 	main_var->num_cmds = 0;
 	while (main_var[main_var->num_cmds].cmd)
 		main_var->num_cmds++;
-	status = execute_command(env_var, main_var);
+	if (main_var->syntaxflag != 1)
+	{
+		status = execute_command(env_var, main_var);
+	}
+	else
+		status = 2;
 	free_parsed_struct(main_var, main_var->num_cmds);
 	return (status);
 }

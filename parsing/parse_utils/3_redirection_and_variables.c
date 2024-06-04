@@ -12,16 +12,24 @@
 
 #include "../minishell.h"
 
-int	check_redir(char **args, int j)
+int	check_redir(t_main *main, char **args, int j)
 {
 	if (ft_strcmp(args[j], ">>") == 0
 		|| ft_strcmp(args[j], "<<") == 0
 		|| ft_strcmp(args[j], "<") == 0
 		|| ft_strcmp(args[j], ">") == 0)
 	{
-		if (!(args [j + 2]))
+		if (args[j + 1] == NULL)
 		{
+			ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", 2);
+			main->syntaxflag = 1;
+			return (0);
+		}
+		else if (!(args [j + 2]))
+		{
+			// printf("ERROR check\n");
 			redir_no_arg(args, j);
+			return (1);
 		}
 		return (1);
 	}

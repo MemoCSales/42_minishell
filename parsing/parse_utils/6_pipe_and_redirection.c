@@ -119,8 +119,9 @@ void	handle_redirections(t_main *parsed_struct, char **args, int i)
 	j = 0;
 	while (args[j] != NULL)
 	{
-		if (check_redir(args, j))
+		if (check_redir(parsed_struct, args, j))
 		{
+
 			redirection(parsed_struct, args, i, j);
 			j--;
 		}

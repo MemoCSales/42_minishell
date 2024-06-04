@@ -38,6 +38,9 @@ t_main	*parse_line(char *line, t_env *env_var)
 		args = ft_split(commands[i], ' ');
 
 		handle_redirections(parsed_struct, args, i);
+		if (args[0] == NULL)//AS IF IS NULL AFTER remove_args, OUTSIDE THE LOOP
+			break;
+
 
 		check_flags(&parsed_struct[i], args);
 
@@ -113,6 +116,7 @@ t_main	*initialize_main(t_main *main_var, int num_commands)
 		main_var[i].heredoc = NULL;
 		main_var[i].extra = NULL;
 		main_var[i].current_dir = getcwd(NULL, 0);
+		main_var[i].syntaxflag = 0;
 		main_var[i].fd[0] = -1;
 		main_var[i].fd[1] = -1;
 		i++;
