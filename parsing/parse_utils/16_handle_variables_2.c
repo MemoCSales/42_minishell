@@ -67,6 +67,8 @@ t_handle_vars	dollar_question(t_handle_vars *h_vars, t_env *env_var)
 	ft_strcpy(&h_vars->result[h_vars->j], h_vars->status);
 	h_vars->j += ft_strlen(h_vars->status);
 	h_vars->i += 2;
+	free(h_vars->status);
+	h_vars->status = NULL;
 	return (*h_vars);
 }
 

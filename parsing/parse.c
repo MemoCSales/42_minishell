@@ -14,96 +14,70 @@
 
 t_main	*parse_line(char *line, t_env *env_var)
 {
-	t_main		*parsed_struct;
-	char		**args;
-	char		**commands;
-	char		*old_command;
-	char		**ph_strings;
-	int			i;
+	t_main	*parsed_struct;
+	char	**args;
+	char	**commands;
+	char	*old_command;
+	char	**ph_strings;
+	int		i;
 
 	i = 0;
-
 	line = prepare_line(line, &ph_strings, env_var);
 	if (line[0] == '\0')
 		return (NULL);
 	commands = ft_split(line, '|');
 	parsed_struct = initialize_main(NULL, count_elements(commands));
-
 	while (i < count_elements(commands))
 	{
 		old_command = commands[i];
 		commands[i] = process_command_string(old_command);
 		free(old_command);
-
+		old_command = NULL;
 		args = ft_split(commands[i], ' ');
-
 		handle_redirections(parsed_struct, args, i);
-		if (args[0] == NULL)//AS IF IS NULL AFTER remove_args, OUTSIDE THE LOOP
-			break;
-
-
+		if (args[0] == NULL)
+		{
+			if (args)
+				cleanup_env_var(&args);
+			break ;
+		}
 		check_flags(&parsed_struct[i], args);
-
 		create_pipe(&parsed_struct[i], i, count_elements(commands));
-
 		free(parsed_struct[i].cmd);
 		parsed_struct[i].cmd = malloc(ft_strlen(args[0]) + 1);
 		check_malloc(parsed_struct[i].cmd);
 		ft_strlcpy(parsed_struct[i].cmd, args[0], ft_strlen(args[0]) + 1);
-
 		reverse_placeholders_in_struct(&parsed_struct[i], &ph_strings);
-
 		if (args)
 			cleanup_env_var(&args);
-
 		i++;
 	}
 	parsed_struct[count_elements(commands)].cmd = NULL;
-
 	if (ph_strings)
 		cleanup_env_var(&ph_strings);
-
 	if (commands)
 		cleanup_env_var(&commands);
-
 	if (line)
 	{
 		free(line);
 		line = NULL;
 	}
-
-// //PRINT STRUCT
+	// //PRINT STRUCT
 	// i = 0;
 	// while (parsed_struct[i].cmd)
 	// {
 	// 	print_struct(&parsed_struct[i], i);
 	// 	i++;
 	// }
-
 	return (parsed_struct);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 t_main	*initialize_main(t_main *main_var, int num_commands)
 {
 	int	i;
 
 	i = 0;
-	free (main_var);
+	free(main_var);
 	main_var = malloc((num_commands + 1) * sizeof(t_main));
 	check_malloc(main_var);
 	while (i < num_commands)

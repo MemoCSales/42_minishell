@@ -59,7 +59,7 @@ typedef struct s_handle_vars
 	char		*var_name;
 	char		*var_value;
 	char		*status;
-	int			size; // TENTANDO RESOLVER O PROBLEMA DE SIZE
+	int size; // TENTANDO RESOLVER O PROBLEMA DE SIZE
 	int			i;
 	int			j;
 	int			quotes;
@@ -253,6 +253,7 @@ void			free_main(t_main *main_var);
 void			free_args(char **args);
 void			free_and_nullify(void **ptr);
 void			free_parsed_struct(t_main *parsed_struct, int num_commands);
+void			free_parse_struct_without_cmds(t_main *parsed_struct);
 void			cleanup_env_var(char ***env_vars);
 
 // utils/cleanup_2.c
