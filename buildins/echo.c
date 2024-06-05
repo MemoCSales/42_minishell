@@ -16,17 +16,24 @@ void	exit_code(t_env *env)
 {
 	printf("%d\n", env->status);
 }
-void ft_strremove(char *string, int c)
+
+void	ft_strremove(char *string, int c)
 {
-    char *src, *dst;
-    for (src = dst = string; *src; src++)
-    {
-        if (*src != c)
-        {
-            *dst++ = *src;
-        }
-    }
-    *dst = '\0';
+	char	*src;
+	char	*dst;
+
+	src = string;
+	dst = string;
+	while (*src)
+	{
+		if (*src != c)
+		{
+			*dst = *src;
+			dst++;
+		}
+		src++;
+	}
+	*dst = '\0';
 }
 
 // char	*ft_strremove(char *string, int c)
@@ -62,19 +69,14 @@ int	print_args_echo(t_main *main, int cut_newline)
 {
 	int		i;
 	char	*arg;
-	// char	*arg_no_quotes;
 
 	i = 0;
 	while (main->args[i] != NULL)
 	{
 		arg = main->args[i];
-		// arg_no_quotes = NULL;
-		// arg_no_quotes = ft_strremove(arg, 0);
 		ft_strremove(arg, 0);
-		// if (printf("%s", arg_no_quotes) < 0)
 		if (printf("%s", arg) < 0)
 		{
-			// free(arg_no_quotes);
 			return (1);
 		}
 		if (main->args[i + 1] != NULL)
@@ -83,7 +85,6 @@ int	print_args_echo(t_main *main, int cut_newline)
 	}
 	if (!cut_newline)
 		printf("\n");
-	// free(arg_no_quotes);
 	return (0);
 }
 
