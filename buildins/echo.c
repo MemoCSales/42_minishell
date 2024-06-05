@@ -16,28 +16,40 @@ void	exit_code(t_env *env)
 {
 	printf("%d\n", env->status);
 }
-
-char	*ft_strremove(char *string, int c)
+void ft_strremove(char *string, int c)
 {
-	char	*new;
-	char	*new_start;
-
-	new = malloc(ft_strlen(string) + 1);
-	if (!new)
-	{
-		ft_putstr_fd("Error allocating memory: echo", 2);
-		exit(0);
-	}
-	new_start = new;
-	while (*string)
-	{
-		if (*string != c)
-			*new ++ = *string;
-		string++;
-	}
-	*new = '\0';
-	return (new_start);
+    char *src, *dst;
+    for (src = dst = string; *src; src++)
+    {
+        if (*src != c)
+        {
+            *dst++ = *src;
+        }
+    }
+    *dst = '\0';
 }
+
+// char	*ft_strremove(char *string, int c)
+// {
+// 	char	*new;
+// 	char	*new_start;
+
+// 	new = malloc(ft_strlen(string) + 1);
+// 	if (!new)
+// 	{
+// 		ft_putstr_fd("Error allocating memory: echo", 2);
+// 		exit(0);
+// 	}
+// 	new_start = new;
+// 	while (*string)
+// 	{
+// 		if (*string != c)
+// 			*new ++ = *string;
+// 		string++;
+// 	}
+// 	*new = '\0';
+// 	return (new_start);
+// }
 
 int	handle_flag(t_main *main)
 {
@@ -50,17 +62,19 @@ int	print_args_echo(t_main *main, int cut_newline)
 {
 	int		i;
 	char	*arg;
-	char	*arg_no_quotes;
+	// char	*arg_no_quotes;
 
 	i = 0;
 	while (main->args[i] != NULL)
 	{
 		arg = main->args[i];
-		arg_no_quotes = NULL;
-		arg_no_quotes = ft_strremove(arg, 0);
-		if (printf("%s", arg_no_quotes) < 0)
+		// arg_no_quotes = NULL;
+		// arg_no_quotes = ft_strremove(arg, 0);
+		ft_strremove(arg, 0);
+		// if (printf("%s", arg_no_quotes) < 0)
+		if (printf("%s", arg) < 0)
 		{
-			free(arg_no_quotes);
+			// free(arg_no_quotes);
 			return (1);
 		}
 		if (main->args[i + 1] != NULL)
@@ -69,7 +83,7 @@ int	print_args_echo(t_main *main, int cut_newline)
 	}
 	if (!cut_newline)
 		printf("\n");
-	free(arg_no_quotes);
+	// free(arg_no_quotes);
 	return (0);
 }
 
