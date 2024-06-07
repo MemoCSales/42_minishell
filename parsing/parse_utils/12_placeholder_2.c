@@ -78,13 +78,18 @@ void	handle_psi_lower(char **str, char ***ph_strings, int *i)
 {
 	char	*placeholder;
 	char	*replacement;
+	char	*temp;
 
 	while ((*ph_strings)[*i] != NULL)
 	{
-		placeholder = ft_strjoin("ψ(", ft_itoa((*i) + 1));
+		temp = ft_itoa((*i) + 1);
+		placeholder = ft_strjoin("ψ(", temp);
+		free(temp);
 		if (!placeholder)
 			return ;
+		temp = placeholder;
 		placeholder = ft_strjoin(placeholder, ")");
+		free(temp);
 		if (!placeholder)
 			return ;
 		replacement = (*ph_strings)[*i];

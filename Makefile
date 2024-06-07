@@ -14,6 +14,7 @@ SRC =	main.c \
 		./utils/init_env.c \
 		./utils/cleanup.c \
 		./utils/cleanup_2.c \
+		./utils/cleanup_3.c \
 		./utils/general_utils.c \
 		./utils/general_utils_2.c \
 		./utils/general_utils_export.c \

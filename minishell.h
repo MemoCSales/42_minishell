@@ -59,7 +59,7 @@ typedef struct s_handle_vars
 	char		*var_name;
 	char		*var_value;
 	char		*status;
-	int			size; // TENTANDO RESOLVER O PROBLEMA DE SIZE
+	int			size;
 	int			i;
 	int			j;
 	int			quotes;
@@ -189,6 +189,7 @@ void			shift_env_vars(char **env_vars, int index);
 int				echo_builtin(t_main *main);
 int				handle_flag(t_main *main);
 int				print_args_echo(t_main *main, int cut_newline);
+void			ft_strremove(char *string, int c);
 
 /*--------------------ENVIRONMENT VARIABLES FUNCTION--------------*/
 void			init_env(t_env *env_vars, char **env);
@@ -249,19 +250,23 @@ char			**split_cmd_path(char *cmd_path);
 
 // utils/cleanup.c
 void			cleanup_split(char **split);
-void			free_main(t_main *main_var);
 void			free_args(char **args);
 void			free_and_nullify(void **ptr);
+void			free_struct_fields(t_main *parsed_struct);
 void			free_parsed_struct(t_main *parsed_struct, int num_commands);
-void			cleanup_env_var(char ***env_vars);
 
 // utils/cleanup_2.c
 void			free_args_2(char ***args);
 // void			free_main_struct(t_main *main_var);
 void			free_ph_strings(char ***ph_strings);
 void			free_string(char *string);
-void			free_copied_args(char **args);
 void			free_env_vars(t_env *env_vars);
+void			cleanup_env_var(char ***env_vars);
+void			free_copied_args(char **args);
+
+// utils/cleanup_3.c
+void			free_parse_struct_without_cmds(t_main *parsed_struct);
+void			free_main(t_main *main_var);
 
 // parse.c
 void			cleanup_args(char **args);

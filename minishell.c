@@ -43,7 +43,10 @@ int	execute_commands(t_env *env_var, t_main *main_var)
 	}
 	else
 		status = 2;
-	free_parsed_struct(main_var, main_var->num_cmds);
+	if (main_var->num_cmds > 0)
+		free_parsed_struct(main_var, main_var->num_cmds);
+	else
+		free_parse_struct_without_cmds(main_var);
 	return (status);
 }
 

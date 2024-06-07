@@ -161,7 +161,7 @@ t_main	*initialize_main(t_main *main_var, int num_commands)
 	int	i;
 
 	i = 0;
-	free (main_var);
+	free(main_var);
 	main_var = malloc((num_commands + 1) * sizeof(t_main));
 	check_malloc(main_var);
 	while (i < num_commands)
