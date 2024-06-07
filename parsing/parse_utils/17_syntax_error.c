@@ -13,8 +13,10 @@
 #include "../minishell.h"
 
 // int is_metacharacter(char* token) {
-//     return strcmp(token, "|") == 0 || strcmp(token, ";") == 0 || strcmp(token, "&") == 0 ||
-//            strcmp(token, "(") == 0 || strcmp(token, ")") == 0 || strcmp(token, "<") == 0 ||
+//     return strcmp(token, "|") == 0 
+// || strcmp(token, ";") == 0 || strcmp(token, "&") == 0 ||
+//            strcmp(token, "(") == 0 
+// || strcmp(token, ")") == 0 || strcmp(token, "<") == 0 ||
 //            strcmp(token, ">") == 0;
 // }
 

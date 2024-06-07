@@ -64,7 +64,7 @@ char	*get_path(t_main *main, char *path)
 		return (home);
 	if (main->args[0] && main->args[1] != NULL)
 	{
-		ft_putstr_fd("bash: cd: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("ψΨ: cd: too many arguments\n", STDERR_FILENO);
 		return (NULL);
 	}
 	if (path == NULL || *path == '\0')

@@ -95,7 +95,7 @@ void	cd_error_check(char *path)
 	}
 	else if (errno == ENOENT)
 	{
-		ft_putstr_fd("bash: cd: ", STDERR_FILENO);
+		ft_putstr_fd("ψΨ: cd: ", STDERR_FILENO);
 		ft_putstr_fd(path, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 	}

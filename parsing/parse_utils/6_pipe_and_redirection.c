@@ -82,7 +82,6 @@ char	*read_heredoc(char *delimiter)
 	{
 		ft_putstr_fd("> ", 1);
 		line = get_next_line(0);
-		// if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 		if (ft_strequ(line, delimiter))
 			break ;
 		if (heredoc == NULL)
@@ -91,7 +90,6 @@ char	*read_heredoc(char *delimiter)
 		{
 			temp = ft_strjoin(heredoc, line);
 			free(heredoc);
-			// heredoc = temp;
 			heredoc = ft_strjoin(temp, "\n");
 		}
 		free(line);
@@ -99,6 +97,37 @@ char	*read_heredoc(char *delimiter)
 	free(line);
 	return (heredoc);
 }
+
+// char	*read_heredoc(char *delimiter)
+// {
+// 	char	*heredoc;
+// 	char	*line;
+// 	char	*temp;
+
+// 	heredoc = NULL;
+// 	if (check_delimiter(delimiter))
+// 		return (NULL);
+// 	while (1)
+// 	{
+// 		ft_putstr_fd("> ", 1);
+// 		line = get_next_line(0);
+// 		// if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+// 		if (ft_strequ(line, delimiter))
+// 			break ;
+// 		if (heredoc == NULL)
+// 			heredoc = ft_strdup(line);
+// 		else
+// 		{
+// 			temp = ft_strjoin(heredoc, line);
+// 			free(heredoc);
+// 			// heredoc = temp;
+// 			heredoc = ft_strjoin(temp, "\n");
+// 		}
+// 		free(line);
+// 	}
+// 	free(line);
+// 	return (heredoc);
+// }
 
 void	create_pipe(t_main *command, int i, int num_commands)
 {

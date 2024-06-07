@@ -27,13 +27,13 @@ void	error_messages(char *type)
 	else if (ft_strcmp(type, "BASH_MANY_ARGUMENTS") == 0)
 	{
 		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("bash: exit: too many arguments\n", 2);
+		ft_putstr_fd("ψΨ: exit: too many arguments\n", 2);
 		return ;
 	}
 	else if (ft_strcmp(type, "BASH_NUMERIC_ARGS\n") == 0)
 	{
 		ft_putstr_fd("exit\n", 2);
-		ft_putstr_fd("bash: exit: numeric argument required\n", 2);
+		ft_putstr_fd("ψΨ: exit: numeric argument required\n", 2);
 		return ;
 	}
 }

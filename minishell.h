@@ -264,6 +264,10 @@ void			free_copied_args(char **args);
 void			free_env_vars(t_env *env_vars);
 
 // parse.c
+void			cleanup_args(char **args);
+void			clean_parse(char **ph, char **commands, char *line);
+void			process_args_and_update_struct(t_main *parsed_struct, \
+				char **commands, int index, char **ph_strings);
 t_main			*parse_line(char *line, t_env *env_var);
 t_main			*initialize_main(t_main *main_var, int num_commands);
 
@@ -370,6 +374,7 @@ void			insert_spaces_and_duplicate_command(char *changed, int *j,
 					char *command, int *i);
 
 // 15_handle_variables_1.c
+void			handle_variables_sub(t_handle_vars *h_vars, char *line, t_env *env_var);
 char			*handle_variables(char *line, t_env *env_var);
 t_handle_vars	start_h_vars(t_handle_vars *h_vars, char *line);
 char			*get_env_var(t_env *env, char *name);

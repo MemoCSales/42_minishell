@@ -20,11 +20,11 @@ t_handle_vars	quotes_zero(t_handle_vars *h_vars, char *line, t_env *env_var)
 	while (ft_isalnum(*h_vars->var_end) || *h_vars->var_end == '_')
 		h_vars->var_end++;
 	h_vars->size = (h_vars->var_end - (h_vars->var_start + 1));
-	h_vars->var_name = malloc(h_vars->size);
+	h_vars->var_name = malloc(h_vars->size + 1);
 	check_malloc(h_vars->var_name);
 	ft_strncpy(h_vars->var_name, h_vars->var_start + 1, \
 		((h_vars->var_end) - (h_vars->var_start)));
-	h_vars->var_name[h_vars->var_end - h_vars->var_start] = '\0';
+	h_vars->var_name[h_vars->size] = '\0';
 	h_vars->var_value = get_env_var(env_var, h_vars->var_name);
 	if (h_vars->var_value != NULL)
 	{

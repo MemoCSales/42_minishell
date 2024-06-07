@@ -21,7 +21,8 @@ int	check_redir(t_main *main, char **args, int j)
 	{
 		if (args[j + 1] == NULL)
 		{
-			ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", 2);
+			ft_putstr_fd \
+			("ψΨ: syntax error near unexpected token `newline'\n", 2);
 			main->syntaxflag = 1;
 			return (0);
 		}

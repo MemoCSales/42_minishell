@@ -23,9 +23,11 @@ void	*my_malloc(size_t size)
 
 void	my_free(void *ptr)
 {
-	// printf("Freed memory at address %p\n", ptr);
 	free(ptr);
 }
+
+// printf("Freed memory at address %p\n", ptr);
+
 //Custom Memory Allocator
 // typedef struct Allocation {
 //     void* address;

@@ -96,8 +96,6 @@ int	redir_no_arg(char **args, int j)
 	int	fd;
 
 	fd = 0;
-	// if (args[j + 1] != NULL)//ADDED NOT SURE IF NEEDED
-	// {
 	if (ft_strcmp(args[j], "<") == 0)
 	{
 		if (file_exists(args[j + 1]) == 1)
@@ -117,34 +115,5 @@ int	redir_no_arg(char **args, int j)
 			close(fd);
 		}
 	}
-	// }
-	// else
-	// {
-	// 	printf("Error: No argument provided for %s\n", args[j]);
-	// 	// return (1);
-	// }
 	return (0);
 }
-
-// //ANTIGA, RETORNAR SE DER RUIM
-// char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
-// {
-// 	char	*prepared;
-
-// 	prepared = malloc(strlen(line) + 8192);
-// 	check_malloc(prepared);
-// 	prepared = check_closed_quotes(line);
-// 	if ((ft_strequ(prepared, "\'") || ft_strequ(prepared, "\"")))
-// 	{
-// 		printf("Error: Unclosed quotes (%c)\n", prepared[0]);
-// 		free(prepared);
-// 		prepared = ft_strdup("\0");
-// 		check_malloc(prepared);
-// 		return (prepared);
-// 	}
-// 	prepared = handle_variables(line, env_var);
-// 	*ph_strings = malloc(sizeof(char **) * (strlen(line) + 8192));
-// 	check_malloc(ph_strings);
-// 	placeholder(prepared, ph_strings);
-// 	return (prepared);
-// }

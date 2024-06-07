@@ -32,14 +32,14 @@ int	check_command(t_main *main, char **error_message)
 {
 	if (ft_strncmp(main->cmd, "/", 1) == 0)
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("ψΨ: ", 2);
 		ft_putstr_fd(main->cmd, 2);
 		*error_message = ": Is a directory\n";
 		return (126);
 	}
 	else if (ft_strncmp(main->cmd, "./", 2) == 0)
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("ψΨ: ", 2);
 		ft_putstr_fd(main->cmd, 2);
 		*error_message = ": No such file o directory\n";
 		return (126);

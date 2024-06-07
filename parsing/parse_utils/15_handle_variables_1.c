@@ -12,6 +12,13 @@
 
 #include "../minishell.h"
 
+void	handle_variables_sub(t_handle_vars *h_vars, char *line, t_env *env_var)
+{
+	h_vars->quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
+	if (h_vars->i == 0)
+		*h_vars = quotes_zero(h_vars, line, env_var);
+}
+
 char	*handle_variables(char *line, t_env *env_var)
 {
 	t_handle_vars	h_vars;
@@ -25,12 +32,9 @@ char	*handle_variables(char *line, t_env *env_var)
 	check_malloc(temp);
 	free(line_copy);
 	line = temp;
-	// line = change_unquoted_dollar_signs(line);
 	if (ft_strchr(line, '$'))
 	{
-		h_vars.quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
-		if (h_vars.quotes == 0)
-			h_vars = quotes_zero(&h_vars, line, env_var);
+		handle_variables_sub(&h_vars, line, env_var);
 	}
 	h_vars.i = 0;
 	h_vars.quotes = ft_strchr(line, '$') - line;
@@ -42,6 +46,67 @@ char	*handle_variables(char *line, t_env *env_var)
 	free(temp);
 	return (h_vars.result);
 }
+
+// char	*handle_variables(char *line, t_env *env_var)
+// {
+// 	t_handle_vars	h_vars;
+// 	char			*temp;
+// 	char			*line_copy;
+
+// 	h_vars = start_h_vars(&h_vars, line);
+// 	line_copy = ft_strdup(line);
+// 	check_malloc(line_copy);
+// 	temp = change_unquoted_dollar_signs(line_copy);
+// 	check_malloc(temp);
+// 	free(line_copy);
+// 	line = temp;
+// 	if (ft_strchr(line, '$'))
+// 	{
+// 		h_vars.quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
+// 		if (h_vars.quotes == 0)
+// 			h_vars = quotes_zero(&h_vars, line, env_var);
+// 	}
+// 	h_vars.i = 0;
+// 	h_vars.quotes = ft_strchr(line, '$') - line;
+// 	if (h_vars.quotes >= 0)
+// 		h_vars.quotes = is_char_in_quotes(line, h_vars.quotes);
+// 	while (line[h_vars.i] != '\0')
+// 		h_vars = if_conditions(&h_vars, line, env_var);
+// 	h_vars.result[h_vars.j] = '\0';
+// 	free(temp);
+// 	return (h_vars.result);
+// }
+
+// char	*handle_variables(char *line, t_env *env_var)
+// {
+// 	t_handle_vars	h_vars;
+// 	char			*temp;
+// 	char			*line_copy;
+
+// 	h_vars = start_h_vars(&h_vars, line);
+// 	line_copy = ft_strdup(line);
+// 	check_malloc(line_copy);
+// 	temp = change_unquoted_dollar_signs(line_copy);
+// 	check_malloc(temp);
+// 	free(line_copy);
+// 	line = temp;
+// 	// line = change_unquoted_dollar_signs(line);
+// 	if (ft_strchr(line, '$'))
+// 	{
+// 		h_vars.quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
+// 		if (h_vars.quotes == 0)
+// 			h_vars = quotes_zero(&h_vars, line, env_var);
+// 	}
+// 	h_vars.i = 0;
+// 	h_vars.quotes = ft_strchr(line, '$') - line;
+// 	if (h_vars.quotes >= 0)
+// 		h_vars.quotes = is_char_in_quotes(line, h_vars.quotes);
+// 	while (line[h_vars.i] != '\0')
+// 		h_vars = if_conditions(&h_vars, line, env_var);
+// 	h_vars.result[h_vars.j] = '\0';
+// 	free(temp);
+// 	return (h_vars.result);
+// }
 
 t_handle_vars	start_h_vars(t_handle_vars *h_vars, char *line)
 {

@@ -97,7 +97,7 @@ $(NAME): $(OBJ) $(LIBFT)
 $(OBJ_DIR)%.o: %.c $(LIBFT)
 			@mkdir -p $(@D)
 			@$(CC) $(CFLAGS) -I$(LIBFT_DIRECTORY) -c $< -o $@
-			@printf "$(RED)ψΨ"
+			@printf "$(RED)Ψ."
 
 message:
 	@printf "$(RED)     $(DEFAULT)"

@@ -44,7 +44,7 @@ int	check_delimiter(char *delimiter)
 {
 	if (!delimiter)
 	{
-		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n",
+		ft_putstr_fd("ψΨ: syntax error near unexpected token `newline'\n",
 			STDERR_FILENO);
 		return (1);
 	}
