@@ -15,7 +15,7 @@
 void	handle_variables_sub(t_handle_vars *h_vars, char *line, t_env *env_var)
 {
 	h_vars->quotes = is_char_in_quotes(line, ft_strchr(line, '$') - line);
-	if (h_vars->i == 0)
+	if (h_vars->quotes == 0)
 		*h_vars = quotes_zero(h_vars, line, env_var);
 }
 

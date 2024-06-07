@@ -98,10 +98,7 @@ $(NAME): $(OBJ) $(LIBFT)
 $(OBJ_DIR)%.o: %.c $(LIBFT)
 			@mkdir -p $(@D)
 			@$(CC) $(CFLAGS) -I$(LIBFT_DIRECTORY) -c $< -o $@
-			@printf "$(RED)Ψ."
-
-message:
-	@printf "$(RED)     $(DEFAULT)"
+			@printf "$(RED)Ψ"
 
 # CHANGED clean AND fclean SO THE make re DOES NOT DELETE THE LIBFT (FASTER RECOMPILATION)
 clean:
