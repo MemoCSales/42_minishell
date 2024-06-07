@@ -83,13 +83,6 @@ t_main	*parse_line(char *line, t_env *env_var)
 	}
 	parsed_struct[count_elements(commands)].cmd = NULL;
 	clean_parse(ph_strings, commands, line);
-// //PRINT STRUCT
-	i = 0;
-	while (parsed_struct[i].cmd)
-	{
-		print_struct(&parsed_struct[i], i);
-		i++;
-	}
 	return (parsed_struct);
 }
 // while (i < count_elements(commands))

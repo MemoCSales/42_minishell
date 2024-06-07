@@ -379,7 +379,8 @@ void			insert_spaces_and_duplicate_command(char *changed, int *j,
 					char *command, int *i);
 
 // 15_handle_variables_1.c
-void			handle_variables_sub(t_handle_vars *h_vars, char *line, t_env *env_var);
+void			handle_variables_sub(t_handle_vars *h_vars, \
+				char *line, t_env *env_var);
 char			*handle_variables(char *line, t_env *env_var);
 t_handle_vars	start_h_vars(t_handle_vars *h_vars, char *line);
 char			*get_env_var(t_env *env, char *name);
