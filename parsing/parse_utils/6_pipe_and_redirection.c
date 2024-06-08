@@ -90,12 +90,12 @@ char	*read_heredoc(char *delimiter)
 		{
 			temp = ft_strjoin(heredoc, line);
 			free(heredoc);
-			heredoc = ft_strjoin(temp, "\n");
+			heredoc = ft_strjoin(temp, "");
 		}
 		free(line);
 	}
 	free(line);
-	return (heredoc);
+	return (temp);
 }
 
 // char	*read_heredoc(char *delimiter)

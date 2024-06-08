@@ -64,7 +64,7 @@ char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 	prepared = check_closed_quotes(line);
 	if ((ft_strequ(prepared, "\'") || ft_strequ(prepared, "\"")))
 	{
-		printf("Error: Unclosed quotes (%c)\n", prepared[0]);
+		// printf("Error: Unclosed quotes (%c)\n", prepared[0]);
 		free(prepared);
 		prepared = ft_strdup("\0");
 		check_malloc(prepared);
@@ -100,7 +100,7 @@ int	redir_no_arg(char **args, int j)
 	{
 		if (file_exists(args[j + 1]) == 1)
 			return (0);
-		else
+		else if (count_elements(args) <= 2)
 			printf("Error: No such file or directory: %s\n", args[j + 1]);
 	}
 	else if ((ft_strcmp(args[j], ">") == 0) || ft_strcmp(args[j], ">>") == 0)
