@@ -64,7 +64,6 @@ char	*prepare_line(char *line, char ***ph_strings, t_env *env_var)
 	prepared = check_closed_quotes(line);
 	if ((ft_strequ(prepared, "\'") || ft_strequ(prepared, "\"")))
 	{
-		// printf("Error: Unclosed quotes (%c)\n", prepared[0]);
 		free(prepared);
 		prepared = ft_strdup("\0");
 		check_malloc(prepared);
