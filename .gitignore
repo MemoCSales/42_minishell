@@ -1,0 +1,6 @@
+# other files
+.o
+.a
+
+#binary
+minishell
