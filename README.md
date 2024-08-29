@@ -86,3 +86,5 @@ After building the project, you can test its functionality with some basic comma
 ## Contributors
 - [Memo Sales](https://github.com/MemoCSales)
 - [Demetrio Rodrigues](https://github.com/demacinema)
+
+Feel free to contribute to this project by submitting pull requests or opening issues.
