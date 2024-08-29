@@ -5,10 +5,10 @@
 ### Table of contents
 
 * [Overview](#Overview)
-* [The-Challenge](#The-Challenge)
-* [Key-Concepts](#Key-Concepts)
-* [Building-and-Running](#Building-and-Running)
-* [Example-tests](#Example-tests)
+* [The Challenge](#The-Challenge)
+* [Key Concepts](#Key-Concepts)
+* [Building and Running](#Building-and-Running)
+* [Example tests](#Example-tests)
 * [Conclusion](#Conclusion)
 * [Contributors](#Contributors)
 ## Overview
